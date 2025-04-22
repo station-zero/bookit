@@ -1,15 +1,188 @@
+<!DOCTYPE html>
 <html>
-<head>
-<script src="jquery-3.7.1.min.js"></script>
-<script src="script.js"></script>
+	<head>
+		<script src="jquery-3.7.1.min.js"></script>
+		<script src="script.js"></script>
+		<script>
+			$(document).ready(function() {
+			
+				$("#home_menu_btn").on("click", function() {
+					showMe("#home");
+				});
+			
+				$("#login_btn").on("click", function() {
+					showMe("#login");
+				});
+			
+				function showMe(id)
+				{
+					$(".content_div").hide();
+					$(id).show();
+				}
+				
+				showMe("#home");
+			});
+		</script>
+		<style>
+															
+			html, body
+			{
+				margin:0px;
+				padding:0px;
+			}
+			
+			p
+			{
+				font-family:arial;
+				color:#f3f3e0;
 
-<script>
-$(document).ready(function() {
-	calendar();
-});
-</script>
-</head>
-<body>
-<div id="calendar">test</div>
-</body>
+			}
+			
+			#main
+			{
+				margin:auto;
+				width:1080px;
+			}
+			
+			#menu_bar
+			{
+				display:block;
+				float:left;
+				width:980px;
+				background:#373737;
+			}
+			
+			#menu_bar .menu_link
+			{
+				display:block;
+				float:left;
+				padding:10px;
+				margin:10px;
+				font-family:arial;
+				color:#f3f3e0;
+				text-decoration:none;
+				font-size:17px;
+			}
+			
+			#login_btn
+			{
+				display:block;
+				float:left;
+				width:100px;
+				background:#696963;
+				text-align:center;
+				padding:20px 0px;
+				font-family:arial;
+				color:#f3f3e0;
+				font-weight:bold;
+				font-size:17px;
+			}
+			#login_btn:hover
+			{
+			cursor:pointer;
+			}
+			
+			
+			#home
+			{
+				background:#e44746;
+				text-align:center;
+				
+			}
+			
+			#home p
+			{
+				font-size:30px;
+			}
+			
+			.btn_c2
+			{
+				display:block;
+				float:left;
+				width:720px;
+				min-height:180px;
+				text-align:left;
+				background-color:#608bc1;
+				padding:0px;
+				
+			}
+			
+			.btn_c2 p, #home .btn_c2 p, .btn_c1 p, #home .btn_c1 p 
+			{
+				font-size:24px;
+				padding:20px 30px;
+			}
+			
+			.btn_c1
+			{
+				display:block;
+				float:left;
+				width:360px;
+				min-height:180px;
+				background-color:#133e87;
+				
+			}
+			
+			.divider
+			{
+				display:block;
+				float:left;
+				width:100%;
+				height:4px;
+				background-color:#f3f3e0;
+			}
+			
+			.content_div
+			{
+				clear:both;
+				display:none;
+				float:left;
+				width:100%;
+				padding:20px 0px 0px 0px;
+			}
+			
+			
+		</style>
+	</head>
+	<body>
+	
+	<div id="main">
+		<div id="menu_bar">
+			<a href="javascript:void" id="home_menu_btn" class="menu_link">Home</a>
+			<a href="" class="menu_link">test 2</a>
+			<a href="" class="menu_link">test 3</a>
+		</div>
+		<div id="login_btn">Login</div>
+		
+		
+		
+		
+		<div class="content_div" id="home">
+			<img src="images/logo.png">
+			<p>Booking and resavation system</p>
+			<div class="divider"></div>
+			<div class="btn_c2"><p>
+				CREATE A FREE BOOKING SITE FOR YOUR MEETING 
+				ROOM, VACATION HOUSE, MUSIC STUDIO, CARS 
+				OR EVEN YOUR BOAT.</p> 
+			</div>
+			<div class="btn_c1">
+				<p> Create a free account</p>
+			</div>
+		</div>
+		
+		<div  class="content_div" id="calendar"></div>
+	
+		<div  class="content_div" id="login">
+			<table>
+				<tr><td>E-mail: </td><td><input id="login_email"></td></tr>
+				<tr><td>password: </td><td><input type="password" id="login_password"></td></tr>
+				<tr><td colspan="2"><input type="button" value="login"></td></tr>
+			</table>
+		</div>
+		
+		
+	</div>
+		
+	</body>
 </html>
