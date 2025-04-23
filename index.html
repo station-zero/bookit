@@ -90,7 +90,7 @@
         					success: function(data){
 								const JsonData = jQuery.parseJSON(data);
 								$.each(JsonData.boards, function(i, item) {
-							    	console.log(item);
+							   		addBoard(item.id,item.title);
 								});
 								console.log(JsonData.msg);
 								showMe("#dash_board"); 
@@ -102,6 +102,13 @@
 					}					
 
 
+				}
+
+				function addBoard(id, title)
+				{
+					var child = $("<div alt='" + id + "''>" + title  + "</div>");
+					$("#board_list").append(child);
+					
 				}
 
 				function error()
@@ -327,7 +334,7 @@
 			Welcome user
 			<div id="new_btn"></div>
 			<div id="messages"></div>
-			<div>LIST:</div>
+			<div id="board_list">LIST:</div>
 
 			</div>
 
