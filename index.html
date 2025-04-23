@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<script src="jquery-3.7.1.min.js"></script>
-		<script src="script.js"></script>
+		<!--<script src="script.js"></script> -->
 		<script>
 
 			$(document).ready(function() {
@@ -12,7 +12,7 @@
 					let jwt_hash = "";
 					
 					this.setJWT = (hash) => {jwt_hash = hash;}
-					this.getJWT = jwt_hash;
+					this.getJWT = () => jwt_hash;
 
 					this.setAction = (action) => {api_action = action;}
 					this.getAction = () => api_action;
@@ -224,8 +224,10 @@
 			</div>
 		</div>
 		
+		
 		<div  class="content_div" id="calendar"></div>
 	
+		
 		<div  class="content_div" id="login">
 			<table>
 				<tr><td>E-mail: </td><td><input id="login_email"></td></tr>
@@ -234,6 +236,7 @@
 			</table>
 		</div>
 
+		
 		<div  class="content_div" id="new_account">
 			<table>
 				<tr><td>E-mail: </td><td><input id="account_email"></td></tr>
