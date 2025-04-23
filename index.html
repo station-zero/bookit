@@ -64,7 +64,7 @@
         					url: "api.php",
         					success: function(data){
 								var JsonData = jQuery.parseJSON(data);
-								profile.setJWT() = JsonData.JWT;
+								profile.setJWT(JsonData.JWT);
 								initDashboard();
 							},
 							error: function(){
