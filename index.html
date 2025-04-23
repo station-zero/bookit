@@ -6,6 +6,12 @@
 		<script>
 			$(document).ready(function() {
 			
+				const check_gdpr = window.localStorage.getItem("gdpr");
+				if(check_gdpr)
+				{
+					$("#gdpr_banner").hide();
+				}
+
 				function userProfile() {
 					let api_action = "";
 					let jwt_hash = "";
@@ -22,7 +28,12 @@
 				$("#home_menu_btn").on("click", function() {
 					showMe("#home");
 				});
-			
+
+				$("#gdpr_ok").on("click", function() {
+					$("#gdpr_banner").hide();
+					window.localStorage.setItem("gdpr", 1);
+				});
+				
 				$("#login_btn").on("click", function() {
 					showMe("#login");
 					profile.setAction("login");
@@ -34,30 +45,52 @@
 				});
 			
 				$(".submit_btn").on("click", function() {
-					submit();
+					callAPI(profile.getAction());
 				});
 
-				function submit()
+				function callAPI(action)
 				{
-					if(profile.getAction() == "login")
+					if( action == "login")
 					{
 						let email_form = $("#login_email").value;
 						let password_form = $("#password_email").value;
 						
 						$.ajax({
-        					type: "POST",
-        					data: {'action':profile.getAction(),'token':"Bmn0c8rQDJoGTibk"},
+							type: "POST",
+        					data: {
+								'action':action,
+								'email':email_form,
+								'password':password_form},
         					url: "api.php",
         					success: function(data){
-								console.log(data);
-								//profile.setJWT() = "data";
-								showMe("#dash_board");
+								var JsonData = jQuery.parseJSON(data);
+								profile.setJWT() = JsonData.JWT;
+								initDashboard();
 							},
 							error: function(){
 								error();
 							}
         				});
-					}
+					}					
+
+					if( action == "getBoards")
+					{
+						$.ajax({
+							type: "POST",
+        					data: {
+								'token':profile.getJWT(),
+								},
+        					url: "api.php",
+        					success: function(data){
+								return data; 
+							},
+							error: function(){
+								return "error";
+							}
+        				});
+					}					
+
+
 				}
 
 				function error()
@@ -69,6 +102,14 @@
 				{
 					$(".content_div").hide();
 					$(id).show();
+				}
+
+				function initDashBoard()
+				{
+					let boards = callAPI("getBoards"); 
+					let boardData = jQuery.parseJSON(boards);
+					
+					showMe("#dash_board");
 				}
 				
 				showMe("#home");
@@ -193,7 +234,39 @@
 				padding:20px 0px 0px 0px;
 			}
 			
-			
+			#gdpr_banner
+			{
+				position:fixed;
+				bottom:0px;
+				background-color:rgba(0, 0, 0, 0.8);
+				width:100%;
+				padding:20px;
+				text-align:center;
+				
+			}
+
+			#gdpr_banner p
+			{
+				color:#f3f3e0;
+				size:14px;
+			}
+
+			#gdpr_banner #gdpr_ok
+			{
+				display: inline-block;
+				padding:10px 15px;
+				margin:0px 10px;
+				background:#009900;
+				border:1px solid #FFF;
+				color:#f3f3e0;
+				size:14px;
+				font-family:arial;
+			}
+
+			#gdpr_banner #gdpr_ok:hover
+			{
+				cursor:pointer;
+			}
 		</style>
 	</head>
 	<body>
@@ -246,11 +319,22 @@
 		</div>
 
 
+		<div  class="content_div" id="dash_board">
+			Welcome user
+			<div id="new_btn"></div>
+			<div id="messages"></div>
+			<div>LIST:</div>
+
+			</div>
+
 
 		<div  class="content_div" id="error">FEJL</div>
 		
 		
 	</div>
 		
+	<div id="gdpr_banner">
+		<p>bla bla bla. bla bla </p><div id="gdpr_ok">Accept</div>
+	</div>
 	</body>
 </html>

@@ -1,8 +1,7 @@
 <?php
 //include 'db.php';
 header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+
 $jwt_token = "";
 
 function b64Encoding($data) {
@@ -25,38 +24,36 @@ function jwt($token, $secret, $time)
     //signing the Json Web Token
     $jwt = b64Encoding(json_encode($header)) . "." . b64Encoding(json_encode($payload));
     $jwt = $jwt . "." . b64Encoding(hash_hmac('SHA256', $jwt, base64_decode($secret), true));
-    return $jwt 
+    return $jwt;
 }
 
-$token  = "Bmn0c8rQDJoGTibk" // base64_encode(random_bytes(12));
-$secret "yXWczx0LwgKInpMFfgh0gCYCA8EKbOnw" = // base64_encode(random_bytes(24));
+$token  = base64_encode(random_bytes(12));
+$secret = base64_encode(random_bytes(24));
 
 $jwt_token = jwt($token, $secret, date("c"));   
 
 $method = $_SERVER['REQUEST_METHOD'];
-$input = json_decode(file_get_contents('php://input'), true);
+$input = $_POST;
 
 switch ($method) {
     case 'POST':
-        if($input['token']==$token)
+        if($input['action']=="login")
         {
-            if($input['action']=="login")
-            {
-                echo json_encode(["message" => "successfully", "JWT" => $jwt_token]); 
-            }
-
-            if($input['action']=="new_account")
-            {
-                echo json_encode(["message" => "successfully"]); 
-            }
+            echo json_encode(["message" => "successfully1 ", "JWT" => $jwt_token]); 
         }
-
+        if($input['action']=="new_account")
+        {
+            //create new account
+            echo json_encode(["message" => "successfully1 ", "JWT" => $jwt_token]); 
+        }
+        break;
+    
     case 'PUT':
-        echo json_encode(["message" => "successfully"]);
+        echo json_encode(["message" => "successfully3"]);
         break;
 
     case 'DELETE':
-        echo json_encode(["message" => "successfully"]);
+        echo json_encode(["message" => "successfully4"]);
         break;
 
     default:
