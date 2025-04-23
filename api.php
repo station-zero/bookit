@@ -41,10 +41,23 @@ switch ($method) {
         {
             echo json_encode(["message" => "successfully1 ", "JWT" => $jwt_token]); 
         }
+        
         if($input['action']=="new_account")
         {
             //create new account
             echo json_encode(["message" => "successfully1 ", "JWT" => $jwt_token]); 
+        }
+        
+        if($input['action']=="get_boards")
+        {
+            $boards = array();
+            $boards[] = array('title' => 'John Doe1', 'id' => 30);
+            $boards[] = array('title' => 'John Doe2', 'id' => 32);
+            
+            $dataArray = array('boards' => $boards, 'msg' => 10); 
+             
+            //create new account
+            echo json_encode($dataArray); 
         }
         break;
     

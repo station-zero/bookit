@@ -48,6 +48,11 @@
 					callAPI(profile.getAction());
 				});
 
+				function initDashboard()
+				{
+					const boards = callAPI("get_boards"); 
+				}
+				
 				function callAPI(action)
 				{
 					if( action == "login")
@@ -63,7 +68,7 @@
 								'password':password_form},
         					url: "api.php",
         					success: function(data){
-								var JsonData = jQuery.parseJSON(data);
+								const JsonData = jQuery.parseJSON(data);
 								profile.setJWT(JsonData.JWT);
 								initDashboard();
 							},
@@ -73,16 +78,22 @@
         				});
 					}					
 
-					if( action == "getBoards")
+					if( action == "get_boards")
 					{
 						$.ajax({
 							type: "POST",
         					data: {
-								'token':profile.getJWT(),
+								'action':action,
+								'token':profile.getJWT()
 								},
         					url: "api.php",
         					success: function(data){
-								return data; 
+								const JsonData = jQuery.parseJSON(data);
+								$.each(JsonData.boards, function(i, item) {
+							    	console.log(item);
+								});
+								console.log(JsonData.msg);
+								showMe("#dash_board"); 
 							},
 							error: function(){
 								return "error";
@@ -104,13 +115,6 @@
 					$(id).show();
 				}
 
-				function initDashBoard()
-				{
-					let boards = callAPI("getBoards"); 
-					let boardData = jQuery.parseJSON(boards);
-					
-					showMe("#dash_board");
-				}
 				
 				showMe("#home");
 			});
