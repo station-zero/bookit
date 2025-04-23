@@ -4,7 +4,6 @@
 		<script src="jquery-3.7.1.min.js"></script>
 		<!--<script src="script.js"></script> -->
 		<script>
-
 			$(document).ready(function() {
 			
 				function userProfile() {
@@ -40,7 +39,6 @@
 
 				function submit()
 				{
-					console.log(profile.getAction());
 					if(profile.getAction() == "login")
 					{
 						let email_form = $("#login_email").value;
@@ -48,10 +46,11 @@
 						
 						$.ajax({
         					type: "POST",
-        					data: {'email':email_form,'password':password_form},
+        					data: {'action':profile.getAction(),'token':"Bmn0c8rQDJoGTibk"},
         					url: "api.php",
         					success: function(data){
-								profile.setJWT() = "data";
+								console.log(data);
+								//profile.setJWT() = "data";
 								showMe("#dash_board");
 							},
 							error: function(){
