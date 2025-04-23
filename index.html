@@ -4,16 +4,68 @@
 		<script src="jquery-3.7.1.min.js"></script>
 		<script src="script.js"></script>
 		<script>
+
 			$(document).ready(function() {
 			
+				function userProfile() {
+					let api_action = "";
+					let jwt_hash = "";
+					
+					this.setJWT = (hash) => {jwt_hash = hash;}
+					this.getJWT = jwt_hash;
+
+					this.setAction = (action) => {api_action = action;}
+					this.getAction = () => api_action;
+				}
+
+				let profile = new userProfile();
+				
 				$("#home_menu_btn").on("click", function() {
 					showMe("#home");
 				});
 			
 				$("#login_btn").on("click", function() {
 					showMe("#login");
+					profile.setAction("login");
+				});
+
+				$("#new_account_btn").on("click", function() {
+					showMe("#new_account");
+					profile.setAction("new_account");
 				});
 			
+				$(".submit_btn").on("click", function() {
+					submit();
+				});
+
+				function submit()
+				{
+					console.log(profile.getAction());
+					if(profile.getAction() == "login")
+					{
+						let email_form = $("#login_email").value;
+						let password_form = $("#password_email").value;
+						
+						$.ajax({
+        					type: "POST",
+        					data: {'email':email_form,'password':password_form},
+        					url: "api.php",
+        					success: function(data){
+								profile.setJWT() = "data";
+								showMe("#dash_board");
+							},
+							error: function(){
+								error();
+							}
+        				});
+					}
+				}
+
+				function error()
+				{
+					showMe("#error");
+				}
+
 				function showMe(id)
 				{
 					$(".content_div").hide();
@@ -23,12 +75,13 @@
 				showMe("#home");
 			});
 		</script>
-		<style>
-															
+
+		<style>													
 			html, body
 			{
 				margin:0px;
 				padding:0px;
+				background:#d8d8d8;
 			}
 			
 			p
@@ -148,7 +201,7 @@
 	
 	<div id="main">
 		<div id="menu_bar">
-			<a href="javascript:void" id="home_menu_btn" class="menu_link">Home</a>
+			<a href="#" id="home_menu_btn" class="menu_link">Home</a>
 			<a href="" class="menu_link">test 2</a>
 			<a href="" class="menu_link">test 3</a>
 		</div>
@@ -166,7 +219,7 @@
 				ROOM, VACATION HOUSE, MUSIC STUDIO, CARS 
 				OR EVEN YOUR BOAT.</p> 
 			</div>
-			<div class="btn_c1">
+			<div class="btn_c1" id="new_account_btn">
 				<p> Create a free account</p>
 			</div>
 		</div>
@@ -177,9 +230,22 @@
 			<table>
 				<tr><td>E-mail: </td><td><input id="login_email"></td></tr>
 				<tr><td>password: </td><td><input type="password" id="login_password"></td></tr>
-				<tr><td colspan="2"><input type="button" value="login"></td></tr>
+				<tr><td colspan="2"><input class="submit_btn" type="button" value="login"></td></tr>
 			</table>
 		</div>
+
+		<div  class="content_div" id="new_account">
+			<table>
+				<tr><td>E-mail: </td><td><input id="account_email"></td></tr>
+				<tr><td>password: </td><td><input type="password" id="account_password"></td></tr>
+				<tr><td>Username: </td><td><input id="account_username"></td></tr>
+				<tr><td colspan="2"><input class="submit_btn" type="button" value="Create"></td></tr>
+			</table>
+		</div>
+
+
+
+		<div  class="content_div" id="error">FEJL</div>
 		
 		
 	</div>
