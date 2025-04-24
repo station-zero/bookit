@@ -1,0 +1,38 @@
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
+    hashed_password TEXT NOT NULL,
+    role TEXT NOT NULL,
+    jwt_token TEXT,
+    id_number TEXT NOT NULL,
+    verified INTEGER NOT NULL,
+    jwt_token_expire DATETIME
+);
+
+CREATE TABLE calendar (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    owner INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    interval INTEGER NOT NULL,
+    users TEXT NOT NULL,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE calendar_blocks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    calendar_id INTEGER NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    user_id TEXT NOT NULL
+);
+
+CREATE TABLE msg (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender TEXT NOT NULL,
+    receiver TEXT NOT NULL,
+    message TEXT NOT NULL,
+    timestamp DATETIME NOT NULL,
+    archive INTEGER NOT NULL
+);
+
