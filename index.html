@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+	<title>Apoint test 2</title>
 	<head>
 		<script src="jquery-3.7.1.min.js"></script>
 		<!--<script src="script.js"></script> -->
@@ -46,6 +47,7 @@
 			
 				$(".submit_btn").on("click", function() {
 					callAPI(profile.getAction());
+					
 				});
 
 				function initDashboard()
@@ -76,7 +78,32 @@
 								error();
 							}
         				});
-					}					
+					}
+					
+					if( action == "new_account")
+					{
+						let email_form = $("#account_email").val();
+						let password_form = $("#account_password").val();
+						let user_form = $("#account_username").val();
+						
+						$.ajax({
+							type: "POST",
+        					data: {
+								'action':action,
+								'email':email_form,
+								'password':password_form,
+								'username':user_form
+								},
+        					url: "api.php",
+        					success: function(data){
+								const JsonData = jQuery.parseJSON(data);
+								console.log(JsonData);
+							},
+							error: function(){
+								error();
+							}
+        				});
+					}
 
 					if( action == "get_boards")
 					{
