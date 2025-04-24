@@ -1,0 +1,205 @@
+<html>
+<head>
+<script src="jquery-3.7.1.min.js"></script>
+	<!--<script src="script.js"></script> -->
+	<script>
+		
+		let calendar = (function(){ 
+		
+			const today = new Date();
+			let DD = today.getDate();
+			let YY = today.getFullYear();
+			let MM = today.getMonth();
+			
+			class Selector {
+				constructor() {
+					this.day = 0;
+					this.month = 0;
+					this.year = 0;
+				}
+			}
+			
+			let selectStartDate = new Selector;
+			let selectEndDate = new Selector;
+			let selected = false;
+			
+			function drawCalendar(year,month,day)
+			{
+				let secondMonth = month + 1;
+				let secondYear = year;
+				
+				if(secondMonth > 11)
+				{
+					secondMonth = 0;
+					secondYear += 1; 
+				}
+				
+				const daysInMonth = new Date(year, month + 1, 0).getDate();
+				const daysInSecondMonth = new Date(secondYear, secondMonth + 1, 0).getDate();
+				
+				const firstDayInMonth = new Date(year, month, 0).getDay();
+				const firstDayInSecondMonth = new Date(secondYear, secondMonth, 0).getDay();
+				
+				let dayNumber = 1;
+				
+				$("#first_date").text(month + 1 + "/" + year);
+				$("#second_date").text(secondMonth + 1 + "/" + secondYear);
+				$("#first_month_picker").html("");
+				$("#second_month_picker").html("");
+				
+				console.log(YY + "," + MM);
+				console.log("start with:" + firstDayInMonth);
+				console.log("last date in m:" + daysInMonth);
+				
+				for(let i=1; i < 60; i++)
+				{
+					let divElement = "";
+					if(i > firstDayInMonth && dayNumber < daysInMonth + 1){
+						divElement = "<div class='dayPicker' ";
+						divElement += "data-d='" +  dayNumber + "' ";
+						divElement += "data-m='" +  month + "' ";
+						divElement += "data-y='" +  year + "' ";
+						divElement += ">" + dayNumber + "</div>";
+						dayNumber += 1;
+					}else{
+						divElement = "<div class='dayPickerEmty'></div>";
+					}
+					$("#first_month_picker").append(divElement);
+				}
+				
+				dayNumber = 1;
+					
+				for(let i=1; i < 60; i++)
+				{
+					let divElement = "";
+					if(i > firstDayInSecondMonth && dayNumber < daysInSecondMonth + 1){
+						divElement = "<div class='dayPicker' ";
+						divElement += "data-d='" +  dayNumber + "' ";
+						divElement += "data-m='" +  month + "' ";
+						divElement += "data-y='" +  year + "' ";
+						divElement += ">" + dayNumber + "</div>";
+						dayNumber += 1;
+					}else{
+						divElement = "<div class='dayPickerEmty'></div>";
+					}
+					$("#second_month_picker").append(divElement);
+				}
+			}
+			
+			$(".dayPicker").on("click", function(){
+				 let day = $(this).attr('data-d');
+				 let month = $(this).attr('data-m');
+				 let year = $(this).attr('data-y');
+				 console.log(day + "," + month + "," + year);
+			});
+			
+			$("#prev").on("click", function(){
+				MM -= 1;
+				if(MM < 0)
+				{
+					YY -= 1;
+					MM = 11;
+				}
+				drawCalendar(YY,MM,DD);
+			});
+			
+			$("#next").on("click", function(){
+				MM += 1;
+				if(MM > 11)
+				{
+					YY += 1;
+					MM = 0;
+				}
+				drawCalendar(YY,MM,DD);
+			});
+			
+			
+			drawCalendar(YY,MM,DD);
+			
+		});
+		$(document).ready(function() {
+			calendar();	
+		});
+		
+	</script>
+	<style>
+	
+		.breakDiv
+		{
+		
+		}
+		
+		.dayPicker, .dayPickerEmty
+		{
+			width:40px;
+			height:40px;
+			text-align:center;
+			display: grid;
+			float:left;
+			align-items: center;
+
+		}
+		
+		#calendar_box
+		{
+			display:block;
+			float:left;
+			padding:2px;
+			margin:4px;
+			
+		}
+		
+		#first_month, #second_month
+		{
+			display:block;
+			float:left;
+			width:290px;
+			border:1px solid #999999;
+			padding:2px;
+		}
+		
+		#prev, #next
+		{
+			display:block;
+			float:left;
+			width:45%;
+		}
+		
+		#next{
+			text-align:right;
+		}
+		
+	</style>
+</head>
+<body>
+
+<div id="calendar_box">
+	<div id="prev">Prev</div>
+	<div id="next">next</div>
+	
+	<div id="first_month">
+		<div id="first_date"></div>
+		<div class="dayPickerEmty">M</div>
+		<div class="dayPickerEmty">T</div>
+		<div class="dayPickerEmty">W</div>
+		<div class="dayPickerEmty">T</div>
+		<div class="dayPickerEmty">F</div>
+		<div class="dayPickerEmty">S</div>
+		<div class="dayPickerEmty">S</div>	
+		<div id="first_month_picker"></div>
+	</div>
+	<div id="second_month">
+		<div id="second_date"></div>
+		<div class="dayPickerEmty">M</div>
+		<div class="dayPickerEmty">T</div>
+		<div class="dayPickerEmty">W</div>
+		<div class="dayPickerEmty">T</div>
+		<div class="dayPickerEmty">F</div>
+		<div class="dayPickerEmty">S</div>
+		<div class="dayPickerEmty">S</div>
+		<div id="second_month_picker"></div>
+	</div>
+</div>
+
+</body>
+</html>
