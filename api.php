@@ -29,11 +29,6 @@ function jwt($token, $secret, $time)
     return $jwt;
 }
 
-$token  = base64_encode(random_bytes(12));
-$secret = base64_encode(random_bytes(24));
-
-$jwt_token = jwt($token, $secret, date("c"));   
-
 $method = $_SERVER['REQUEST_METHOD'];
 $input = $_POST;
 
@@ -52,7 +47,7 @@ function send_mail($email, $code)
     </head>
     <body>
         <p>CLick on that F***ing link!:</p>
-        <a href="https://www.apoint.dk/verify.php?i=' . $code . '">Click HERE </a>
+        <a href="https://www.apoint.dk/verify.php?i=' . $code . '">KLIK OG VIND EN MIO.</a>
     </body>
     </html>
     ';
@@ -60,16 +55,51 @@ function send_mail($email, $code)
     mail($email, $subject, $message, $headers);
 }
 
+function get_user($token)
+{
+    $user_data = array( 
+        'valid' => false 
+    );
+    
+    $query = 'SELECT * FROM users WHERE jwt_token=:token AND verified=""';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':token', $token);
+    $result = $statement->execute();
+    
+    while ($row = $result->fetchArray()) {
+        $user_data['valid']=true;
+        $user_data['id']=$row['id'];
+        $user_data['email']=$row['email'];
+    }  
+
+    return $user_data;
+}
+
 switch ($method) {
     case 'POST':
         if($input['action']=="login")
         {
-            $username = $input['username'];
+            $email = $input['email'];
             $password = $input['password'];
-           
+            $hashed_password = hash("sha256", $password);
             
+            $token  = base64_encode(random_bytes(12));
+            $secret = base64_encode(random_bytes(24));            
+            $jwt_token = jwt($token, $secret, date("c"));   
+
+            $query = 'UPDATE users SET jwt_token=:token WHERE email=:email AND hashed_password=:hashed_password';
+            $statement = $db->prepare($query);
+            $statement->bindValue(':token', $jwt_token);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':hashed_password', $hashed_password);
+            $result = $statement->execute();
             
-            echo json_encode(["message" => "successfully1 ", "JWT" => $jwt_token]); 
+            if($db->changes() != 0)
+            {
+                echo json_encode(["route" => "loggedin", "val" => $jwt_token]);
+            }else{
+                echo json_encode(["route" => "error", "val" => "2"]);
+            } 
         }
         
         if($input['action']=="new_account")
@@ -79,33 +109,74 @@ switch ($method) {
             $password = $input['password'];
             $email = $input['email'];
             $hashed_pw = hash("sha256", $password);
+            
             $verified_code = base64_encode(random_bytes(12));
+            $verified_code = preg_replace('/[^a-zA-Z0-9_ -]/s','-',$verified_code);
 
-            $results = $db->prepare('INSERT INTO users(username, email, hashed_password, verified) VALUES (?,?,?,?)');
-            $results->bindValue(1, $username);
-            $results->bindValue(2, $email);
-            $results->bindValue(3, $hashed_pw);
-            $results->bindValue(4, $verified_code);
-            $results->execute();
-             
-            if(!$results){
-                echo json_encode(["message" => $db->lastErrorMsg()]);
-            }else{
+            $query = 'INSERT INTO users(username, email, hashed_password, verified) VALUES (:username,:email,:hashed_pw,:verified)';
+            $statement = $db->prepare($query);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':hashed_pw', $hashed_pw);
+            $statement->bindValue(':verified', $verified_code);
+            $result = $statement->execute();
+            
+            if($db->changes() != 0)
+            {
                 send_mail($email,$verified_code);
-                echo json_encode(["message" => "OKAY:" . $verified_code]);
+                echo json_encode(["route" => "mail_send", "val" => ""]);
+            }else{
+                echo json_encode(["route" => "error", "val" => "1"]);
             }
         }
 
-        if($input['action']=="get_boards")
+        if($input['action']=="new_calendar")
         {
-            $boards = array();
-            $boards[] = array('title' => 'John Doe1', 'id' => 30);
-            $boards[] = array('title' => 'John Doe2', 'id' => 32);
+            $title = $input['title'];
+            $type = $input['type'];
+            $token = $input['token'];
             
-            $dataArray = array('boards' => $boards, 'msg' => 10); 
-             
-            //create new account
-            echo json_encode($dataArray); 
+            $user = get_user($token); 
+            if($user["valid"]==true)
+            {
+                $query = 'INSERT INTO calendar(owner, type, name) VALUES (:owner,:type,:name)';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':owner', $user['id']);
+                $statement->bindValue(':type', $type);
+                $statement->bindValue(':name', $title);
+                $result = $statement->execute();
+
+                if($db->changes() != 0)
+                {
+                    echo json_encode(["route" => "error", "val" => "Det virket!"]);
+                }else{
+                    echo json_encode(["route" => "error", "val" => "4"]);
+                }
+            }else{
+                echo json_encode(["route" => "error", "val" => "5"]);
+            }
+        }            
+
+        if($input['action']=="get_calendars")
+        {
+            $token = $input['token'];
+            $user = get_user($token); 
+            if($user["valid"]==true)
+            {
+                $query = 'SELECT * FROM calendar WHERE owner=:owner';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':owner', $user['id']);
+                $result = $statement->execute();
+                
+                $items = array();
+            
+                while ($row = $result->fetchArray()) {
+                    $items[] = array('id' => $row['id'], 'title' => $row['name']); 
+                }    
+                echo json_encode(["route" => "dashboard", "val" => "dashboard", "calendars" => $items]);
+            }else{
+                echo json_encode(["route" => "error", "val" => "6"]);
+            }
         }
         break;
     

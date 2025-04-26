@@ -1,0 +1,15 @@
+[25-Apr-2025 15:55:13 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such table: calenders in /home/pillonid/apoint.dk/api.php on line 167
+[25-Apr-2025 15:55:13 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:168
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 168
+[25-Apr-2025 15:56:29 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such table: calendars in /home/pillonid/apoint.dk/api.php on line 167
+[25-Apr-2025 15:56:29 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:168
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 168
+[25-Apr-2025 15:56:30 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such table: calendars in /home/pillonid/apoint.dk/api.php on line 167
+[25-Apr-2025 15:56:30 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:168
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 168

@@ -3,155 +3,99 @@
 	<title>Apoint test 2</title>
 	<head>
 		<script src="jquery-3.7.1.min.js"></script>
-		<!--<script src="script.js"></script> -->
+		<script src="jaxa.js"></script>
+		<script src="render.js"></script>
+		
 		<script>
-			$(document).ready(function() {
-			
+			function userProfile() {
+				let jwt_hash = "";
+				let login_status = false;
+					
+				this.setJWT = (hash) => {jwt_hash = hash;}
+				this.getJWT = () => jwt_hash;
+
+				this.setLoginStatus = (bool) => {login_status = bool;}
+				this.getLoginStatus = () => login_status;
+			}
+
+			let profile = new userProfile();
+							
+			function apiRequest(action)
+			{
+				let data_obj = {};
+				if( action == "login")
+				{	
+					data_obj = {
+						'action':action,
+						'email': $("#login_email").val(),
+						'password': $("#login_password").val()
+					}
+					console.log(data_obj);
+ 				}
+	
+				if(action == "new_account")
+				{
+				data_obj = {
+					'action':action,
+					'email': $("#account_email").val(),
+					'password': $("#account_password").val(),
+					'username': $("#account_username").val()
+					}
+				}
+		
+				if( action == "new_calendar")
+				{
+				data_obj = {
+						'action': action,
+						'title': $("#c_title").val(),
+						'type': $("#c_type").val(),
+						'token': profile.getJWT()
+						}
+				}	
+
+				if( action == "get_calendars")
+				{
+					data_obj = {
+						'action':action,
+						'token':profile.getJWT()
+						}
+				}
+				
+				callAPI(action, data_obj);
+			}
+
+			function addBoard(id, title)
+			{
+				var child = $("<div alt='" + id + "''>" + title  + "</div>");
+				$("#board_list").append(child);
+			}
+
+			$(function(){
 				const check_gdpr = window.localStorage.getItem("gdpr");
 				if(check_gdpr)
 				{
 					$("#gdpr_banner").hide();
 				}
 
-				function userProfile() {
-					let api_action = "";
-					let jwt_hash = "";
-					
-					this.setJWT = (hash) => {jwt_hash = hash;}
-					this.getJWT = () => jwt_hash;
-
-					this.setAction = (action) => {api_action = action;}
-					this.getAction = () => api_action;
-				}
-
-				let profile = new userProfile();
-				
-				$("#home_menu_btn").on("click", function() {
-					showMe("#home");
+				$(window).on('popstate', function(event) {
+ 					let hash = event.target.location.hash;
+					if(hash == ""){hash = "#home"}					
+					renderPage("goto",hash);
 				});
 
 				$("#gdpr_ok").on("click", function() {
 					$("#gdpr_banner").hide();
 					window.localStorage.setItem("gdpr", 1);
 				});
-				
-				$("#login_btn").on("click", function() {
-					showMe("#login");
-					profile.setAction("login");
-				});
-
-				$("#new_account_btn").on("click", function() {
-					showMe("#new_account");
-					profile.setAction("new_account");
-				});
 			
 				$(".submit_btn").on("click", function() {
-					callAPI(profile.getAction());
-					
+					const action = $(this).data("action");
+					renderPage("api",action)
 				});
+			
+				renderPage("goto","#home");
+			})
 
-				function initDashboard()
-				{
-					const boards = callAPI("get_boards"); 
-				}
-				
-				function callAPI(action)
-				{
-					if( action == "login")
-					{
-						let email_form = $("#login_email").value;
-						let password_form = $("#password_email").value;
-						
-						$.ajax({
-							type: "POST",
-        					data: {
-								'action':action,
-								'email':email_form,
-								'password':password_form},
-        					url: "api.php",
-        					success: function(data){
-								const JsonData = jQuery.parseJSON(data);
-								profile.setJWT(JsonData.JWT);
-								initDashboard();
-							},
-							error: function(){
-								error();
-							}
-        				});
-					}
-					
-					if( action == "new_account")
-					{
-						let email_form = $("#account_email").val();
-						let password_form = $("#account_password").val();
-						let user_form = $("#account_username").val();
-						
-						$.ajax({
-							type: "POST",
-        					data: {
-								'action':action,
-								'email':email_form,
-								'password':password_form,
-								'username':user_form
-								},
-        					url: "api.php",
-        					success: function(data){
-								const JsonData = jQuery.parseJSON(data);
-								console.log(JsonData);
-							},
-							error: function(){
-								error();
-							}
-        				});
-					}
-
-					if( action == "get_boards")
-					{
-						$.ajax({
-							type: "POST",
-        					data: {
-								'action':action,
-								'token':profile.getJWT()
-								},
-        					url: "api.php",
-        					success: function(data){
-								const JsonData = jQuery.parseJSON(data);
-								$.each(JsonData.boards, function(i, item) {
-							   		addBoard(item.id,item.title);
-								});
-								console.log(JsonData.msg);
-								showMe("#dash_board"); 
-							},
-							error: function(){
-								return "error";
-							}
-        				});
-					}					
-
-
-				}
-
-				function addBoard(id, title)
-				{
-					var child = $("<div alt='" + id + "''>" + title  + "</div>");
-					$("#board_list").append(child);
-					
-				}
-
-				function error()
-				{
-					showMe("#error");
-				}
-
-				function showMe(id)
-				{
-					$(".content_div").hide();
-					$(id).show();
-				}
-
-				
-				showMe("#home");
-			});
 		</script>
 
 		<style>													
@@ -311,14 +255,10 @@
 	
 	<div id="main">
 		<div id="menu_bar">
-			<a href="#" id="home_menu_btn" class="menu_link">Home</a>
-			<a href="" class="menu_link">test 2</a>
-			<a href="" class="menu_link">test 3</a>
+			<a>LOADING CONTENT</a>
 		</div>
-		<div id="login_btn">Login</div>
-		
-		
-		
+		<a href="#login" class="menu_link"><div>Login</div></a>
+	
 		
 		<div class="content_div" id="home">
 			<img src="images/logo.png">
@@ -329,9 +269,11 @@
 				ROOM, VACATION HOUSE, MUSIC STUDIO, CARS 
 				OR EVEN YOUR BOAT.</p> 
 			</div>
-			<div class="btn_c1" id="new_account_btn">
-				<p> Create a free account</p>
-			</div>
+			<a href="#new_account" class="menu_link">
+				<div class="btn_c1">
+					<p> Create a free account</p>
+				</div>
+			</a>
 		</div>
 		
 		
@@ -342,31 +284,42 @@
 			<table>
 				<tr><td>E-mail: </td><td><input id="login_email"></td></tr>
 				<tr><td>password: </td><td><input type="password" id="login_password"></td></tr>
-				<tr><td colspan="2"><input class="submit_btn" type="button" value="login"></td></tr>
+				<tr><td colspan="2"><input class="submit_btn" data-action="login" type="button" value="login"></td></tr>
 			</table>
 		</div>
 
+		<div  class="content_div" id="loggedin">
+			You are logged in!
+		</div>
 		
 		<div  class="content_div" id="new_account">
 			<table>
 				<tr><td>E-mail: </td><td><input id="account_email"></td></tr>
 				<tr><td>password: </td><td><input type="password" id="account_password"></td></tr>
 				<tr><td>Username: </td><td><input id="account_username"></td></tr>
-				<tr><td colspan="2"><input class="submit_btn" type="button" value="Create"></td></tr>
+				<tr><td colspan="2"><input class="submit_btn" data-action="new_account" type="button" value="Create"></td></tr>
 			</table>
 		</div>
 
 
-		<div  class="content_div" id="dash_board">
+		<div  class="content_div" id="dashboard">
 			Welcome user
 			<div id="new_btn"></div>
 			<div id="messages"></div>
 			<div id="board_list">LIST:</div>
 
+			<div id="create_calendar">
+				Title<input id="c_title"><br>
+				type<select id="c_type">
+					<option value="day">day</option>
+					<option value="time">time</option>
+				</select><br>
+				<input class="submit_btn" data-action="new_calendar" type="button" value="Create">
 			</div>
+		</div>
 
-
-		<div  class="content_div" id="error">FEJL</div>
+		<div  class="content_div" id="mail_send">Mail send, check your mail you retard!</div>
+		<div  class="content_div" id="error"><div id="error_msg"></div></div>
 		
 		
 	</div>
