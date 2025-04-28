@@ -44,6 +44,7 @@
 				let totalMonths = selectEndDate.MM - selectStartDate.MM + (years * 12);
 				let thisYear = selectStartDate.YY;
 				let thisMonth = selectStartDate.MM - 1;
+				let thisDay = selectStartDate.DD;
 				let booking_arr = [];
 				let prevYY = thisYear;
 				let prevMM = thisMonth;
@@ -72,8 +73,15 @@
 					const test = thisMonth;
 					
 					const lastDateInMonth = new Date(thisYear, thisMonth + 1, 0).getDate();
-					for (let day=1; day <= lastDateInMonth; day++)
+					let startDay = 1;
+					if(thisYear==selectStartDate.YY && thisMonth == selectStartDate.MM)
 					{
+						startDay = thisDay;
+					}
+
+					for (let day=startDay; day <= lastDateInMonth; day++)
+					{
+					
 						const thisYYMMDD = checkSum(thisYear, thisMonth, day);
 						
 						if(thisMonth==selectStartDate.MM && day >= selectStartDate.DD && thisYear == selectStartDate.YY)
@@ -95,6 +103,7 @@
 						{
 							if(thisYYMMDD == booked)
 							{
+								console.log(thisYYMMDD);
 								addDay = false;
 								day = lastDateInMonth + 1;
 								month = totalMonths + 1;
@@ -227,7 +236,6 @@
 				$("#first_date").html(monthNames[month] + "/" + year);
 				$("#second_date").html(monthNames[secondMonth] + "/" + secondYear);	
 				
-
 				$("#first_month_picker").html(generateMonth(month, year));
 				$("#second_month_picker").html(generateMonth(secondMonth, secondYear));	
 				
