@@ -43,8 +43,7 @@
 				let years = selectEndDate.YY - selectStartDate.YY;
 				let totalMonths = selectEndDate.MM - selectStartDate.MM + (years * 12);
 				let thisYear = selectStartDate.YY;
-				let thisMonth = selectStartDate.MM;
-				
+				let thisMonth = selectStartDate.MM - 1;
 				let booking_arr = [];
 				let prevYY = thisYear;
 				let prevMM = thisMonth;
@@ -63,18 +62,20 @@
 				
 				for(let month=0; month <= totalMonths; month++)
 				{
-					thisMonth += month; 
+					thisMonth += 1; 
+					
 					if(thisMonth==12)
 					{
 						thisMonth = 0;
 						thisYear += 1;
 					}
-
+					const test = thisMonth;
+					
 					const lastDateInMonth = new Date(thisYear, thisMonth + 1, 0).getDate();
 					for (let day=1; day <= lastDateInMonth; day++)
 					{
 						const thisYYMMDD = checkSum(thisYear, thisMonth, day);
-						let addDay = false;
+						
 						if(thisMonth==selectStartDate.MM && day >= selectStartDate.DD && thisYear == selectStartDate.YY)
 						{
 							addDay = true;
@@ -97,31 +98,39 @@
 								addDay = false;
 								day = lastDateInMonth + 1;
 								month = totalMonths + 1;
-								
 							}
 						}
 
-						if(addDay == true){
-							daysInMonths.push(checkSum(thisYear,thisMonth,day));
-							$(".dayPicker").each(function() {
-  								const divDD = $(this).data("d");
-								const divMM = $(this).data("m");
-								const divYY = $(this).data("y");
-								if(divDD == day && divMM == thisMonth && divYY == thisYear)
-								{
-									$(this).css({background:selectedColor});
-								}
-							});
-
+						if(addDay==true){
+							console.log(thisMonth);
+						
 							prevDD = day;
 							prevMM = thisMonth;
 							prevYY = thisYear;
-						}
+							daysInMonths.push(thisYYMMDD);
+						}	
 					}
 				}
 				selectEndDate.DD = prevDD;
 				selectEndDate.MM = prevMM;
 				selectEndDate.YY = prevYY;
+
+				for(let date of daysInMonths)
+				{
+					let year = String(date).substring(0,4);
+					let month = String(date).substring(4,6);
+					let day = String(date).substring(6,8);
+					
+					$(".dayPicker").each(function() {	
+						const divDD = $(this).data("d");
+						const divMM = $(this).data("m");
+						const divYY = $(this).data("y");
+						if(divDD == day && divMM == month && divYY == year)
+						{
+							$(this).css({background:selectedColor});
+						}
+					});
+				}
 
 				$("#startDate").val(selectStartDate.YY + "/" + selectStartDate.MM + "/" + selectStartDate.DD);
 				$("#endDate").val(selectEndDate.YY + "/" + selectEndDate.MM + "/" + selectEndDate.DD);
@@ -294,7 +303,7 @@
 					selectEndDate.YY = year;
 
 					selectEndDate.checkSum = checkSum(selectEndDate.YY, selectEndDate.MM, selectEndDate.DD);
-					 
+					
 					drawSelection();
 				}
 			});
