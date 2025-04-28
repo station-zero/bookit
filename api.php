@@ -55,6 +55,21 @@ function send_mail($email, $code)
     mail($email, $subject, $message, $headers);
 }
 
+function get_username($id)
+{
+    $name = "";
+
+    $query = 'SELECT * FROM users WHERE id=:id';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':id', $id);
+    $result = $statement->execute();
+    
+    while ($row = $result->fetchArray()) {
+        $name = $row['username'];
+    }  
+    return $name;
+}
+
 function get_user($token)
 {
     $user_data = array( 
@@ -150,7 +165,7 @@ switch ($method) {
                 {
                     echo json_encode(["route" => "error", "val" => "Det virket!"]);
                 }else{
-                    echo json_encode(["route" => "error", "val" => "4"]);
+                    echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }
             }else{
                 echo json_encode(["route" => "error", "val" => "5"]);
@@ -178,6 +193,49 @@ switch ($method) {
                 echo json_encode(["route" => "error", "val" => "6"]);
             }
         }
+
+
+        if($input['action']=="calendar")
+        {
+            $token = $input['token'];
+            $id = $id['token'];
+            $user = get_user($token);
+            if($user["valid"]==true)
+            {
+                $query = 'SELECT type FROM calendar WHERE id=:id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':id', $id);
+                $result = $statement->execute();
+                
+                $type = "";
+            
+                while ($row = $result->fetchArray()) {
+                    $type = $row['type']; 
+                } 
+
+                $query = 'SELECT * FROM calendar_blocks WHERE calender_id=:id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':id', $id);
+                $result = $statement->execute();
+                while ($row = $result->fetchArray()) {
+                    $items[] = array(
+                        'id' => $row['id'], 
+                        'start_time' => $row['start_time'], 
+                        'end_time' => $row['end_time'], 
+                        'user' => $row['user_id']); 
+                }
+
+                foreach ($items as $i){
+                    $i['user_id'] = get_username($i['user_id']);
+                }
+
+                echo json_encode(["route" => "calender", "val" => "", "items" => $items, "type" => $type]);
+            }else{
+                echo json_encode(["route" => "error", "val" => "7"]);
+            }
+        }
+
+
         break;
     
     case 'PUT':

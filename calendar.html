@@ -4,18 +4,32 @@
 	<!--<script src="script.js"></script> -->
 	<script>
 		
-		let calendar = (function(){ 
+		const bookings = [{'start': "2025/05/12",'end': "2025/05/15",'id':12},{'start': "2025/05/25",'end': "2025/06/06",'id':16}];
+
+		function calendar(type){ 
 		
-			const today = new Date();
-			let DD = today.getDate();
-			let YY = today.getFullYear();
-			let MM = today.getMonth();
-			
+			const now = new Date();
+			let DD = now.getDate();
+			let YY = now.getFullYear();
+			let MM = now.getMonth();
+
+			let daysList = [];
+
+			const todayDD = DD;
+			const todayYY = YY;
+			const todayMM = MM;
+			const todayYYMMDD = checkSum(todayYY, todayMM, todayDD);
+
+			const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+			let selectedColor = "#9988FF";
+
 			class Selector {
 				constructor() {
-					this.day = 0;
-					this.month = 0;
-					this.year = 0;
+					this.DD = 0;
+					this.MM = 0;
+					this.YY = 0;
+					this.checkSum = 0;
 				}
 			}
 			
@@ -23,6 +37,173 @@
 			let selectEndDate = new Selector;
 			let selected = false;
 			
+			function drawSelection()
+			{
+				let daysInMonths = [];
+				let years = selectEndDate.YY - selectStartDate.YY;
+				let totalMonths = selectEndDate.MM - selectStartDate.MM + (years * 12);
+				let thisYear = selectStartDate.YY;
+				let thisMonth = selectStartDate.MM;
+				
+				let booking_arr = [];
+				let prevYY = thisYear;
+				let prevMM = thisMonth;
+				let prevDD = 0;
+				
+				$(".dayPicker").each(function() {
+					$(this).css({background:"#FFFFFF"});
+				})
+
+				for(var booking of bookings)
+				{
+					const bookingDateStart = correctDateArray(booking.start);
+					booking_arr.push(checkSum(bookingDateStart[0], bookingDateStart[1], bookingDateStart[2]));
+				}
+				booking_arr.sort();
+				
+				for(let month=0; month <= totalMonths; month++)
+				{
+					thisMonth += month; 
+					if(thisMonth==12)
+					{
+						thisMonth = 0;
+						thisYear += 1;
+					}
+
+					const lastDateInMonth = new Date(thisYear, thisMonth + 1, 0).getDate();
+					for (let day=1; day <= lastDateInMonth; day++)
+					{
+						const thisYYMMDD = checkSum(thisYear, thisMonth, day);
+						let addDay = false;
+						if(thisMonth==selectStartDate.MM && day >= selectStartDate.DD && thisYear == selectStartDate.YY)
+						{
+							addDay = true;
+						}
+
+						if(thisMonth>selectStartDate.MM && thisYear >= selectStartDate.YY)
+						{
+							addDay = true;
+						}
+
+						if(thisMonth==selectEndDate.MM && day > selectEndDate.DD && thisYear == selectEndDate.YY)
+						{
+							addDay = false;
+						}
+
+						for(let booked of booking_arr)
+						{
+							if(thisYYMMDD == booked)
+							{
+								addDay = false;
+								day = lastDateInMonth + 1;
+								month = totalMonths + 1;
+								
+							}
+						}
+
+						if(addDay == true){
+							daysInMonths.push(checkSum(thisYear,thisMonth,day));
+							$(".dayPicker").each(function() {
+  								const divDD = $(this).data("d");
+								const divMM = $(this).data("m");
+								const divYY = $(this).data("y");
+								if(divDD == day && divMM == thisMonth && divYY == thisYear)
+								{
+									$(this).css({background:selectedColor});
+								}
+							});
+
+							prevDD = day;
+							prevMM = thisMonth;
+							prevYY = thisYear;
+						}
+					}
+				}
+				selectEndDate.DD = prevDD;
+				selectEndDate.MM = prevMM;
+				selectEndDate.YY = prevYY;
+
+				$("#startDate").val(selectStartDate.YY + "/" + selectStartDate.MM + "/" + selectStartDate.DD);
+				$("#endDate").val(selectEndDate.YY + "/" + selectEndDate.MM + "/" + selectEndDate.DD);
+
+				}
+
+			function checkSum(year,month,day)
+			{
+				return parseInt(String(year) + String(month).padStart(2, '0') + String(day).padStart(2, '0'));
+			}
+
+			function correctDateArray(date)
+			{
+				const new_date = date.split("/");
+				let new_DD = new_date[2];
+				let new_MM = parseInt(new_date[1]) - 1;
+				let new_YY = parseInt(new_date[0]);
+				
+				if(new_MM == -1)
+				{
+					new_MM = 11;
+					new_YY -= 1; 
+				}
+				return [String(new_YY), String(new_MM).padStart(2, '0'), String(new_DD).padStart(2, '0')];
+			}
+
+			function generateMonth(month, year)
+			{
+				const lastDateInMonth = new Date(year, month + 1, 0).getDate();
+				const firstDayInMonth = new Date(year, month, 0).getDay();
+				let dayNumber = 1;
+				let divElement = "";
+
+				for(let i=1; i < 45; i++)
+				{
+					if(i > firstDayInMonth && dayNumber < lastDateInMonth + 1){
+
+						
+						let todayClass = "";
+						let className = "dayPicker";
+						const dayCheckSum = checkSum(year, month, dayNumber);
+
+						for(var booking of bookings)
+						{
+							const bookingDateStart = correctDateArray(booking.start);
+							const bookingStart = checkSum(bookingDateStart[0], bookingDateStart[1], bookingDateStart[2]);
+							
+							const bookingDateEnd = correctDateArray(booking.end);
+							const bookingEnd = checkSum(bookingDateEnd[0], bookingDateEnd[1], bookingDateEnd[2]);
+							
+							if(dayCheckSum >= bookingStart && dayCheckSum <= bookingEnd)
+							{
+								className = "booked";
+							}	
+						}
+
+						if(dayCheckSum < todayYYMMDD)
+						{
+							className = "greyedOut"
+						}
+
+						if(todayDD==dayNumber && todayMM==month && todayYY==year)
+						{
+							todayClass = "today";
+						}
+
+						divElement += "<div class='" + className + "' ";
+						divElement += "data-d='" +  dayNumber + "' ";
+						divElement += "data-m='" +  month + "' ";
+						divElement += "data-y='" +  year + "' ";
+						divElement += ">" + dayNumber + "</div>";
+						dayNumber += 1;
+					}else{
+						divElement += "<div class='dayPickerEmty'></div>";
+					}
+					if(i % 7 == 0){
+						divElement += "<div class='.break'></div>";
+					}
+				}
+				return divElement;
+			}
+
 			function drawCalendar(year,month,day)
 			{
 				let secondMonth = month + 1;
@@ -34,65 +215,90 @@
 					secondYear += 1; 
 				}
 				
-				const daysInMonth = new Date(year, month + 1, 0).getDate();
-				const daysInSecondMonth = new Date(secondYear, secondMonth + 1, 0).getDate();
+				$("#first_date").html(monthNames[month] + "/" + year);
+				$("#second_date").html(monthNames[secondMonth] + "/" + secondYear);	
 				
-				const firstDayInMonth = new Date(year, month, 0).getDay();
-				const firstDayInSecondMonth = new Date(secondYear, secondMonth, 0).getDay();
+
+				$("#first_month_picker").html(generateMonth(month, year));
+				$("#second_month_picker").html(generateMonth(secondMonth, secondYear));	
 				
-				let dayNumber = 1;
+				drawSelection();
 				
-				$("#first_date").text(month + 1 + "/" + year);
-				$("#second_date").text(secondMonth + 1 + "/" + secondYear);
-				$("#first_month_picker").html("");
-				$("#second_month_picker").html("");
-				
-				console.log(YY + "," + MM);
-				console.log("start with:" + firstDayInMonth);
-				console.log("last date in m:" + daysInMonth);
-				
-				for(let i=1; i < 60; i++)
-				{
-					let divElement = "";
-					if(i > firstDayInMonth && dayNumber < daysInMonth + 1){
-						divElement = "<div class='dayPicker' ";
-						divElement += "data-d='" +  dayNumber + "' ";
-						divElement += "data-m='" +  month + "' ";
-						divElement += "data-y='" +  year + "' ";
-						divElement += ">" + dayNumber + "</div>";
-						dayNumber += 1;
-					}else{
-						divElement = "<div class='dayPickerEmty'></div>";
-					}
-					$("#first_month_picker").append(divElement);
-				}
-				
-				dayNumber = 1;
-					
-				for(let i=1; i < 60; i++)
-				{
-					let divElement = "";
-					if(i > firstDayInSecondMonth && dayNumber < daysInSecondMonth + 1){
-						divElement = "<div class='dayPicker' ";
-						divElement += "data-d='" +  dayNumber + "' ";
-						divElement += "data-m='" +  month + "' ";
-						divElement += "data-y='" +  year + "' ";
-						divElement += ">" + dayNumber + "</div>";
-						dayNumber += 1;
-					}else{
-						divElement = "<div class='dayPickerEmty'></div>";
-					}
-					$("#second_month_picker").append(divElement);
-				}
 			}
-			
-			$(".dayPicker").live("click", function(){
-				 let day = $(this).attr('data-d');
-				 let month = $(this).attr('data-m');
-				 let year = $(this).attr('data-y');
-				 console.log(day + "," + month + "," + year);
+
+			function resetSelection()
+			{
+				$(".dayPicker").each(function() {
+							$(this).css({"background":"#FFFFFF"})
+							selectStartDate.DD = 0;
+							selectStartDate.MM = 0;
+							selectStartDate.YY = 0;
+							selectEndDate.DD = 0;
+							selectEndDate.MM = 0;
+							selectEndDate.YY = 0;
+							
+				});
+				selected=false;
+			}
+
+			$(document).on("click", ".greyedOut", function(){
+				resetSelection();
 			});
-			
+
+			$(document).on("click", ".dayPicker", function(){
+				let day = $(this).data('d');
+				let month = $(this).data('m');
+				let year = $(this).data('y');
+				
+				if(type=="daySelector")
+				{
+					if(selected==false)
+					{
+						resetSelection();
+						selected=true;
+						selectStartDate.DD = day;
+						selectStartDate.MM = month;
+						selectStartDate.YY = year;
+						selectStartDate.checkSum = checkSum(selectStartDate.YY, selectStartDate.MM, selectStartDate.DD);
+						
+						$(this).css({background:selectedColor});
+					}else{
+						selectEndDate.DD = day;
+						selectEndDate.MM = month;
+						selectEndDate.YY = year;
+						selectEndDate.checkSum = checkSum(selectEndDate.YY, selectEndDate.MM, selectEndDate.DD);
+						selected=false;
+						
+						if(selectStartDate.checkSum > selectEndDate.checkSum)
+						{
+							resetSelection();
+						}else{
+							drawSelection();
+						}
+					}
+				}else{
+
+				}
+			});
+
+			$(document).on("mouseover", ".dayPicker", function(){	
+				
+				if(selected==true)
+				{
+					let day = $(this).data('d');
+					let month = $(this).data('m');
+					let year = $(this).data('y');
+
+					selectEndDate.DD = day;
+					selectEndDate.MM = month;
+					selectEndDate.YY = year;
+
+					selectEndDate.checkSum = checkSum(selectEndDate.YY, selectEndDate.MM, selectEndDate.DD);
+					 
+					drawSelection();
+				}
+			});
+
 			$("#prev").on("click", function(){
 				MM -= 1;
 				if(MM < 0)
@@ -116,28 +322,66 @@
 			
 			drawCalendar(YY,MM,DD);
 			
-		});
+		}
 		$(document).ready(function() {
-			calendar();	
+			calendar("daySelector");	
 		});
 		
 	</script>
 	<style>
-	
-		.breakDiv
-		{
 		
-		}
-		
-		.dayPicker, .dayPickerEmty
+		.dayPicker, .dayPickerEmty, .greyedOut, .booked
 		{
-			width:40px;
-			height:40px;
+			width:50px;
+			height:50px;
 			text-align:center;
 			display: grid;
 			float:left;
 			align-items: center;
+			font-family:Arial;
+			font-size:15px;
+			padding:2px;
+			margin:2px;
+			border:1px solid #FFFFFF;
+		}
 
+		.topRow
+		{
+			font-family:Arial;
+			font-size:10px;
+			font-weight:bold;
+			border-bottom:3px solid #000000;
+		}
+
+		.header
+		{
+			text-align: center;
+			font-family:Arial;
+			font-size:18px;
+			padding:10px 0px;
+		}
+
+		.greyedOut
+		{
+			background-color:#e9e9e9;
+		}
+
+		.dayPicker, .greyedOut, .booked
+		{
+			border:1px solid #c1c1c1;
+			border-radius:3px;
+		}
+
+
+		.booked
+		{
+			background-color:#FF4444;
+			
+		}
+
+		.today
+		{
+			font-weight: bold;
 		}
 		
 		#calendar_box
@@ -146,14 +390,14 @@
 			float:left;
 			padding:2px;
 			margin:4px;
-			
+			background:#FFFFFF;
+			width:860px;
 		}
 		
 		#first_month, #second_month
 		{
 			display:block;
 			float:left;
-			width:290px;
 			border:1px solid #999999;
 			padding:2px;
 		}
@@ -162,11 +406,39 @@
 		{
 			display:block;
 			float:left;
-			width:45%;
+			width:100px;
+			text-align:center;
+			font-family:Arial;
+			font-size:14px;
+			padding:8px 0px;
+			border:1px solid #062538;
+			border-radius:5px;
+			background:#2dabf9;
+			color:#FFFFFF;
+			text-shadow:1px 1px #263666;
+			text-transform: uppercase;
+			font-weight: bold;
 		}
 		
 		#next{
-			text-align:right;
+			float:right;
+		}
+
+		.break
+		{
+			clear:both;
+		}
+
+		#cal_top_header
+		{
+			display: block;
+    		float: left;
+    		clear: both;
+    		height: 40px;
+    		min-width: 850px;
+			text-align:center;
+			font-family:Arial;
+			font-size:20px;
 		}
 		
 	</style>
@@ -174,32 +446,41 @@
 <body>
 
 <div id="calendar_box">
-	<div id="prev">Prev</div>
-	<div id="next">next</div>
-	
+	<div id="cal_top_header">
+		<div id="prev">prev</div>
+			Calendar
+		<div id="next">next</div>
+	</div>
 	<div id="first_month">
-		<div id="first_date"></div>
-		<div class="dayPickerEmty">M</div>
-		<div class="dayPickerEmty">T</div>
-		<div class="dayPickerEmty">W</div>
-		<div class="dayPickerEmty">T</div>
-		<div class="dayPickerEmty">F</div>
-		<div class="dayPickerEmty">S</div>
-		<div class="dayPickerEmty">S</div>	
+		<div id="first_date" class="header"></div>
+		<div class="dayPickerEmty topRow">Mon</div>
+		<div class="dayPickerEmty topRow">Tue</div>
+		<div class="dayPickerEmty topRow">Wed</div>
+		<div class="dayPickerEmty topRow">Thu</div>
+		<div class="dayPickerEmty topRow">Fre</div>
+		<div class="dayPickerEmty topRow">Sat</div>
+		<div class="dayPickerEmty topRow">Sun</div>	
 		<div id="first_month_picker"></div>
 	</div>
 	<div id="second_month">
-		<div id="second_date"></div>
-		<div class="dayPickerEmty">M</div>
-		<div class="dayPickerEmty">T</div>
-		<div class="dayPickerEmty">W</div>
-		<div class="dayPickerEmty">T</div>
-		<div class="dayPickerEmty">F</div>
-		<div class="dayPickerEmty">S</div>
-		<div class="dayPickerEmty">S</div>
+		<div id="second_date" class="header"></div>
+		<div class="dayPickerEmty topRow">Mon</div>
+		<div class="dayPickerEmty topRow">Tue</div>
+		<div class="dayPickerEmty topRow">Wed</div>
+		<div class="dayPickerEmty topRow">Thu</div>
+		<div class="dayPickerEmty topRow">Fre</div>
+		<div class="dayPickerEmty topRow">Sat</div>
+		<div class="dayPickerEmty topRow">Sun</div>
 		<div id="second_month_picker"></div>
 	</div>
+	<div class="break">
+		<table>
+			<tr><td>Selected start date:</td><td><input id="startDate" value=""></td></tr>
+			<tr><td>Selected end date:</td><td><input id="endDate" value=""></td></tr>
+		</table>
+	</div>
+	
 </div>
-
+	
 </body>
 </html>

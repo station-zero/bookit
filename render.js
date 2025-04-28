@@ -15,19 +15,27 @@ function renderPage(route, val)
         profile.setJWT(val);
         profile.setLoginStatus(true);
     }
-        
+
+    if(route=="#calendar")
+    {
+        apiRequest("calendar",val);
+        page = route;
+    }
+    
     if(route=="goto")
     {
-        if(val=="#dashboard")
+        if(val == ""){val = "#home";}
+		
+        if(val == "#dashboard")
         {
-            apiRequest("get_calendars");
+            apiRequest("get_calendars","");
         }
         page = val;
     }
 
     if(route=="api")
     {
-        apiRequest(val);
+        apiRequest(val,"");
     }
 
     menu += "<a href='#home' class='menu_link'>Home</a>";

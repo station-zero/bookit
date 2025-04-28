@@ -5,6 +5,7 @@
 		<script src="jquery-3.7.1.min.js"></script>
 		<script src="jaxa.js"></script>
 		<script src="render.js"></script>
+		<script src="apiRequest.js"></script>
 		
 		<script>
 			function userProfile() {
@@ -20,56 +21,17 @@
 
 			let profile = new userProfile();
 							
-			function apiRequest(action)
+
+
+			function renderCalendars(calendars)
 			{
-				let data_obj = {};
-				if( action == "login")
-				{	
-					data_obj = {
-						'action':action,
-						'email': $("#login_email").val(),
-						'password': $("#login_password").val()
-					}
-					console.log(data_obj);
- 				}
-	
-				if(action == "new_account")
-				{
-				data_obj = {
-					'action':action,
-					'email': $("#account_email").val(),
-					'password': $("#account_password").val(),
-					'username': $("#account_username").val()
-					}
-				}
-		
-				if( action == "new_calendar")
-				{
-				data_obj = {
-						'action': action,
-						'title': $("#c_title").val(),
-						'type': $("#c_type").val(),
-						'token': profile.getJWT()
-						}
-				}	
-
-				if( action == "get_calendars")
-				{
-					data_obj = {
-						'action':action,
-						'token':profile.getJWT()
-						}
-				}
-				
-				callAPI(action, data_obj);
+				$("#board_list").html("");
+				$.each(calendars, function(i, item) {
+					var child = $("<div class='calendar_box' data-id='" + item.id + "''>" + item.title  + "</div>");
+					$("#board_list").append(child);
+				});
 			}
-
-			function addBoard(id, title)
-			{
-				var child = $("<div alt='" + id + "''>" + title  + "</div>");
-				$("#board_list").append(child);
-			}
-
+			
 			$(function(){
 				const check_gdpr = window.localStorage.getItem("gdpr");
 				if(check_gdpr)
@@ -77,10 +39,19 @@
 					$("#gdpr_banner").hide();
 				}
 
+				$(document).on('click', '.calendar_box', function() {
+					const id = $(this).data("id"); 
+					window.location.hash = "calendar/" + id;
+				});
+
 				$(window).on('popstate', function(event) {
- 					let hash = event.target.location.hash;
-					if(hash == ""){hash = "#home"}					
-					renderPage("goto",hash);
+ 					const hash = event.target.location.hash;
+					const path = hash.split("/");
+					if(path.length == 2){
+						renderPage(path[0],path[1]);
+					}else{
+						renderPage("goto",path[0]);
+					}
 				});
 
 				$("#gdpr_ok").on("click", function() {
@@ -90,10 +61,11 @@
 			
 				$(".submit_btn").on("click", function() {
 					const action = $(this).data("action");
-					renderPage("api",action)
+					renderPage("api", action)
 				});
-			
-				renderPage("goto","#home");
+
+				const hash = window.location.hash;
+				renderPage("goto", hash);
 			})
 
 		</script>
@@ -155,6 +127,23 @@
 			#login_btn:hover
 			{
 			cursor:pointer;
+			}
+			
+			.calendar_box
+			{
+				display:block;
+				float:left;
+				width:200px;
+				border:1px solid #000;
+				border-radius:5px;
+				text-align:center;
+				padding:10px;
+				margin:10px;
+				background:#FFFFFF;
+			}
+			.calendar_box:hover
+			{
+				cursor:pointer;
 			}
 			
 			
@@ -301,12 +290,14 @@
 			</table>
 		</div>
 
+		<div  class="content_div" id="calendar">
+		</div>
 
 		<div  class="content_div" id="dashboard">
-			Welcome user
+			
 			<div id="new_btn"></div>
 			<div id="messages"></div>
-			<div id="board_list">LIST:</div>
+			<div id="board_list">Calendars:</div>
 
 			<div id="create_calendar">
 				Title<input id="c_title"><br>
