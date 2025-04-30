@@ -170,6 +170,35 @@ switch ($method) {
             }else{
                 echo json_encode(["route" => "error", "val" => "5"]);
             }
+        }
+
+        if($input['action']=="save_dates")
+        {
+            $start = $input['start'];
+            $end = $input['end'];
+            $token = $input['token'];
+            $calendar_id = $input['calendar_id'];
+            
+            $user = get_user($token); 
+            if($user["valid"]==true)
+            {
+                $query = 'INSERT INTO calendar_blocks(start_time, end_time, user_id, calendar_id) VALUES (:start,:end,:user_id,:calendar_id)';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':user_id', $user['id']);
+                $statement->bindValue(':calendar_id', $calendar_id);
+                $statement->bindValue(':start', $start);
+                $statement->bindValue(':end', $end);
+                $result = $statement->execute();
+
+                if($db->changes() != 0)
+                {
+                    echo json_encode(["route" => "error", "val" => "Det virker!"]);
+                }else{
+                    echo json_encode(["route" => "error", "val" => "fejl i database"]);
+                }
+            }else{
+                echo json_encode(["route" => "error", "val" => "5"]);
+            }
         }            
 
         if($input['action']=="get_calendars")
@@ -194,6 +223,29 @@ switch ($method) {
             }
         }
 
+        if($input['action']=="remove_booking")
+        {
+            $token = $input['token'];
+            $id = $input['id'];
+            
+            $user = get_user($token); 
+            if($user["valid"]==true)
+            {
+                $query = 'DELETE FROM calendar_blocks WHERE id=:id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':id', $id);
+                $result = $statement->execute();
+
+                if($db->changes() != 0)
+                {
+                    echo json_encode(["route" => "error", "val" => "delete the booking"]);
+                }else{
+                    echo json_encode(["route" => "error", "val" => "18"]);    
+                }
+            }else{
+                echo json_encode(["route" => "error", "val" => "8"]);
+            }
+        }
 
         if($input['action']=="calendar")
         {
@@ -212,21 +264,27 @@ switch ($method) {
                 while ($row = $result->fetchArray()) {
                     $type = $row['type']; 
                 } 
-                $items = [];
+                $items = array();
+
                 $query = 'SELECT * FROM calendar_blocks WHERE calendar_id=:id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':id', $id);
                 $result = $statement->execute();
                 while ($row = $result->fetchArray()) {
+
+                    $ownership = false;
+                    if($user["id"] == $row['user_id'])
+                    {
+                        $ownership = true;
+                    }
                     $items[] = array(
                         'id' => $row['id'], 
                         'start' => $row['start_time'], 
                         'end' => $row['end_time'], 
-                        'user' => $row['user_id']); 
-                }
-
-                foreach ($items as $i){
-                    $i['user_id'] = get_username($i['user_id']);
+                        'user_id' => $row['user_id'],
+                        'user' => get_username($row['user_id']),
+                        'ownership' => $ownership
+                    ); 
                 }
 
                 echo json_encode(["route" => "calendar_view", "val" => $items]);

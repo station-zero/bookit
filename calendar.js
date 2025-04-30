@@ -1,12 +1,10 @@
 		
 		function calendar(bookings){ 
-			console.log("asdasd");
+			
 			const now = new Date();
 			let DD = now.getDate();
 			let YY = now.getFullYear();
 			let MM = now.getMonth();
-
-			let daysList = [];
 
 			const todayDD = DD;
 			const todayYY = YY;
@@ -31,6 +29,7 @@
 			let selected = false;
 			
 			$("#calendar_info_box").hide();
+			$("#calendar_wrapper").show();			
 
 			function drawSelection()
 			{
@@ -134,8 +133,8 @@
 					});
 				}
 
-				$("#startDate").val(selectStartDate.YY + "/" + selectStartDate.MM + "/" + selectStartDate.DD);
-				$("#endDate").val(selectEndDate.YY + "/" + selectEndDate.MM + "/" + selectEndDate.DD);
+				$("#startDate").val(selectStartDate.DD + "/" + (selectStartDate.MM + 1) + "/" + selectStartDate.YY);
+				$("#endDate").val(selectEndDate.DD + "/" + (selectEndDate.MM + 1) + "/" + selectEndDate.YY);
 
 				}
 
@@ -316,12 +315,23 @@
 			$(document).on("click", ".booked", function(){
 				
 				const id = $(this).data("id");
+				
 				$("#calendar_info_box_start").html(bookings[id].start);
 				$("#calendar_info_box_end").html(bookings[id].end);
 				$("#calendar_info_box_user").html(bookings[id].user);
+
+				if(bookings[id].ownership==true)
+				{
+					$("#calendar_info_btn").html("<div data-id='" + bookings[id].id + "' id='delete_cal_btn'>Remove booking</div>");
+				}
 				
 				$("#calendar_info_box").show();
 				$("#calendar_wrapper").hide();
+			});
+
+			$(document).on("click", "#delete_cal_btn", function(){
+				const id = $(this).data("id");
+				apiRequest("remove_booking",id);			
 			});
 
 			$(document).on("click", "#calendar_info_close_btn", function(){

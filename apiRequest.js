@@ -20,6 +20,33 @@ function apiRequest(action,parameter)
         }
     }
 
+    if(action == "save_dates")
+        {
+            let startInput = $("#startDate").val();
+            let endInput = $("#endDate").val();
+            let start = startInput.split("/");
+            let end = endInput.split("/");
+            
+        data_obj = {
+            'action':action,
+            'token': profile.getJWT(),
+            'start': String(start[2]).padStart(2,"0") + "-" + String(start[1]).padStart(2,"0") + "-" + start[0] + " 00:00",
+            'end': String(end[2]).padStart(2,"0") + "-" + String(end[1]).padStart(2,"0") + "-" + end[0] + " 00:00",
+            'calendar_id':profile.getCalendarID()
+            }
+
+        }
+
+        if( action == "remove_booking")
+            {
+            data_obj = {
+                    'action': action,
+                    'id': parameter,
+                    'token': profile.getJWT()
+                    }
+            }	
+        
+
     if( action == "new_calendar")
     {
     data_obj = {

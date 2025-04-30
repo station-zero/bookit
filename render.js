@@ -19,6 +19,7 @@ function renderPage(route, val)
     if(route=="#calendar")
     {
         apiRequest("calendar",val);
+        profile.setCalendarID(val);
         page = "#load";
     }
     
@@ -36,7 +37,6 @@ function renderPage(route, val)
     if(route=="calendar_view")
     {
         //const bookings = [{'start': "2025-05-12 00:00",'end': "2025-05-15 00:00",'id':12,'user':'james'},{'start': "2025-05-25 00:00",'end': "2025-06-06 00:00",'id':16,'user':'Cowboy Joe'}];
-        console.log(val);
         calendar(val);
         page="#calendar";
     }
@@ -49,7 +49,7 @@ function renderPage(route, val)
     menu += "<a href='#home' class='menu_link'>Home</a>";
     if(profile.getLoginStatus()==true)
     {
-        menu = "<a href='#dashboard' class='menu_link'>Home</a>";
+        menu = "<a href='#dashboard' class='menu_link'>Dashboard</a>";
     }
     $("#menu_bar").html(menu);
 

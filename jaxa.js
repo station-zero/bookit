@@ -11,7 +11,7 @@ function callAPI(action, data_obj)
 				{
 					renderCalendars(JsonData.calendars);						
 				}
-				
+
 				renderPage(JsonData.route,JsonData.val);
 			},
 		error: function(){

@@ -12,12 +12,16 @@
 			function userProfile() {
 				let jwt_hash = "";
 				let login_status = false;
-					
+				let CalendarID = 0;	
 				this.setJWT = (hash) => {jwt_hash = hash;}
 				this.getJWT = () => jwt_hash;
 
 				this.setLoginStatus = (bool) => {login_status = bool;}
 				this.getLoginStatus = () => login_status;
+
+				this.setCalendarID = (ID) => {CalendarID = ID;}
+				this.getCalendarID = () => CalendarID;
+
 			}
 
 			let profile = new userProfile();
@@ -456,6 +460,7 @@
 							<tr><td>Selected end date:</td><td><input id="endDate" value=""></td></tr>
 						</table>
 					</div>
+					<input class="submit_btn" data-action="save_dates" type="button" value="Save">
 				</div>
 				<div id="calendar_info_box">
 					<div id="calendar_info_close_btn">x</div>
@@ -471,7 +476,9 @@
 							<td>End:</td><td><span id="calendar_info_box_end"></span></td>
 						</tr>
 					</table>	
+					<div id="calendar_info_btn"></div>
 				</div>
+
 			</div>		
 		</div>
 
