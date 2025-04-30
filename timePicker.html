@@ -1,0 +1,395 @@
+<html>
+<head>
+<script src="jquery-3.7.1.min.js"></script>
+	<!--<script src="script.js"></script> -->
+	<script>
+		
+		const bookings = [{'start': "2025-05-12 10:00",'end': "2025-05-12 11:00",'id':12,'user':'james'},
+		{'start': "2025-06-06 14:00",'end': "2025-06-06 15:00",'id':16,'user':'Cowboy Joe'}];
+
+        function timePicker(interval){
+  
+            const now = new Date();
+	    	let DD = now.getDate();
+    		let YY = now.getFullYear();
+	    	let MM = now.getMonth();
+
+            const todayDD = now.getDate();
+    		const todayYY = now.getFullYear();
+	    	const todayMM = now.getMonth();
+
+            const freeColor = "#33FF33";
+            const takenColor = "#FF3333";
+            
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            $("#pick_date_btn").html(DD + "/" + MM + "/" + YY);
+            $("#small_calendar_wrapper").hide();
+
+            let interval_list = [];
+            
+            
+            function createTimeView()
+            {
+                $("#time_line").html("");
+                $("#time_slots").html("");
+
+                for(let i=0; i < 24; i++)
+                {
+                    const hour = String(i).padStart(2, '0');
+                    $("#time_line").append("<div class='time_indicator'><div>" + hour + ":00" + "</div></div>");
+                    $("#time_line").append("<div class='time_indicator'><div>" + hour + ":30" + "</div></div>");
+                                    
+                }
+                
+                const max_slots = 1440/interval;
+                for(let i=0; i < max_slots; i++)
+                {
+                    let color = freeColor;
+                    
+                    let startTime = timeConverter(i * interval);
+                    let endTime = timeConverter((i + 1) * interval);
+                    
+                    let HHMM = startTime.split(":");
+
+                    let booking = checkDate(YY,MM,DD,HHMM[0],HHMM[1]);
+                    
+                    if(booking.length > 0)
+                    {
+                        color = takenColor;
+                    }
+
+                    const text = startTime + "-" + endTime;
+                    $("#time_slots").append("<div style='height:" + interval + "px; background:" + color + "' class='time_slot' data-time='" + i +"'><div>" + text + "</div></div>");
+                }
+            }
+
+            function checkDate(year,month,day,hour,min)
+            {
+                booking_detail = [];
+                for(booking of bookings)
+                {
+                    const bookingYY = booking.start.substring(0,4);
+                    const bookingMM = booking.start.substring(5,7);
+                    const bookingDD = booking.start.substring(8,10);
+                    const bookingHH = booking.start.substring(11,13); 
+                    const bookingMin = booking.start.substring(14,16); 
+                    
+                    if(checkSum(bookingYY,bookingMM,bookingDD) == checkSum(YY,(MM + 1),DD) && hour==bookingHH && min==bookingMin)
+                    {
+                        booking_detail.push(booking.user);
+                        booking_detail.push(booking.id);
+                    }
+                }
+                return booking_detail;
+            }
+            
+            function initCalendar()
+            {
+                $("#small_cal_month_viewer").text(monthNames[MM] + " - " + YY);
+                $("#small_cal_month_picker").html(generateMonth(MM, YY));
+            }
+
+            function timeConverter(min)
+            {
+                const HH = parseInt(min / 60);
+                const MM = min - (HH * 60);
+                const result = String(HH).padStart(2, '0') + ":" + String(MM).padStart(2, '0');
+                
+                return result;
+            }
+
+            function checkSum(year,month,day)
+			{
+				return parseInt(String(year) + String(month).padStart(2, '0') + String(day).padStart(2, '0'));
+			}
+
+            function generateMonth(month, year)
+			{
+				const lastDateInMonth = new Date(year, month + 1, 0).getDate();
+				const firstDayInMonth = new Date(year, month, 0).getDay();
+				let dayNumber = 1;
+				let divElement = "";
+
+				for(let i=1; i < 45; i++)
+				{
+					if(i > firstDayInMonth && dayNumber < lastDateInMonth + 1){
+
+						let className = "smallDayPicker";
+						
+						if(checkSum(year, month, dayNumber) < checkSum(todayYY,todayMM,todayDD))
+						{
+							className = "smallGreyedOut"
+						}
+
+						divElement += "<div class='" + className + "' ";
+						divElement += "data-d='" +  dayNumber + "' ";
+						divElement += "data-m='" +  month + "' ";
+						divElement += "data-y='" +  year + "' ";
+						divElement += ">" + dayNumber + "</div>";
+						dayNumber += 1;
+					}else{
+						divElement += "<div class='smallDayPickerEmty'></div>";
+					}
+					if(i % 7 == 0){
+						divElement += "<div class='break'></div>";
+					}
+				}
+				return divElement;
+			}
+            
+            $("#small_cal_prev").on("click", function(){
+				MM -= 1;
+				if(MM < 0)
+				{
+					YY -= 1;
+					MM = 11;
+				}
+				initCalendar();
+			});
+			
+			$("#small_cal_next").on("click", function(){
+				MM += 1;
+				if(MM > 11)
+				{
+					YY += 1;
+					MM = 0;
+				}
+				initCalendar();
+			});
+
+            $("#pick_date_btn").on("click", function(){
+                $("#small_calendar_wrapper").show();
+                $("#pick_date_btn").hide();
+                initCalendar();
+            });
+	
+            $(document).on("click", ".smallDayPicker", function(){
+				DD = $(this).data('d');
+				MM = $(this).data('m');
+				YY = $(this).data('y');
+
+
+                $("#pick_date_btn").html(DD + "/" + (MM + 1) + "/" + YY);
+                $("#small_calendar_wrapper").hide();
+                $("#pick_date_btn").show();
+                createTimeView();
+            });
+
+        }
+		
+		$(document).ready(function() {
+			timePicker(60);	
+		});
+		
+	</script>
+	<style>
+		
+		.smallDayPicker, .smallDayPickerEmty, .smallGreyedOut
+		{
+			width:30px;
+			height:30px;
+			text-align:center;
+			display: grid;
+			float:left;
+			align-items: center;
+			font-family:Arial;
+			font-size:12px;
+			padding:2px;
+			margin:2px;
+			border:1px solid #e9e9e9;
+		}
+
+		.topRow
+		{
+			font-family:Arial;
+			font-size:10px;
+			font-weight:bold;
+			border-bottom:3px solid #000000;
+		}
+
+		.smallGreyedOut
+		{
+			background-color:#d0d0d0;
+		}
+
+		.smallDayPicker, .smallGreyedOut
+		{
+			border:1px solid #c1c1c1;
+			border-radius:3px;
+		}
+
+        .smallDayPicker
+        {
+            background:#FFFFFF;
+        }
+		
+		#small_calendar
+		{
+			display:block;
+			float:left;
+			padding:2px;
+			margin:4px;
+			background:#e9e9e9;
+			width:100%;
+		}
+		
+		#small_cal_prev, #small_cal_next
+		{
+			display:block;
+			float:left;
+			width:55px;
+			text-align:center;
+			font-family:Arial;
+			font-size:14px;
+			padding:8px 0px;
+			border:1px solid #062538;
+			border-radius:5px;
+			background:#2dabf9;
+			color:#e9e9e9;
+			text-shadow:1px 1px #263666;
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+		
+		#small_cal_next{
+			float:right;
+		}
+
+		.break
+		{
+			clear:both;
+		}
+
+        #small_cal_month_picker
+        {
+            clear:both;
+        }
+
+		#small_cal_top_header
+		{
+			display: block;
+    		float: left;
+    		clear: both;
+    		min-width: 100%;
+			text-align:center;
+			font-family:Arial;
+			font-size:14px;
+		}
+
+        #time_picker
+        {
+            display:block;
+            float:left;
+            padding:10px;
+            margin:10px;
+            width:290px;
+            border:1px solid #333333;
+            background:#e9e9e9;
+        }
+        #small_calendar_wrapper
+        {
+            display:block;
+            float:left;
+            background:#e9e9e9;
+            
+        }
+
+        #pick_date_btn
+        {
+            display:block;
+            width:100%;
+            text-align:center;
+        }
+			
+        #time_line
+        {
+            display:block;
+            float:left;
+            width:50px;
+            border-right:2px solid #000000;
+        }
+
+        .time_indicator
+        {
+            height:30px;
+        }
+
+        .time_indicator div
+        {
+            border-bottom:2px solid #c1c1c1;
+            height:100%;
+        }
+
+        #time_slots
+        {
+            display:block;
+            float:left;
+            width:200px;
+        }
+
+        .time_slot
+        {
+            display:block;
+            float:left;
+        }
+
+        .time_slot div
+        {
+            border:1px solid #c1c1c1;
+            height:100%;
+            width:260px;
+        }
+
+        #schedu_box
+        {
+            display:block;
+            clear:both;
+            width: 314px;
+            height: 300px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            border:2px solid #c1c1c1;
+        }
+
+        .schedu_btn
+        {
+            display:block;
+        }
+
+	</style>
+</head>
+<body>
+
+    
+    
+    <div id="time_picker">
+        <div id="pick_date_btn"></div>
+        <div id="small_calendar_wrapper">
+            <div id="small_cal_top_header">
+                <div id="small_cal_prev">prev</div>
+                    <span id="small_cal_month_viewer">Calendar</span>
+                <div id="small_cal_next">next</div>
+            </div>	
+            <div id="small_calendar">
+                <div id="cal_date_viewer" class="header"></div>
+                <div class="smallDayPickerEmty topRow">Mon</div>
+                <div class="smallDayPickerEmty topRow">Tue</div>
+                <div class="smallDayPickerEmty topRow">Wed</div>
+                <div class="smallDayPickerEmty topRow">Thu</div>
+                <div class="smallDayPickerEmty topRow">Fre</div>
+                <div class="smallDayPickerEmty topRow">Sat</div>
+                <div class="smallDayPickerEmty topRow">Sun</div>	
+                <div id="small_cal_month_picker"></div>
+            </div>
+        </div>
+    </div>
+    <div id="schedu_box">	
+        <div id="time_line"></div>
+        <div id="time_slots"></div>
+    </div>
+    <div class="schedu_btn" id="time_prev">earlier </div>
+    <div class="schedu_btn" id="time_net">Later </div>
+	
+</body>
+</html>

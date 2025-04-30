@@ -32,6 +32,7 @@ function apiRequest(action,parameter)
 
     if( action == "get_calendars")
     {
+        
         data_obj = {
             'action':action,
             'token':profile.getJWT()

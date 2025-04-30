@@ -19,7 +19,7 @@ function renderPage(route, val)
     if(route=="#calendar")
     {
         apiRequest("calendar",val);
-        page = route;
+        page = "#load";
     }
     
     if(route=="goto")
@@ -31,6 +31,14 @@ function renderPage(route, val)
             apiRequest("get_calendars","");
         }
         page = val;
+    }
+
+    if(route=="calendar_view")
+    {
+        //const bookings = [{'start': "2025-05-12 00:00",'end': "2025-05-15 00:00",'id':12,'user':'james'},{'start': "2025-05-25 00:00",'end': "2025-06-06 00:00",'id':16,'user':'Cowboy Joe'}];
+        console.log(val);
+        calendar(val);
+        page="#calendar";
     }
 
     if(route=="api")
@@ -50,5 +58,6 @@ function renderPage(route, val)
     {
         $(".content_div").hide();
         $(page).show();
+        
     }
 }

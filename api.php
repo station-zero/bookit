@@ -198,7 +198,7 @@ switch ($method) {
         if($input['action']=="calendar")
         {
             $token = $input['token'];
-            $id = $id['token'];
+            $id = $input['id'];
             $user = get_user($token);
             if($user["valid"]==true)
             {
@@ -212,16 +212,16 @@ switch ($method) {
                 while ($row = $result->fetchArray()) {
                     $type = $row['type']; 
                 } 
-
-                $query = 'SELECT * FROM calendar_blocks WHERE calender_id=:id';
+                $items = [];
+                $query = 'SELECT * FROM calendar_blocks WHERE calendar_id=:id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':id', $id);
                 $result = $statement->execute();
                 while ($row = $result->fetchArray()) {
                     $items[] = array(
                         'id' => $row['id'], 
-                        'start_time' => $row['start_time'], 
-                        'end_time' => $row['end_time'], 
+                        'start' => $row['start_time'], 
+                        'end' => $row['end_time'], 
                         'user' => $row['user_id']); 
                 }
 
@@ -229,7 +229,8 @@ switch ($method) {
                     $i['user_id'] = get_username($i['user_id']);
                 }
 
-                echo json_encode(["route" => "calender", "val" => "", "items" => $items, "type" => $type]);
+                echo json_encode(["route" => "calendar_view", "val" => $items]);
+                
             }else{
                 echo json_encode(["route" => "error", "val" => "7"]);
             }

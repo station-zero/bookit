@@ -1,14 +1,6 @@
-<html>
-<head>
-<script src="jquery-3.7.1.min.js"></script>
-	<!--<script src="script.js"></script> -->
-	<script>
 		
-		const bookings = [{'start': "2025-05-12 00:00",'end': "2025-05-15 00:00",'id':12,'user':'james'},
-		{'start': "2025-05-25 00:00",'end': "2025-06-06 00:00",'id':16,'user':'Cowboy Joe'}];
-
-		function calendar(type){ 
-		
+		function calendar(bookings){ 
+			console.log("asdasd");
 			const now = new Date();
 			let DD = now.getDate();
 			let YY = now.getFullYear();
@@ -113,8 +105,7 @@
 						}
 
 						if(addDay==true){
-							console.log(thisMonth);
-						
+							
 							prevDD = day;
 							prevMM = thisMonth;
 							prevYY = thisYear;
@@ -325,7 +316,6 @@
 			$(document).on("click", ".booked", function(){
 				
 				const id = $(this).data("id");
-				console.log(bookings[id]);
 				$("#calendar_info_box_start").html(bookings[id].start);
 				$("#calendar_info_box_end").html(bookings[id].end);
 				$("#calendar_info_box_user").html(bookings[id].user);
@@ -363,195 +353,5 @@
 			drawCalendar(YY,MM,DD);
 			
 		}
-		$(document).ready(function() {
-			calendar("daySelector");	
-		});
 		
-	</script>
-	<style>
 		
-		.dayPicker, .dayPickerEmty, .greyedOut, .booked
-		{
-			width:50px;
-			height:50px;
-			text-align:center;
-			display: grid;
-			float:left;
-			align-items: center;
-			font-family:Arial;
-			font-size:15px;
-			padding:2px;
-			margin:2px;
-			border:1px solid #FFFFFF;
-		}
-
-		.topRow
-		{
-			font-family:Arial;
-			font-size:10px;
-			font-weight:bold;
-			border-bottom:3px solid #000000;
-		}
-
-		.header
-		{
-			text-align: center;
-			font-family:Arial;
-			font-size:18px;
-			padding:10px 0px;
-		}
-
-		.greyedOut
-		{
-			background-color:#e9e9e9;
-		}
-
-		.dayPicker, .greyedOut, .booked
-		{
-			border:1px solid #c1c1c1;
-			border-radius:3px;
-		}
-
-
-		.booked
-		{
-			background-color:#FF4444;
-			
-		}
-
-		.today
-		{
-			font-weight: bold;
-		}
-		
-		#calendar_box
-		{
-			display:block;
-			float:left;
-			padding:2px;
-			margin:4px;
-			background:#FFFFFF;
-			width:860px;
-		}
-		
-		#first_month, #second_month
-		{
-			display:block;
-			float:left;
-			border:1px solid #999999;
-			padding:2px;
-		}
-		
-		#prev, #next
-		{
-			display:block;
-			float:left;
-			width:100px;
-			text-align:center;
-			font-family:Arial;
-			font-size:14px;
-			padding:8px 0px;
-			border:1px solid #062538;
-			border-radius:5px;
-			background:#2dabf9;
-			color:#FFFFFF;
-			text-shadow:1px 1px #263666;
-			text-transform: uppercase;
-			font-weight: bold;
-		}
-		
-		#next{
-			float:right;
-		}
-
-		.break
-		{
-			clear:both;
-		}
-
-		#cal_top_header
-		{
-			display: block;
-    		float: left;
-    		clear: both;
-    		height: 40px;
-    		min-width: 850px;
-			text-align:center;
-			font-family:Arial;
-			font-size:20px;
-		}
-
-		#calendar_info_box
-		{
-			display:none;
-			width:100%;
-			background:#FFFFFF;
-			font-family:Arial;
-			font-size:18px;
-		}
-
-		#calendar_info_close_btn
-		{
-			display:block;
-			float:right;
-		}	
-	</style>
-</head>
-<body>
-
-	
-<div id="calendar_box">
-	<div id="calendar_wrapper">
-		<div id="cal_top_header">
-			<div id="prev">prev</div>
-				Calendar
-			<div id="next">next</div>
-		</div>
-		<div id="first_month">
-			<div id="first_date" class="header"></div>
-			<div class="dayPickerEmty topRow">Mon</div>
-			<div class="dayPickerEmty topRow">Tue</div>
-			<div class="dayPickerEmty topRow">Wed</div>
-			<div class="dayPickerEmty topRow">Thu</div>
-			<div class="dayPickerEmty topRow">Fre</div>
-			<div class="dayPickerEmty topRow">Sat</div>
-			<div class="dayPickerEmty topRow">Sun</div>	
-			<div id="first_month_picker"></div>
-		</div>
-		<div id="second_month">
-			<div id="second_date" class="header"></div>
-			<div class="dayPickerEmty topRow">Mon</div>
-			<div class="dayPickerEmty topRow">Tue</div>
-			<div class="dayPickerEmty topRow">Wed</div>
-			<div class="dayPickerEmty topRow">Thu</div>
-			<div class="dayPickerEmty topRow">Fre</div>
-			<div class="dayPickerEmty topRow">Sat</div>
-			<div class="dayPickerEmty topRow">Sun</div>
-			<div id="second_month_picker"></div>
-		</div>
-		<div class="break">
-			<table>
-				<tr><td>Selected start date:</td><td><input id="startDate" value=""></td></tr>
-				<tr><td>Selected end date:</td><td><input id="endDate" value=""></td></tr>
-			</table>
-		</div>
-	</div>
-	<div id="calendar_info_box">
-		<div id="calendar_info_close_btn">x</div>
-		<h1>Reserved</h1>
-		<table>
-			<tr>
-				<td>User:</td><td><span id="calendar_info_box_user"></span></td>
-			</tr>
-			<tr>
-				<td>Start:</td><td><span id="calendar_info_box_start"></span></td>
-			</tr>
-			<tr>
-				<td>End:</td><td><span id="calendar_info_box_end"></span></td>
-			</tr>
-			
-	</div>
-</div>
-	
-</body>
-</html>
