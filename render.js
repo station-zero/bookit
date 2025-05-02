@@ -30,6 +30,13 @@ function renderPage(route, val)
         page = "#load";
     }
 
+    if(route=="calendars_list")
+    {
+        console.log(val);
+        calendarList(val);
+        page = "#calendars";
+    }
+
     if(route=="#settings")
     {
         apiRequest("calendar_settings",val);
@@ -51,6 +58,13 @@ function renderPage(route, val)
         {
             apiRequest("get_calendars","");
         }
+
+        if(val == "#calendars")
+        {
+            apiRequest("added_calendars","");
+            val="#load";
+        }
+
         page = val;
     }
 
@@ -62,22 +76,20 @@ function renderPage(route, val)
 
     if(route=="time_picker_view")
     {
-        timePicker(60, val, getScreen());
+        console.log(val);
+        timePicker(val['interval'], val['bookings'], getScreen());
         page="#time_picker";
 
-    }
-
-    if(route=="api")
-    {
-        apiRequest(val,"");
-        page = "#load";
     }
 
     menu += "<a href='#home' class='menu_link'>Home</a>";
     $("#login_btn").text("login");
     if(profile.getLoginStatus()==true)
     {
-        menu = "<a href='#dashboard' class='menu_link'>Dashboard</a>";
+        menu = "<a href='#home' class='menu_link'>Home</a>";
+        menu += "<a href='#dashboard' class='menu_link'>Dashboard</a>";
+        menu += "<a href='#calendars' class='menu_link'>calendars</a>";
+        
         $("#login_btn").text("Profile");
     }
     $("#menu_bar").html(menu);

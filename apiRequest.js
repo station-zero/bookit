@@ -33,8 +33,7 @@ function apiRequest(action,parameter)
             'start': String(start[2]).padStart(2,"0") + "-" + String(start[1]).padStart(2,"0") + "-" + start[0] + " 00:00",
             'end': String(end[2]).padStart(2,"0") + "-" + String(end[1]).padStart(2,"0") + "-" + end[0] + " 00:00",
             'calendar_id':profile.getCalendarID()
-            }
-
+        }
     }
 
     if( action == "remove_booking")
@@ -43,7 +42,7 @@ function apiRequest(action,parameter)
                 'action': action,
                 'id': parameter,
                 'token': profile.getJWT()
-                }
+        }
     }	
     
     if(action == "save_timeslots")
@@ -53,19 +52,46 @@ function apiRequest(action,parameter)
             'token': profile.getJWT(),
             'time_slots': parameter,
             'calendar_id':profile.getCalendarID()
-            }
-
+        }
     }
 
-    if( action == "add_user")
+    if(action == "add_user")
     {
-        console.log($("#add_user_email").val());
-    data_obj = {
+        data_obj = {
             'action': action,
             'email': $("#add_user_email").val(),
             'calendar_id':profile.getCalendarID(),
             'token': profile.getJWT()
-            }
+        }
+    }
+
+    if(action == "remove_user")
+    {
+        data_obj = {
+            'action': action,
+            'id': parameter,
+            'calendar_id':profile.getCalendarID(),
+            'token': profile.getJWT()
+        }
+    }
+
+    if(action == "remove_pending_user")
+    {
+        data_obj = {
+            'action': action,
+            'id': parameter,
+            'calendar_id':profile.getCalendarID(),
+            'token': profile.getJWT()
+        }
+    }    
+    
+    if(action == "remove_calendar")
+    {
+        data_obj = {
+            'action': action,
+            'calendar_id':profile.getCalendarID(),
+            'token': profile.getJWT()
+        }
     }
 
     if( action == "new_calendar")
@@ -74,6 +100,7 @@ function apiRequest(action,parameter)
             'action': action,
             'title': $("#c_title").val(),
             'type': $("#c_type").val(),
+            'interval': parseInt($("#c_interval").val()),
             'token': profile.getJWT()
             }
     }	
@@ -86,6 +113,14 @@ function apiRequest(action,parameter)
             'token':profile.getJWT()
             }
     }
+
+    if( action == "added_calendars")
+        {
+            data_obj = {
+                'action':action,
+                'token':profile.getJWT()
+                }
+        }
 
     if( action == "calendar")
     {

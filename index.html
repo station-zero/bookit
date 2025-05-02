@@ -47,7 +47,16 @@
 				}
 				return viewType;
 			}
-		
+			
+			function calendarList(calendars)
+			{
+				$("#calendar_list_view").html("");
+				$.each(calendars, function(i, item) {
+					var child = $("<a href='#calendar/" + item.id + "''>" + item.title  + "</a><br>");
+					$("#calendar_list_view").append(child);
+				});
+			}
+
 			function renderCalendars(calendars)
 			{
 				$("#board_list").html("");
@@ -70,17 +79,24 @@
 				let html = "";
 
 				$("#settings_c_users").html("");
-				html += "<table><tr><td>Users</td><td>Status</td></tr>";
+				html += "<table><tr><td>Users</td><td>Status</td><td></td></tr>";
 
 				for(user of calendar['users'])
 				{	
-					html += "<tr><td>" + user['name'] + "</td><td>" + user['status'] + "</td></tr>";
+					if(user['id']!="")
+					{
+						html += "<tr><td>" + user['name'] + "</td><td>" + user['status'] + "</td>";
+						html += "<td><div class='remove_user' data-id='" + user['id'] + "'><img src='images/delete.png'></div></td></tr>";
+					}
 				}
 				for(pending_user of calendar['pending'])
 				{	
-					html += "<tr><td>" + pending_user['name'] + "</td><td>" + pending_user['status'] + "</td></tr>";
+					if(pending_user['id']!="")
+					{
+						html += "<tr><td>" + pending_user['name'] + "</td><td>" + pending_user['status'] + "</td>";
+						html += "<td><div class='remove_pending' data-id='" + pending_user['id'] + "'><img src='images/delete.png'></div></td></tr>";
+					}
 				}
-
 				html += "</table>";
 				$("#settings_c_users").append(html);
 			}
@@ -103,6 +119,20 @@
 					$("#gdpr_banner").hide();
 				}
 
+				$(document).on('click', '.remove_user', function() {
+					const id = $(this).data("id"); 
+					apiRequest("remove_user",id);
+				});
+
+				$(document).on('click', '.remove_pending', function() {
+					const id = $(this).data("id"); 
+					apiRequest("remove_pending_user",id);
+				});
+
+				$(document).on('click', '#delete_calendar', function() {
+					apiRequest("remove_calendar","");
+				});
+				
 				$(document).on('click', '.calendar_box', function() {
 					const id = $(this).data("id"); 
 					window.location.hash = "settings/" + id;
@@ -120,7 +150,7 @@
 			
 				$(".submit_btn").on("click", function() {
 					const action = $(this).data("action");
-					renderPage("api", action)
+					apiRequest(action,"");
 				});
 
 				$("#c_type").on("change", function(){
@@ -186,6 +216,7 @@
 						<tr><td>users:</td><td><div id="settings_c_users"></div><a href="#adduser"><div>Add user</div></a></td></tr>
 					</table>	
 				</div>
+				<div id="delete_calendar">Delete calendar</div>
 			</div>
 
 			<div class="content_div content_view" id="adduser">
@@ -200,6 +231,14 @@
 				</div>
 
 			</div>
+
+			<div class="content_div content_view" id="calendars">
+				<div id="calendar_list_view">
+
+				</div>
+			</div>
+
+
 
 			<div  class="content_div content_view" id="new_account">
 				<div class="form_box">
