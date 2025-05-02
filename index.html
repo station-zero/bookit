@@ -64,13 +64,25 @@
 			{
 				$("#settings_c_url").html("<a href='#calendar/" + calendar['id'] + "'>apoint.dk#calendar/" + calendar['id'] + "</a>");
 				$("#settings_c_type").html(calendar['type']);
-				$("#settings_c_users").html("");
+				
 				profile.setCalendarUsers(calendar['users']);
-				let users = String(calendar['users']).split(","); 
-				for(user of users)
-				{
-					$("#settings_c_users").append("<div>" + user + "</div>");
+
+				let html = "";
+
+				$("#settings_c_users").html("");
+				html += "<table><tr><td>Users</td><td>Status</td></tr>";
+
+				for(user of calendar['users'])
+				{	
+					html += "<tr><td>" + user['name'] + "</td><td>" + user['status'] + "</td></tr>";
 				}
+				for(pending_user of calendar['pending'])
+				{	
+					html += "<tr><td>" + pending_user['name'] + "</td><td>" + pending_user['status'] + "</td></tr>";
+				}
+
+				html += "</table>";
+				$("#settings_c_users").append(html);
 			}
 
 			function urlPath(hash)
@@ -93,7 +105,6 @@
 
 				$(document).on('click', '.calendar_box', function() {
 					const id = $(this).data("id"); 
-					//window.location.hash = "calendar/" + id;
 					window.location.hash = "settings/" + id;
 				});
 

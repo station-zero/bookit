@@ -35,9 +35,9 @@ function send_mail($email, $code)
 {
     $subject = 'Hello!';
 
-    $headers['From'] = 'noreply@apoint.dk';
-    $headers['MIME-Version'] = 'MIME-Version: 1.0';
-    $headers['Content-type'] = 'text/html; charset=iso-8859-1';
+    $headers = "From: noreply@apoint.dk\n";
+    $headers .= "MIME-Version: 1.0\n";
+    $headers .= "Content-type: text/html; charset=iso 8859-1";
 
     $message = '
     <html>
@@ -67,6 +67,93 @@ function get_username($id)
         $name = $row['username'];
     }  
     return $name;
+}
+
+function allowed_in($calendar_id, $user_id)
+{
+    $status = false;
+    $query = 'SELECT users FROM calendar WHERE id=:calendar_id';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':calendar_id', $calendar_id);
+    
+    $result = $statement->execute();
+    while ($row = $result->fetchArray()) {
+        $user_list = explode(",",$row['users']);
+        
+        foreach($user_list as $id)
+        {
+            if($id == $user_id)
+            {
+                $status = true;     
+            }
+        }
+    }
+
+    return $status;
+}
+
+function get_pending_users($calendar_id)
+{
+    $pending_users = array();
+    
+    $query = 'SELECT * FROM pending_users WHERE calendar_id=:calendar_id';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':calendar_id', $calendar_id);
+    $result = $statement->execute();
+    
+    while ($row = $result->fetchArray()) {
+        $pending_users[] = array(
+            'id' => $row['id'], 
+            'name' => $row['email'],
+            'status' => "pending" 
+        );
+    }
+    return $pending_users;
+}
+
+function update_pending_users($calendar_id, $user_list)
+{
+    $pending_users = array();
+    $remove_list = array();
+    
+    $query = 'SELECT * FROM pending_users WHERE calendar_id=:calendar_id';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':calendar_id', $calendar_id);
+    $result = $statement->execute();
+    
+    while ($row = $result->fetchArray()) {
+        $pending_users[] = array(
+            'id' => $row['id'], 
+            'email' => $row['email'] 
+        );
+    }  
+    
+    foreach($pending_users as $user)
+    {
+        $query = 'SELECT id FROM users WHERE email=:email';
+        $statement = $GLOBALS["db"]->prepare($query);
+        $statement->bindValue(':email', $user['email']);
+        $result = $statement->execute();
+        while ($row = $result->fetchArray()) {
+            $user_list .= "," . $row['id'];
+            $remove_list[] = $user['id'];
+        }
+    }
+
+    $query = 'UPDATE calendar SET users=:user_list WHERE id=:calendar_id';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':calendar_id', $calendar_id);
+    $statement->bindValue(':user_list', $user_list);
+    
+    $result = $statement->execute();
+
+    foreach($remove_list as $item)
+    {
+        $query = 'DELETE FROM pending_users WHERE id=:id';
+        $statement = $GLOBALS["db"]->prepare($query);
+        $statement->bindValue(':id', $item);
+        $result = $statement->execute();
+    }
 }
 
 function get_user($token)
@@ -138,7 +225,7 @@ switch ($method) {
             if($db->changes() != 0)
             {
                 send_mail($email,$verified_code);
-                echo json_encode(["route" => "mail_send", "val" => ""]);
+                echo json_encode(["route" => "goto", "val" => "#mail_send"]);
             }else{
                 echo json_encode(["route" => "error", "val" => "1"]);
             }
@@ -153,11 +240,13 @@ switch ($method) {
             $user = get_user($token); 
             if($user["valid"]==true)
             {
-                $query = 'INSERT INTO calendar(owner, type, name) VALUES (:owner,:type,:name)';
+                $query = 'INSERT INTO calendar(owner, type, name, users) VALUES (:owner,:type,:name,:users)';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':owner', $user['id']);
                 $statement->bindValue(':type', $type);
                 $statement->bindValue(':name', $title);
+                $statement->bindValue(':users', $user['id']);
+                
                 $result = $statement->execute();
 
                 if($db->changes() != 0)
@@ -247,7 +336,7 @@ switch ($method) {
             
                 while ($row = $result->fetchArray()) {
                     $items[] = array('id' => $row['id'], 'title' => $row['name']); 
-                }    
+                }
                 echo json_encode(["route" => "dashboard", "val" => "dashboard", "calendars" => $items]);
             }else{
                 echo json_encode(["route" => "goto", "val" => "#login"]);
@@ -278,22 +367,22 @@ switch ($method) {
         {
             $token = $input['token'];
             $email = $input['email'];
+            $calendar_id = $input['calendar_id'];
+            
             $user = get_user($token);
             $items = array();
                 
             if($user["valid"]==true)
             {
-                $query = 'INSERT INTO pending_users(start_time, end_time, user_id, calendar_id) VALUES (:start,:end,:user_id,:calendar_id)';
+                $query = 'INSERT INTO pending_users(email, calendar_id) VALUES (:email,:calendar_id)';
                 $statement = $db->prepare($query);
-                $statement->bindValue(':user_id', $user['id']);
                 $statement->bindValue(':calendar_id', $calendar_id);
-                $statement->bindValue(':start', $start);
-                $statement->bindValue(':end', $end);
+                $statement->bindValue(':email', $email);
                 $result = $statement->execute();
 
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "error", "val" => "Det virker!"]);
+                    echo json_encode(["route" => "#settings", "val" => $calendar_id]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }
@@ -320,10 +409,25 @@ switch ($method) {
                 $type = "";
             
                 while ($row = $result->fetchArray()) {
+                    $user_list = array();
+                    
+                    $users = explode(",", $row['users']);
+                    foreach($users as $user_id)
+                    {
+                        $user_list[] = array(
+                            'id' => $user_id,
+                            'name' => get_username($user_id),
+                            'status' => "Active" 
+                        );
+                    }
+
+                    
                     $items = array(
                         'id' => $row['id'], 
                         'type' => $row['type'], 
-                        'users' => $row['users']);
+                        'users' => $user_list,
+                        'pending' => get_pending_users($id)
+                    );
                 } 
                 echo json_encode(["route" => "settings_view", "val" => $items]);
             }else{
@@ -336,18 +440,24 @@ switch ($method) {
             $token = $input['token'];
             $id = $input['id'];
             $user = get_user($token);
+
             if($user["valid"]==true)
             {
-                $query = 'SELECT type FROM calendar WHERE id=:id';
+                $query = 'SELECT type, users FROM calendar WHERE id=:id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':id', $id);
                 $result = $statement->execute();
                 
                 $type = "";
-            
+                $user_list = "";
+
                 while ($row = $result->fetchArray()) {
-                    $type = $row['type']; 
-                } 
+                    $type = $row['type'];
+                    $user_list = $row['users']; 
+                }
+
+                update_pending_users($id, $user_list);
+
                 $items = array();
                 
                 $query = 'SELECT * FROM calendar_blocks WHERE calendar_id=:id';
@@ -372,10 +482,15 @@ switch ($method) {
                     );
 
                 }
-                if($type=="day"){
-                    echo json_encode(["route" => "calendar_view", "val" => $items]);
+                if(allowed_in($id, $user["id"]))
+                {
+                    if($type=="day"){
+                        echo json_encode(["route" => "calendar_view", "val" => $items]);
+                    }else{
+                        echo json_encode(["route" => "time_picker_view", "val" => $items]);
+                    }
                 }else{
-                    echo json_encode(["route" => "time_picker_view", "val" => $items]);
+                    echo json_encode(["route" => "error", "val" => "access denied"]);    
                 }
             }else{
                 echo json_encode(["route" => "goto", "val" => "#login"]);

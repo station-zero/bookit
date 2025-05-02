@@ -1,7 +1,73 @@
-[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Warning:  Undefined array key "type" in /home/pillonid/apoint.dk/api.php on line 273
-[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Warning:  Undefined array key "type" in /home/pillonid/apoint.dk/api.php on line 273
-[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Warning:  Undefined array key "type" in /home/pillonid/apoint.dk/api.php on line 273
-[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + null in /home/pillonid/apoint.dk/api.php:289
+[02-May-2025 13:11:11 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such table: calendars in /home/pillonid/apoint.dk/api.php on line 100
+[02-May-2025 13:11:11 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:101
 Stack trace:
-#0 {main}
-  thrown in /home/pillonid/apoint.dk/api.php on line 289
+#0 /home/pillonid/apoint.dk/api.php(391): update_pending_users('1', NULL)
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 101
+[02-May-2025 13:11:53 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such table: calendars in /home/pillonid/apoint.dk/api.php on line 100
+[02-May-2025 13:11:53 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:101
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(391): update_pending_users('2', NULL)
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 101
+[02-May-2025 13:13:37 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such table: calendars in /home/pillonid/apoint.dk/api.php on line 100
+[02-May-2025 13:13:37 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:101
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(391): update_pending_users('2', NULL)
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 101
+[02-May-2025 13:36:24 Europe/Copenhagen] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function allowed_in(), 1 passed in /home/pillonid/apoint.dk/api.php on line 443 and exactly 2 expected in /home/pillonid/apoint.dk/api.php:72
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(443): allowed_in(6)
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 72
+[02-May-2025 13:36:29 Europe/Copenhagen] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function allowed_in(), 1 passed in /home/pillonid/apoint.dk/api.php on line 443 and exactly 2 expected in /home/pillonid/apoint.dk/api.php:72
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(443): allowed_in(6)
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 72
+[02-May-2025 13:37:52 Europe/Copenhagen] PHP Warning:  Undefined variable $user_list in /home/pillonid/apoint.dk/api.php on line 78
+[02-May-2025 13:37:52 Europe/Copenhagen] PHP Warning:  Undefined variable $id in /home/pillonid/apoint.dk/api.php on line 84
+[02-May-2025 13:37:52 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in /home/pillonid/apoint.dk/api.php on line 84
+[02-May-2025 13:37:57 Europe/Copenhagen] PHP Warning:  Undefined variable $user_list in /home/pillonid/apoint.dk/api.php on line 78
+[02-May-2025 13:37:57 Europe/Copenhagen] PHP Warning:  Undefined variable $id in /home/pillonid/apoint.dk/api.php on line 84
+[02-May-2025 13:37:57 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in /home/pillonid/apoint.dk/api.php on line 84
+[02-May-2025 13:37:59 Europe/Copenhagen] PHP Warning:  Undefined variable $user_list in /home/pillonid/apoint.dk/api.php on line 78
+[02-May-2025 13:37:59 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #1 ($separator) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 82
+[02-May-2025 13:37:59 Europe/Copenhagen] PHP Fatal error:  Uncaught ValueError: explode(): Argument #1 ($separator) cannot be empty in /home/pillonid/apoint.dk/api.php:82
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(82): explode('', ',')
+#1 /home/pillonid/apoint.dk/api.php(443): allowed_in('2', 6)
+#2 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 82
+[02-May-2025 13:39:53 Europe/Copenhagen] PHP Warning:  Undefined variable $id in /home/pillonid/apoint.dk/api.php on line 83
+[02-May-2025 13:39:53 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in /home/pillonid/apoint.dk/api.php on line 83
+[02-May-2025 13:39:56 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #1 ($separator) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:39:56 Europe/Copenhagen] PHP Fatal error:  Uncaught ValueError: explode(): Argument #1 ($separator) cannot be empty in /home/pillonid/apoint.dk/api.php:81
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(81): explode('', ',')
+#1 /home/pillonid/apoint.dk/api.php(442): allowed_in('2', 6)
+#2 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:40:55 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #1 ($separator) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:40:55 Europe/Copenhagen] PHP Fatal error:  Uncaught ValueError: explode(): Argument #1 ($separator) cannot be empty in /home/pillonid/apoint.dk/api.php:81
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(81): explode('', ',')
+#1 /home/pillonid/apoint.dk/api.php(442): allowed_in('2', 6)
+#2 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:41:02 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #1 ($separator) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:41:02 Europe/Copenhagen] PHP Fatal error:  Uncaught ValueError: explode(): Argument #1 ($separator) cannot be empty in /home/pillonid/apoint.dk/api.php:81
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(81): explode('', ',')
+#1 /home/pillonid/apoint.dk/api.php(442): allowed_in('2', 6)
+#2 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:43:41 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:43:52 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:49:54 Europe/Copenhagen] PHP Warning:  Undefined variable $db in /home/pillonid/apoint.dk/api.php on line 134
+[02-May-2025 13:49:54 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/pillonid/apoint.dk/api.php:134
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(425): update_pending_users('1', ',6,6,6,6,6,6,6,...')
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 134

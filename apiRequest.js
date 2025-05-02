@@ -59,9 +59,11 @@ function apiRequest(action,parameter)
 
     if( action == "add_user")
     {
+        console.log($("#add_user_email").val());
     data_obj = {
             'action': action,
             'email': $("#add_user_email").val(),
+            'calendar_id':profile.getCalendarID(),
             'token': profile.getJWT()
             }
     }
