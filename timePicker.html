@@ -7,6 +7,8 @@
 		const bookings = [{'start': "2025-05-12 10:00",'end': "2025-05-12 11:00",'id':12,'user':'james'},
 		{'start': "2025-06-06 14:00",'end': "2025-06-06 15:00",'id':16,'user':'Cowboy Joe'}];
 
+        $("#booking_list_view").hide();
+
         function timePicker(interval){
   
             const now = new Date();
@@ -18,16 +20,35 @@
     		const todayYY = now.getFullYear();
 	    	const todayMM = now.getMonth();
 
-            const freeColor = "#33FF33";
+            const freeColor = "#3333ff";
+            const selectedColor = "#33FF33";
             const takenColor = "#FF3333";
             
             const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-            $("#pick_date_btn").html(DD + "/" + MM + "/" + YY);
+            let time_slots = [];
+
+            $("#pick_date_btn").html(DD + "/" + (MM + 1) + "/" + YY);
             $("#small_calendar_wrapper").hide();
+            $("#booking_list_view").hide();
 
             let interval_list = [];
             
+            function createBookingList()
+            {
+                time_slots = [];
+
+                $(".time_slot").each(function() {
+                    const selected = $(this).data("selected");
+                    const time = $(this).data("time");
+                    
+                    if(selected==true){
+                        time_slots.push(time);
+                    }    
+                })
+
+                console.log(time_slots);
+            }
             
             function createTimeView()
             {
@@ -38,7 +59,7 @@
                 {
                     const hour = String(i).padStart(2, '0');
                     $("#time_line").append("<div class='time_indicator'><div>" + hour + ":00" + "</div></div>");
-                    $("#time_line").append("<div class='time_indicator'><div>" + hour + ":30" + "</div></div>");
+                    $("#time_line").append("<div class='time_indicator'><div>-</div></div>");
                                     
                 }
                 
@@ -47,20 +68,31 @@
                 {
                     let color = freeColor;
                     
-                    let startTime = timeConverter(i * interval);
-                    let endTime = timeConverter((i + 1) * interval);
+                    const startTime = timeConverter(i * interval);
+                    const endTime = timeConverter((i + 1) * interval);
                     
                     let HHMM = startTime.split(":");
 
-                    let booking = checkDate(YY,MM,DD,HHMM[0],HHMM[1]);
+                    const booking = checkDate(YY,MM,DD,HHMM[0],HHMM[1]);
+                    
+                    const timeVal = YY + "-" + String(MM + 1).padStart(2,"0") + "-" + String(DD).padStart(2,"0") + " " + startTime;
                     
                     if(booking.length > 0)
                     {
                         color = takenColor;
                     }
 
-                    const text = startTime + "-" + endTime;
-                    $("#time_slots").append("<div style='height:" + interval + "px; background:" + color + "' class='time_slot' data-time='" + i +"'><div>" + text + "</div></div>");
+                    for(selected_date of time_slots)
+                    {
+                        if(selected_date==timeVal)
+                        {
+                            color = selectedColor;
+                        }
+                    }
+
+                    const text = startTime + " - " + endTime;
+                    $("#time_slots").append("<div style='height:" + interval + "px; background:" + color + 
+					"' class='time_slot' data-selected='false' data-time='" + timeVal +"'>" + text + "</div>");
                 }
             }
 
@@ -126,7 +158,7 @@
 						divElement += "data-d='" +  dayNumber + "' ";
 						divElement += "data-m='" +  month + "' ";
 						divElement += "data-y='" +  year + "' ";
-						divElement += ">" + dayNumber + "</div>";
+                        divElement += ">" + dayNumber + "</div>";
 						dayNumber += 1;
 					}else{
 						divElement += "<div class='smallDayPickerEmty'></div>";
@@ -138,6 +170,33 @@
 				return divElement;
 			}
             
+
+            function prettyTimeFormat(dateTime){
+                const split = dateTime.split(" ");
+                const date = split[0].split("-");
+                const time = split[1].split(":");
+                
+                const endtime = timeConverter((parseInt(time[0]) * 60) + interval);
+                return date[2] + "/" + date[1] + "/" +  date[0] + " " + split[1] + " - " + endtime;  
+
+            }
+
+
+			$(document).on("click", ".time_slot", function(){
+				const selected = $(this).data("selected");
+                
+                if(selected==false)
+                {
+                    $(this).css({"background":selectedColor});
+                    $(this).data("selected", true);
+                
+                }else{
+                    $(this).css({"background":freeColor});
+                    $(this).data("selected", false);
+                }
+                createBookingList();
+            });
+			
             $("#small_cal_prev").on("click", function(){
 				MM -= 1;
 				if(MM < 0)
@@ -161,6 +220,8 @@
             $("#pick_date_btn").on("click", function(){
                 $("#small_calendar_wrapper").show();
                 $("#pick_date_btn").hide();
+                $("#schedu_box").hide();
+                $("#view_time_list").hide();
                 initCalendar();
             });
 	
@@ -173,9 +234,34 @@
                 $("#pick_date_btn").html(DD + "/" + (MM + 1) + "/" + YY);
                 $("#small_calendar_wrapper").hide();
                 $("#pick_date_btn").show();
+                $("#schedu_box").show();
+                $("#view_time_list").show();
                 createTimeView();
             });
 
+            $(document).on("click", "#back_time_picker", function(){
+                $("#time_picker_cal").show();
+                $("#schedu_box").show();
+                $("#booking_list_view").hide();
+            });
+
+            $("#view_time_list").on("click", function(){
+                $("#booking_list_view").html("");
+                let html = "<div id='back_time_picker'>Back</div>";
+                for(selected_date of time_slots)
+                {
+                    html += "<div class='booking_list_item'>" + prettyTimeFormat(selected_date) + "</div>"; 
+                }
+                $("#booking_list_view").html(html);
+
+                $("#time_picker_cal").hide();
+                $("#schedu_box").hide();
+                $("#booking_list_view").show();
+                
+            });
+            
+
+            createTimeView();
         }
 		
 		$(document).ready(function() {
@@ -185,177 +271,6 @@
 	</script>
 	<style>
 		
-		.smallDayPicker, .smallDayPickerEmty, .smallGreyedOut
-		{
-			width:30px;
-			height:30px;
-			text-align:center;
-			display: grid;
-			float:left;
-			align-items: center;
-			font-family:Arial;
-			font-size:12px;
-			padding:2px;
-			margin:2px;
-			border:1px solid #e9e9e9;
-		}
-
-		.topRow
-		{
-			font-family:Arial;
-			font-size:10px;
-			font-weight:bold;
-			border-bottom:3px solid #000000;
-		}
-
-		.smallGreyedOut
-		{
-			background-color:#d0d0d0;
-		}
-
-		.smallDayPicker, .smallGreyedOut
-		{
-			border:1px solid #c1c1c1;
-			border-radius:3px;
-		}
-
-        .smallDayPicker
-        {
-            background:#FFFFFF;
-        }
-		
-		#small_calendar
-		{
-			display:block;
-			float:left;
-			padding:2px;
-			margin:4px;
-			background:#e9e9e9;
-			width:100%;
-		}
-		
-		#small_cal_prev, #small_cal_next
-		{
-			display:block;
-			float:left;
-			width:55px;
-			text-align:center;
-			font-family:Arial;
-			font-size:14px;
-			padding:8px 0px;
-			border:1px solid #062538;
-			border-radius:5px;
-			background:#2dabf9;
-			color:#e9e9e9;
-			text-shadow:1px 1px #263666;
-			text-transform: uppercase;
-			font-weight: bold;
-		}
-		
-		#small_cal_next{
-			float:right;
-		}
-
-		.break
-		{
-			clear:both;
-		}
-
-        #small_cal_month_picker
-        {
-            clear:both;
-        }
-
-		#small_cal_top_header
-		{
-			display: block;
-    		float: left;
-    		clear: both;
-    		min-width: 100%;
-			text-align:center;
-			font-family:Arial;
-			font-size:14px;
-		}
-
-        #time_picker
-        {
-            display:block;
-            float:left;
-            padding:10px;
-            margin:10px;
-            width:290px;
-            border:1px solid #333333;
-            background:#e9e9e9;
-        }
-        #small_calendar_wrapper
-        {
-            display:block;
-            float:left;
-            background:#e9e9e9;
-            
-        }
-
-        #pick_date_btn
-        {
-            display:block;
-            width:100%;
-            text-align:center;
-        }
-			
-        #time_line
-        {
-            display:block;
-            float:left;
-            width:50px;
-            border-right:2px solid #000000;
-        }
-
-        .time_indicator
-        {
-            height:30px;
-        }
-
-        .time_indicator div
-        {
-            border-bottom:2px solid #c1c1c1;
-            height:100%;
-        }
-
-        #time_slots
-        {
-            display:block;
-            float:left;
-            width:200px;
-        }
-
-        .time_slot
-        {
-            display:block;
-            float:left;
-        }
-
-        .time_slot div
-        {
-            border:1px solid #c1c1c1;
-            height:100%;
-            width:260px;
-        }
-
-        #schedu_box
-        {
-            display:block;
-            clear:both;
-            width: 314px;
-            height: 300px;
-            overflow-x: hidden;
-            overflow-y: scroll;
-            border:2px solid #c1c1c1;
-        }
-
-        .schedu_btn
-        {
-            display:block;
-        }
 
 	</style>
 </head>
@@ -363,33 +278,7 @@
 
     
     
-    <div id="time_picker">
-        <div id="pick_date_btn"></div>
-        <div id="small_calendar_wrapper">
-            <div id="small_cal_top_header">
-                <div id="small_cal_prev">prev</div>
-                    <span id="small_cal_month_viewer">Calendar</span>
-                <div id="small_cal_next">next</div>
-            </div>	
-            <div id="small_calendar">
-                <div id="cal_date_viewer" class="header"></div>
-                <div class="smallDayPickerEmty topRow">Mon</div>
-                <div class="smallDayPickerEmty topRow">Tue</div>
-                <div class="smallDayPickerEmty topRow">Wed</div>
-                <div class="smallDayPickerEmty topRow">Thu</div>
-                <div class="smallDayPickerEmty topRow">Fre</div>
-                <div class="smallDayPickerEmty topRow">Sat</div>
-                <div class="smallDayPickerEmty topRow">Sun</div>	
-                <div id="small_cal_month_picker"></div>
-            </div>
-        </div>
-    </div>
-    <div id="schedu_box">	
-        <div id="time_line"></div>
-        <div id="time_slots"></div>
-    </div>
-    <div class="schedu_btn" id="time_prev">earlier </div>
-    <div class="schedu_btn" id="time_net">Later </div>
+    
 	
 </body>
 </html>

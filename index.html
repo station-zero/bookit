@@ -5,6 +5,8 @@
 		<script src="jquery-3.7.1.min.js"></script>
 		<script src="calendar.js"></script>
 		<script src="jaxa.js"></script>
+		<script src="timePicker.js"></script>
+		
 		<script src="render.js"></script>
 		<script src="apiRequest.js"></script>
 		
@@ -13,6 +15,9 @@
 				let jwt_hash = "";
 				let login_status = false;
 				let CalendarID = 0;	
+				let calenderUsers = "";
+				let route = "";
+
 				this.setJWT = (hash) => {jwt_hash = hash;}
 				this.getJWT = () => jwt_hash;
 
@@ -22,12 +27,27 @@
 				this.setCalendarID = (ID) => {CalendarID = ID;}
 				this.getCalendarID = () => CalendarID;
 
+				this.setCalendarUsers = (users) => {calendarUsers = users;}
+				this.getCalendarUsers = () => calendarUsers;
+
+				this.setRoute = (url) => {route = url;}
+				this.getRoute = () => route;
 			}
 
 			let profile = new userProfile();
-							
-
-
+			
+			function getScreen()
+			{
+				let viewType = "fullscreen";
+				const screenWidth = $(window).width();
+			
+				if(screenWidth<1000)
+				{
+					viewType = "phone";
+				}
+				return viewType;
+			}
+		
 			function renderCalendars(calendars)
 			{
 				$("#board_list").html("");
@@ -35,6 +55,33 @@
 					var child = $("<div class='calendar_box' data-id='" + item.id + "''>" + item.title  + "</div>");
 					$("#board_list").append(child);
 				});
+				$(".optional").hide();
+				$("#c_type").val("day");
+				
+			}
+
+			function settings(calendar)
+			{
+				$("#settings_c_url").html("<a href='#calendar/" + calendar['id'] + "'>apoint.dk#calendar/" + calendar['id'] + "</a>");
+				$("#settings_c_type").html(calendar['type']);
+				$("#settings_c_users").html("");
+				profile.setCalendarUsers(calendar['users']);
+				let users = String(calendar['users']).split(","); 
+				for(user of users)
+				{
+					$("#settings_c_users").append("<div>" + user + "</div>");
+				}
+			}
+
+			function urlPath(hash)
+			{
+				const path = hash.split("/");
+				if(path.length == 2){
+					renderPage(path[0],path[1]);
+				}else{
+					renderPage("goto",path[0]);
+				}
+				profile.setRoute(hash);
 			}
 			
 			$(function(){
@@ -46,17 +93,13 @@
 
 				$(document).on('click', '.calendar_box', function() {
 					const id = $(this).data("id"); 
-					window.location.hash = "calendar/" + id;
+					//window.location.hash = "calendar/" + id;
+					window.location.hash = "settings/" + id;
 				});
 
 				$(window).on('popstate', function(event) {
  					const hash = event.target.location.hash;
-					const path = hash.split("/");
-					if(path.length == 2){
-						renderPage(path[0],path[1]);
-					}else{
-						renderPage("goto",path[0]);
-					}
+					 urlPath(hash);
 				});
 
 				$("#gdpr_ok").on("click", function() {
@@ -69,314 +112,25 @@
 					renderPage("api", action)
 				});
 
+				$("#c_type").on("change", function(){
+					if($(this).val() == "time")
+					{
+						$(".optional").show();
+					}else{
+						$(".optional").hide();
+					}
+				});
+
 				const hash = window.location.hash;
-				renderPage("goto", hash);
+				urlPath(hash);
 			})
 
 		</script>
 
-		<style>													
-			html, body
-			{
-				margin:0px;
-				padding:0px;
-				background:#d8d8d8;
-			}
-			
-			p
-			{
-				font-family:arial;
-				color:#f3f3e0;
-
-			}
-			
-			#main
-			{
-				margin:auto;
-				width:1080px;
-			}
-			
-			#menu_bar
-			{
-				display:block;
-				float:left;
-				width:980px;
-				background:#373737;
-			}
-			
-			#menu_bar .menu_link
-			{
-				display:block;
-				float:left;
-				padding:10px;
-				margin:10px;
-				font-family:arial;
-				color:#f3f3e0;
-				text-decoration:none;
-				font-size:17px;
-			}
-			
-			#login_btn
-			{
-				display:block;
-				float:left;
-				width:100px;
-				background:#696963;
-				text-align:center;
-				padding:20px 0px;
-				font-family:arial;
-				color:#f3f3e0;
-				font-weight:bold;
-				font-size:17px;
-			}
-			#login_btn:hover
-			{
-			cursor:pointer;
-			}
-			
-			.calendar_box
-			{
-				display:block;
-				float:left;
-				width:200px;
-				border:1px solid #000;
-				border-radius:5px;
-				text-align:center;
-				padding:10px;
-				margin:10px;
-				background:#FFFFFF;
-			}
-			.calendar_box:hover
-			{
-				cursor:pointer;
-			}
-			
-			
-			#home
-			{
-				background:#e44746;
-				text-align:center;
-				
-			}
-			
-			#home p
-			{
-				font-size:30px;
-			}
-			
-			.btn_c2
-			{
-				display:block;
-				float:left;
-				width:720px;
-				min-height:180px;
-				text-align:left;
-				background-color:#608bc1;
-				padding:0px;
-				
-			}
-			
-			.btn_c2 p, #home .btn_c2 p, .btn_c1 p, #home .btn_c1 p 
-			{
-				font-size:24px;
-				padding:20px 30px;
-			}
-			
-			.btn_c1
-			{
-				display:block;
-				float:left;
-				width:360px;
-				min-height:180px;
-				background-color:#133e87;
-				
-			}
-			
-			.divider
-			{
-				display:block;
-				float:left;
-				width:100%;
-				height:4px;
-				background-color:#f3f3e0;
-			}
-			
-			.content_div
-			{
-				clear:both;
-				display:none;
-				float:left;
-				width:100%;
-				padding:20px 0px 0px 0px;
-			}
-			
-			#gdpr_banner
-			{
-				position:fixed;
-				bottom:0px;
-				background-color:rgba(0, 0, 0, 0.8);
-				width:100%;
-				padding:20px;
-				text-align:center;
-				
-			}
-
-			#gdpr_banner p
-			{
-				color:#f3f3e0;
-				size:14px;
-			}
-
-			#gdpr_banner #gdpr_ok
-			{
-				display: inline-block;
-				padding:10px 15px;
-				margin:0px 10px;
-				background:#009900;
-				border:1px solid #FFF;
-				color:#f3f3e0;
-				size:14px;
-				font-family:arial;
-			}
-
-			#gdpr_banner #gdpr_ok:hover
-			{
-				cursor:pointer;
-			}
-
-			
-
-				
-			
-
-
-		.dayPicker, .dayPickerEmty, .greyedOut, .booked
-		{
-			width:50px;
-			height:50px;
-			text-align:center;
-			display: grid;
-			float:left;
-			align-items: center;
-			font-family:Arial;
-			font-size:15px;
-			padding:2px;
-			margin:2px;
-			border:1px solid #FFFFFF;
-		}
-
-		.topRow
-		{
-			font-family:Arial;
-			font-size:10px;
-			font-weight:bold;
-			border-bottom:3px solid #000000;
-		}
-
-		.header
-		{
-			text-align: center;
-			font-family:Arial;
-			font-size:18px;
-			padding:10px 0px;
-		}
-
-		.greyedOut
-		{
-			background-color:#e9e9e9;
-		}
-
-		.dayPicker, .greyedOut, .booked
-		{
-			border:1px solid #c1c1c1;
-			border-radius:3px;
-		}
-
-
-		.booked
-		{
-			background-color:#FF4444;
-			
-		}
-
-		.today
-		{
-			font-weight: bold;
-		}
+		<link rel="stylesheet" type="text/css" href="main.css">
+		<link rel="stylesheet" type="text/css" href="calendar.css">
+		<link rel="stylesheet" type="text/css" href="timePicker.css">
 		
-		#calendar_box
-		{
-			display:block;
-			float:left;
-			padding:2px;
-			margin:4px;
-			background:#FFFFFF;
-			width:860px;
-		}
-		
-		#first_month, #second_month
-		{
-			display:block;
-			float:left;
-			border:1px solid #999999;
-			padding:2px;
-		}
-		
-		#prev, #next
-		{
-			display:block;
-			float:left;
-			width:100px;
-			text-align:center;
-			font-family:Arial;
-			font-size:14px;
-			padding:8px 0px;
-			border:1px solid #062538;
-			border-radius:5px;
-			background:#2dabf9;
-			color:#FFFFFF;
-			text-shadow:1px 1px #263666;
-			text-transform: uppercase;
-			font-weight: bold;
-		}
-		
-		#next{
-			float:right;
-		}
-
-		.break
-		{
-			clear:both;
-		}
-
-		#cal_top_header
-		{
-			display: block;
-    		float: left;
-    		clear: both;
-    		height: 40px;
-    		min-width: 850px;
-			text-align:center;
-			font-family:Arial;
-			font-size:20px;
-		}
-
-		#calendar_info_box
-		{
-			display:none;
-			width:100%;
-			background:#FFFFFF;
-			font-family:Arial;
-			font-size:18px;
-		}
-
-		#calendar_info_close_btn
-		{
-			display:block;
-			float:right;
-		}	
-
-		</style>
 	</head>
 	<body>
 	
@@ -384,124 +138,230 @@
 		<div id="menu_bar">
 			<a>LOADING CONTENT</a>
 		</div>
-		<a href="#login" class="menu_link"><div>Login</div></a>
-	
-		
-		<div class="content_div" id="home">
-			<img src="images/logo.png">
-			<p>Booking and resavation system</p>
-			<div class="divider"></div>
-			<div class="btn_c2"><p>
-				CREATE A FREE BOOKING SITE FOR YOUR MEETING 
-				ROOM, VACATION HOUSE, MUSIC STUDIO, CARS 
-				OR EVEN YOUR BOAT.</p> 
+		<a href="#login" class="menu_link"><div id="login_btn">Login</div></a>
+		<div id="content_body">
+			<div class="content_div" id="home">
+				<img src="images/logo.png">
+				<p>Booking and resavation system</p>
+				<div class="divider"></div>
+				<div class="btn_c2"><p>
+					CREATE A FREE BOOKING SITE FOR YOUR MEETING 
+					ROOM, VACATION HOUSE, MUSIC STUDIO, CARS 
+					OR EVEN YOUR BOAT.</p> 
+				</div>
+				<a href="#new_account" class="menu_link">
+					<div class="btn_c1">
+						<p> Create a free account</p>
+					</div>
+				</a>
 			</div>
-			<a href="#new_account" class="menu_link">
-				<div class="btn_c1">
-					<p> Create a free account</p>
+			
+			<div  class="content_div content_view btn_d1" id="login">
+				<div class="form_box">
+					<h2>Login</h2>
+					<table>
+						<tr><td>E-mail: </td><td><input id="login_email"></td></tr>
+						<tr><td>password: </td><td><input type="password" id="login_password"></td></tr>
+						<tr><td colspan="2" style="text-align: right"><input class="submit_btn" data-action="login" type="button" value="login"></td></tr>
+					</table>
 				</div>
-			</a>
-		</div>
-		
-		<div  class="content_div" id="login">
-			<table>
-				<tr><td>E-mail: </td><td><input id="login_email"></td></tr>
-				<tr><td>password: </td><td><input type="password" id="login_password"></td></tr>
-				<tr><td colspan="2"><input class="submit_btn" data-action="login" type="button" value="login"></td></tr>
-			</table>
-		</div>
+			</div>
 
-		<div  class="content_div" id="loggedin">
-			You are logged in!
-		</div>
-		
-		<div  class="content_div" id="new_account">
-			<table>
-				<tr><td>E-mail: </td><td><input id="account_email"></td></tr>
-				<tr><td>password: </td><td><input type="password" id="account_password"></td></tr>
-				<tr><td>Username: </td><td><input id="account_username"></td></tr>
-				<tr><td colspan="2"><input class="submit_btn" data-action="new_account" type="button" value="Create"></td></tr>
-			</table>
-		</div>
+			<div class="content_div content_view" id="settings_view">
+				<div>
+					<table>
+						<tr><td>Calendar URL:</td><td><div id="settings_c_url"></div></td></tr>
+						<tr><td>Calendar type:</td><td><div id="settings_c_type"></div></td></tr>
+						<tr><td>users:</td><td><div id="settings_c_users"></div><a href="#adduser"><div>Add user</div></a></td></tr>
+					</table>	
+				</div>
+			</div>
 
-		<div  class="content_div" id="calendar">
-			<div id="calendar_box">
-				<div id="calendar_wrapper">
-					<div id="cal_top_header">
-						<div id="prev">prev</div>
-							Calendar
-						<div id="next">next</div>
+			<div class="content_div content_view" id="adduser">
+				<h2>Add user to calendar:</h2>
+				
+				<div class="form_box">
+					<h2>user details</h2>
+					<table>
+						<tr><td>E-mail:</td><td><input id="add_user_email"></td></tr>
+						<tr><td colspan="2" style="text-align: right"><input class="submit_btn" data-action="add_user" type="button" value="Send request"></td></tr>
+					</table>
+				</div>
+
+			</div>
+
+			<div  class="content_div content_view" id="new_account">
+				<div class="form_box">
+					<h2>Create new account</h2>
+					<table>
+						<tr><td>E-mail: </td><td><input id="account_email"></td></tr>
+						<tr><td>password: </td><td><input type="password" id="account_password"></td></tr>
+						<tr><td>Username: </td><td><input id="account_username"></td></tr>
+						<tr><td colspan="2" style="text-align: right"><input class="submit_btn" data-action="new_account" type="button" value="Create"></td></tr>
+					</table>
+				</div>
+			</div>
+
+			<div  class="content_div content_view" id="calendar">
+				<div id="calendar_box">
+					<div id="calendar_wrapper">
+						<div id="cal_top_header">
+							<div id="prev">prev</div>
+								Calendar
+							<div id="next">next</div>
+						</div>
+						<div id="first_month">
+							<div id="first_date" class="header"></div>
+							<div class="dayPickerEmty topRow">Mon</div>
+							<div class="dayPickerEmty topRow">Tue</div>
+							<div class="dayPickerEmty topRow">Wed</div>
+							<div class="dayPickerEmty topRow">Thu</div>
+							<div class="dayPickerEmty topRow">Fre</div>
+							<div class="dayPickerEmty topRow">Sat</div>
+							<div class="dayPickerEmty topRow">Sun</div>	
+							<div id="first_month_picker"></div>
+						</div>
+						<div id="second_month">
+							<div id="second_date" class="header"></div>
+							<div class="dayPickerEmty topRow">Mon</div>
+							<div class="dayPickerEmty topRow">Tue</div>
+							<div class="dayPickerEmty topRow">Wed</div>
+							<div class="dayPickerEmty topRow">Thu</div>
+							<div class="dayPickerEmty topRow">Fre</div>
+							<div class="dayPickerEmty topRow">Sat</div>
+							<div class="dayPickerEmty topRow">Sun</div>
+							<div id="second_month_picker"></div>
+						</div>
+						<div class="break">
+							<table>
+								<tr><td>Selected start date:</td><td><input id="startDate" value=""></td></tr>
+								<tr><td>Selected end date:</td><td><input id="endDate" value=""></td></tr>
+							</table>
+						</div>
+						<input class="submit_btn" data-action="save_dates" type="button" value="Save">
 					</div>
-					<div id="first_month">
-						<div id="first_date" class="header"></div>
-						<div class="dayPickerEmty topRow">Mon</div>
-						<div class="dayPickerEmty topRow">Tue</div>
-						<div class="dayPickerEmty topRow">Wed</div>
-						<div class="dayPickerEmty topRow">Thu</div>
-						<div class="dayPickerEmty topRow">Fre</div>
-						<div class="dayPickerEmty topRow">Sat</div>
-						<div class="dayPickerEmty topRow">Sun</div>	
-						<div id="first_month_picker"></div>
-					</div>
-					<div id="second_month">
-						<div id="second_date" class="header"></div>
-						<div class="dayPickerEmty topRow">Mon</div>
-						<div class="dayPickerEmty topRow">Tue</div>
-						<div class="dayPickerEmty topRow">Wed</div>
-						<div class="dayPickerEmty topRow">Thu</div>
-						<div class="dayPickerEmty topRow">Fre</div>
-						<div class="dayPickerEmty topRow">Sat</div>
-						<div class="dayPickerEmty topRow">Sun</div>
-						<div id="second_month_picker"></div>
-					</div>
-					<div class="break">
+					<div id="calendar_info_box">
+						<div id="calendar_info_close_btn">x</div>
+						<h1>Reserved</h1>
 						<table>
-							<tr><td>Selected start date:</td><td><input id="startDate" value=""></td></tr>
-							<tr><td>Selected end date:</td><td><input id="endDate" value=""></td></tr>
-						</table>
+							<tr>
+								<td>User:</td><td><span id="calendar_info_box_user"></span></td>
+							</tr>
+							<tr>
+								<td>Start:</td><td><span id="calendar_info_box_start"></span></td>
+							</tr>
+							<tr>
+								<td>End:</td><td><span id="calendar_info_box_end"></span></td>
+							</tr>
+						</table>	
+						<div id="calendar_info_btn"></div>
 					</div>
-					<input class="submit_btn" data-action="save_dates" type="button" value="Save">
+
+				</div>		
+			</div>
+
+			<div  class="content_div content_view" id="dashboard">
+				<div id="dashboard_menu">
+					<a href="#create_calendar"><div class="btn_m1" id="new_btn">Create new calendar</div></a>
+					<div class="btn_m1" id="messages">Messages</div>
 				</div>
-				<div id="calendar_info_box">
-					<div id="calendar_info_close_btn">x</div>
+				<div id="board_list"></div>
+			</div>
+
+			<div  class="content_div content_view" id="create_calendar">
+				<div class="form_box">
+					<table>
+						<tr>
+							<td>Title of calendar:</td><td><input id="c_title"></td>
+						</tr>
+						<tr>
+							<td>type of calendar: </td><td>
+								<select id="c_type">
+									<option value="day">whole-day based bookings</option>
+									<option value="time">Time based bookings</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><span class="optional">Time interval</td><td>
+								<span class="optional">
+									<select id="c_interval">
+										<option value="45">45 min</option>
+										<option value="60">60 min</option>
+										<option value="90">90 min</option>
+										<option value="120">120 min</option>
+									</select>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align:right;">
+								<input class="submit_btn" data-action="new_calendar" type="button" value="Create">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div  class="content_div content_view" id="mail_send">Mail send, check your mail you retard!</div>
+			
+			<div  class="content_div content_view" id="error"><div id="error_msg"></div></div>
+			
+			<div  class="content_div content_view" id="load">LOADING...</div>
+
+			<div  class="content_div content_view" id="time_picker">
+				<div class="boxView">
+					<div id="time_picker_cal">
+						<div id="pick_date_btn"></div>
+						<div id="small_calendar_wrapper">
+							<div id="small_cal_top_header">
+								<div id="small_cal_prev">prev</div>
+									<span id="small_cal_month_viewer">Calendar</span>
+								<div id="small_cal_next">next</div>
+							</div>	
+							<div id="small_calendar">
+								<div id="cal_date_viewer" class="header"></div>
+								<div class="smallDayPickerEmty topRow">Mon</div>
+								<div class="smallDayPickerEmty topRow">Tue</div>
+								<div class="smallDayPickerEmty topRow">Wed</div>
+								<div class="smallDayPickerEmty topRow">Thu</div>
+								<div class="smallDayPickerEmty topRow">Fre</div>
+								<div class="smallDayPickerEmty topRow">Sat</div>
+								<div class="smallDayPickerEmty topRow">Sun</div>	
+								<div id="small_cal_month_picker"></div>
+							</div>
+						</div>
+					</div>
+					<div id="schedu_box">	
+						<div id="time_line"></div>
+						<div id="time_slots"></div>
+					</div>
+					
+				</div>
+				<div class="boxView">
+					<div id="booking_list_view"></div>
+					<div class="btn" id="view_time_list">Book</div>		
+				</div>	
+
+				<div id="time_slot_info_box">
+					<div id="time_slot_info_close_btn">x</div>
 					<h1>Reserved</h1>
 					<table>
 						<tr>
-							<td>User:</td><td><span id="calendar_info_box_user"></span></td>
+							<td>User:</td><td><span id="time_slot_info_box_user"></span></td>
 						</tr>
 						<tr>
-							<td>Start:</td><td><span id="calendar_info_box_start"></span></td>
+							<td>Start:</td><td><span id="time_slot_info_box_start"></span></td>
 						</tr>
 						<tr>
-							<td>End:</td><td><span id="calendar_info_box_end"></span></td>
+							<td>End:</td><td><span id="time_slot_info_box_end"></span></td>
 						</tr>
 					</table>	
-					<div id="calendar_info_btn"></div>
+					<div id="time_slot_info_btn"></div>
 				</div>
 
-			</div>		
-		</div>
-
-		<div  class="content_div" id="dashboard">
-			
-			<div id="new_btn"></div>
-			<div id="messages"></div>
-			<div id="board_list">Calendars:</div>
-
-			<div id="create_calendar">
-				Title<input id="c_title"><br>
-				type<select id="c_type">
-					<option value="day">day</option>
-					<option value="time">time</option>
-				</select><br>
-				<input class="submit_btn" data-action="new_calendar" type="button" value="Create">
 			</div>
 		</div>
-
-		<div  class="content_div" id="mail_send">Mail send, check your mail you retard!</div>
-		<div  class="content_div" id="error"><div id="error_msg"></div></div>
-		<div  class="content_div" id="load">LOADING...</div></div>
-		
 	</div>
 		
 	<div id="gdpr_banner">

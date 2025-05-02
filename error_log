@@ -1,14 +1,7 @@
-[29-Apr-2025 14:02:42 Europe/Copenhagen] PHP Warning:  Undefined variable $user in /home/pillonid/apoint.dk/api.php on line 201
-[29-Apr-2025 14:02:42 Europe/Copenhagen] PHP Warning:  Trying to access array offset on value of type null in /home/pillonid/apoint.dk/api.php on line 201
-[29-Apr-2025 14:03:43 Europe/Copenhagen] PHP Warning:  Undefined variable $user in /home/pillonid/apoint.dk/api.php on line 201
-[29-Apr-2025 14:03:43 Europe/Copenhagen] PHP Warning:  Trying to access array offset on value of type null in /home/pillonid/apoint.dk/api.php on line 201
-[29-Apr-2025 14:04:45 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: calender_id in /home/pillonid/apoint.dk/api.php on line 217
-[29-Apr-2025 14:04:45 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:218
+[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Warning:  Undefined array key "type" in /home/pillonid/apoint.dk/api.php on line 273
+[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Warning:  Undefined array key "type" in /home/pillonid/apoint.dk/api.php on line 273
+[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Warning:  Undefined array key "type" in /home/pillonid/apoint.dk/api.php on line 273
+[30-Apr-2025 12:42:28 Europe/Copenhagen] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + null in /home/pillonid/apoint.dk/api.php:289
 Stack trace:
 #0 {main}
-  thrown in /home/pillonid/apoint.dk/api.php on line 218
-[29-Apr-2025 14:05:07 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: calender_id in /home/pillonid/apoint.dk/api.php on line 217
-[29-Apr-2025 14:05:07 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:218
-Stack trace:
-#0 {main}
-  thrown in /home/pillonid/apoint.dk/api.php on line 218
+  thrown in /home/pillonid/apoint.dk/api.php on line 289

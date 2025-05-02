@@ -1,0 +1,265 @@
+html, body
+{
+    margin:0px;
+    padding:0px;
+    background:#d8d8d8;
+}
+
+h2, p, div, td, p, a, input
+{
+    font-family:arial;
+}
+
+#home p
+{
+    color:#f3f3e0;
+}
+
+
+#main
+{
+    margin:auto;
+    width:1080px;
+}
+
+#menu_bar
+{
+    display:block;
+    float:left;
+    width:980px;
+    background:#373737;
+}
+
+#menu_bar .menu_link
+{
+    display:block;
+    float:left;
+    padding:10px;
+    margin:10px;
+    color:#f3f3e0;
+    text-decoration:none;
+    font-size:17px;
+}
+
+.boxView
+{
+    display:block;
+    float:left;
+    width:300px;
+    margin:0px 18px;
+    padding:0px 18px;
+    
+}
+
+#login_btn, .btn_m1
+{
+    display:block;
+    float:left;
+    width:100px;
+    background:#696963;
+    text-align:center;
+    padding:20px 0px;
+    color:#f3f3e0;
+    font-weight:bold;
+    font-size:17px;
+}
+
+.btn_m1
+{
+    width:auto;
+    padding:10px 30px;
+    margin:10px;
+}
+
+#login_btn:hover, .btn_m1:hover
+{
+    cursor:pointer;
+}
+
+.calendar_box
+{
+    display:block;
+    float:left;
+    width:260px;
+    border:1px solid #000;
+    padding:20px 10px;
+    margin:10px;
+    background:#e44746;
+    text-transform: uppercase;
+    color: #f3f3e0;
+    font-size: 17px;
+
+}
+
+.calendar_box:hover
+{
+    cursor:pointer;
+}
+
+
+#home
+{
+    background:#e44746;
+    text-align:center;
+    
+}
+
+#home p
+{
+    font-size:30px;
+}
+
+.btn_c2
+{
+    display:block;
+    float:left;
+    width:720px;
+    min-height:180px;
+    text-align:left;
+    background-color:#608bc1;
+    padding:0px;
+    
+}
+
+.btn_c2 p, #home .btn_c2 p, .btn_c1 p, #home .btn_c1 p 
+{
+    font-size:24px;
+    padding:20px 30px;
+}
+
+.btn_c1
+{
+    display:block;
+    float:left;
+    width:360px;
+    min-height:180px;
+    background-color:#133e87;
+    
+}
+
+.divider
+{
+    display:block;
+    float:left;
+    width:100%;
+    height:4px;
+    background-color:#f3f3e0;
+}
+
+#content_body
+{
+    display:block;
+    clear:both;
+    float:left;
+    width:100%;
+    padding:0px 0px 0px 0px;
+    background:#FFFFFF;
+    box-sizing: content-box;
+}
+
+.content_div
+{
+    clear:both;
+    display:none;
+    float:left;
+}
+
+#home 
+{
+    padding-top:40px;
+}
+
+.form_box
+{
+    display: block;
+    padding:10px 20px;
+    border:2px solid #696963;
+    margin: 0 auto;
+    width: fit-content;
+    background: #e44746;
+    color:#f3f3e0;
+    font-size:16px;
+}
+
+.form_box input, .form_box select 
+{
+    border:1px solid #373737;
+    font-size:16px;
+    width: 280px;
+    padding:10px;
+    margin:10px;
+}
+
+.form_box input[type="button"]
+{
+    background:#373737;
+    padding:10px 30px;
+    color:#f3f3e0;
+    font-weight:bold;
+    font-size:15px;
+    border:none;
+    margin-top:15px;
+    width:auto;
+}
+
+.form_box input[type="button"]:hover
+{
+    cursor:pointer;
+}
+
+.content_view
+{
+    margin:40px;
+    width:1000px;
+    min-height:400px;
+}
+
+#gdpr_banner
+{
+    position:fixed;
+    bottom:0px;
+    background-color:rgba(0, 0, 0, 0.8);
+    width:100%;
+    padding:20px;
+    text-align:center;
+    
+}
+
+#gdpr_banner p
+{
+    color:#f3f3e0;
+    size:14px;
+}
+
+#gdpr_banner #gdpr_ok
+{
+    display: inline-block;
+    padding:10px 15px;
+    margin:0px 10px;
+    background:#009900;
+    border:1px solid #FFF;
+    color:#f3f3e0;
+    size:14px;
+}
+
+#gdpr_banner #gdpr_ok:hover
+{
+    cursor:pointer;
+}
+
+#dashboard_menu
+{
+    display:block;
+    clear:both;
+    padding:10px;
+}
+
+
+#board_list
+{
+    display:block;
+    float:left;
+    padding:10px 20px;
+    border-top:1px solid #000;
+    margin:0px 20px;
+}

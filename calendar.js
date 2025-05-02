@@ -190,7 +190,7 @@
 							if(dayCheckSum >= bookingStart && dayCheckSum <= bookingEnd)
 							{
 								className = "booked";
-								elementId = item_number; 
+								elementId = booking.id; 
 							}
 							item_number += 1;	
 						}
@@ -316,17 +316,23 @@
 				
 				const id = $(this).data("id");
 				
-				$("#calendar_info_box_start").html(bookings[id].start);
-				$("#calendar_info_box_end").html(bookings[id].end);
-				$("#calendar_info_box_user").html(bookings[id].user);
-
-				if(bookings[id].ownership==true)
+				for(booking of bookings)
 				{
-					$("#calendar_info_btn").html("<div data-id='" + bookings[id].id + "' id='delete_cal_btn'>Remove booking</div>");
+					if(id == booking.id)
+					{
+						$("#calendar_info_box_start").html(booking.start);
+						$("#calendar_info_box_end").html(booking.end);
+						$("#calendar_info_box_user").html(booking.user);
+		
+						if(booking.ownership==true)
+						{
+							$("#calendar_info_btn").html("<div data-id='" + booking.id + "' id='delete_cal_btn'>Remove booking</div>");
+						}
+						
+						$("#calendar_info_box").show();
+						$("#calendar_wrapper").hide();
+					}
 				}
-				
-				$("#calendar_info_box").show();
-				$("#calendar_wrapper").hide();
 			});
 
 			$(document).on("click", "#delete_cal_btn", function(){
