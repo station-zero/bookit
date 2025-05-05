@@ -17,7 +17,7 @@
 				let CalendarID = 0;	
 				let calenderUsers = "";
 				let route = "";
-
+				
 				this.setJWT = (hash) => {jwt_hash = hash;}
 				this.getJWT = () => jwt_hash;
 
@@ -48,6 +48,16 @@
 				return viewType;
 			}
 			
+			function message(message)
+			{
+				$(".msg_box").text(message);
+
+				if(message=="taken")
+				{
+					$("#account_email").css({"color":"#990000"});
+				}
+			}
+
 			function calendarList(calendars)
 			{
 				$("#calendar_list_view").html("");
@@ -109,6 +119,7 @@
 				}else{
 					renderPage("goto",path[0]);
 				}
+				$(".msg_box").text("");
 				profile.setRoute(hash);
 			}
 			
@@ -118,6 +129,24 @@
 				{
 					$("#gdpr_banner").hide();
 				}
+
+				$("#account_email").on("keyup", function(){
+
+					const regex = /\S+@\S+\.\S+/;
+
+					const email = $(this).val();
+					const valid =  regex.test(email);
+					
+					if(valid)
+					{
+						apiRequest("check_email",email);
+						$("#account_email").css({"color":"#000000"});
+					}else{
+						$("#account_email").css({"color":"#990000"});
+					}
+
+
+				});
 
 				$(document).on('click', '.remove_user', function() {
 					const id = $(this).data("id"); 
@@ -245,7 +274,7 @@
 					<h2>Create new account</h2>
 					<table>
 						<tr><td>E-mail: </td><td><input id="account_email"></td></tr>
-						<tr><td>password: </td><td><input type="password" id="account_password"></td></tr>
+						<tr><td>password: </td><td><input type="password" id="account_password"></td><span class="msg_box"></span></tr>
 						<tr><td>Username: </td><td><input id="account_username"></td></tr>
 						<tr><td colspan="2" style="text-align: right"><input class="submit_btn" data-action="new_account" type="button" value="Create"></td></tr>
 					</table>

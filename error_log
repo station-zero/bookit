@@ -71,3 +71,177 @@ Stack trace:
 #0 /home/pillonid/apoint.dk/api.php(425): update_pending_users('1', ',6,6,6,6,6,6,6,...')
 #1 {main}
   thrown in /home/pillonid/apoint.dk/api.php on line 134
+[02-May-2025 13:51:14 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 13:54:30 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 14:32:40 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 414
+[02-May-2025 14:32:42 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 14:35:24 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 414
+[02-May-2025 14:35:26 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 22:24:22 Europe/Copenhagen] PHP Warning:  Undefined variable $user_lists_ids in /home/pillonid/apoint.dk/api.php on line 388
+[02-May-2025 22:24:22 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in /home/pillonid/apoint.dk/api.php on line 388
+[02-May-2025 22:26:36 Europe/Copenhagen] PHP Warning:  Undefined variable $user_lists_ids in /home/pillonid/apoint.dk/api.php on line 388
+[02-May-2025 22:26:36 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in /home/pillonid/apoint.dk/api.php on line 388
+[02-May-2025 22:26:52 Europe/Copenhagen] PHP Warning:  Undefined variable $user_lists_ids in /home/pillonid/apoint.dk/api.php on line 388
+[02-May-2025 22:26:52 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in /home/pillonid/apoint.dk/api.php on line 388
+[02-May-2025 22:42:09 Europe/Copenhagen] PHP Warning:  Undefined variable $user in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:42:09 Europe/Copenhagen] PHP Warning:  Trying to access array offset on value of type null in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:42:12 Europe/Copenhagen] PHP Warning:  Undefined variable $user in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:42:12 Europe/Copenhagen] PHP Warning:  Trying to access array offset on value of type null in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:43:09 Europe/Copenhagen] PHP Warning:  Undefined variable $user in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:43:09 Europe/Copenhagen] PHP Warning:  Trying to access array offset on value of type null in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:43:20 Europe/Copenhagen] PHP Warning:  Undefined variable $user in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:43:20 Europe/Copenhagen] PHP Warning:  Trying to access array offset on value of type null in /home/pillonid/apoint.dk/api.php on line 370
+[02-May-2025 22:47:28 Europe/Copenhagen] PHP Warning:  Undefined variable $calendar_id in /home/pillonid/apoint.dk/api.php on line 378
+[02-May-2025 22:47:47 Europe/Copenhagen] PHP Warning:  Undefined variable $calendar_id in /home/pillonid/apoint.dk/api.php on line 378
+[02-May-2025 23:11:31 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 473
+[02-May-2025 23:11:33 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 81
+[02-May-2025 23:11:36 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 473
+[02-May-2025 23:11:41 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 473
+[02-May-2025 23:19:50 Europe/Copenhagen] PHP Warning:  Undefined array key "interval" in /home/pillonid/apoint.dk/api.php on line 239
+[02-May-2025 23:26:11 Europe/Copenhagen] PHP Warning:  Undefined array key "interval" in /home/pillonid/apoint.dk/api.php on line 239
+[02-May-2025 23:30:31 Europe/Copenhagen] PHP Warning:  Undefined array key "interval" in /home/pillonid/apoint.dk/api.php on line 239
+[02-May-2025 23:59:47 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:47 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:47 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:47 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:47 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:54 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:54 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:54 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:54 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[02-May-2025 23:59:54 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:00:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:00:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:00:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:00:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:00:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:02 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:02 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:02 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:02 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:02 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:34 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:34 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:34 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:34 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:34 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:36 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:36 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:36 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:36 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:36 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:39 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:39 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:39 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:39 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:01:39 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:07:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:07:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:07:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:07:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:07:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:03 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:03 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:03 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:03 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:03 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:07 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:07 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:07 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:07 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:07 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:55 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:55 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:55 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:55 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:55 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:56 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:56 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:56 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:56 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:56 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:08:58 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, string given in /home/pillonid/apoint.dk/api.php on line 362
+[03-May-2025 00:10:36 Europe/Copenhagen] PHP Warning:  Undefined array key "name" in /home/pillonid/apoint.dk/api.php on line 369
+[03-May-2025 00:10:36 Europe/Copenhagen] PHP Warning:  Undefined array key "name" in /home/pillonid/apoint.dk/api.php on line 369
+[03-May-2025 00:10:36 Europe/Copenhagen] PHP Warning:  Undefined array key "name" in /home/pillonid/apoint.dk/api.php on line 369
+[03-May-2025 00:10:36 Europe/Copenhagen] PHP Warning:  Undefined array key "name" in /home/pillonid/apoint.dk/api.php on line 369
+[03-May-2025 00:10:36 Europe/Copenhagen] PHP Warning:  Undefined array key "name" in /home/pillonid/apoint.dk/api.php on line 369
+[05-May-2025 10:23:47 Europe/Copenhagen] PHP Warning:  include(controller.php): Failed to open stream: No such file or directory in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:47 Europe/Copenhagen] PHP Warning:  include(): Failed opening 'controller.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:47 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:23:47 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:23:47 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:23:47 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 469
+[05-May-2025 10:23:50 Europe/Copenhagen] PHP Warning:  include(controller.php): Failed to open stream: No such file or directory in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:50 Europe/Copenhagen] PHP Warning:  include(): Failed opening 'controller.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:23:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:23:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:23:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 469
+[05-May-2025 10:23:53 Europe/Copenhagen] PHP Warning:  include(controller.php): Failed to open stream: No such file or directory in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:53 Europe/Copenhagen] PHP Warning:  include(): Failed opening 'controller.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:53 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:23:53 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:23:53 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:23:53 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 469
+[05-May-2025 10:23:59 Europe/Copenhagen] PHP Warning:  include(controller.php): Failed to open stream: No such file or directory in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:59 Europe/Copenhagen] PHP Warning:  include(): Failed opening 'controller.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:23:59 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:23:59 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:23:59 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:23:59 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 469
+[05-May-2025 10:24:12 Europe/Copenhagen] PHP Warning:  include(controller.php): Failed to open stream: No such file or directory in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:24:12 Europe/Copenhagen] PHP Warning:  include(): Failed opening 'controller.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/pillonid/apoint.dk/api.php on line 8
+[05-May-2025 10:24:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:24:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:24:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:24:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 469
+[05-May-2025 10:24:44 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:24:44 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:24:44 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:24:44 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 469
+[05-May-2025 10:24:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:24:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:24:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:24:50 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 469
+[05-May-2025 10:25:55 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:25:55 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:25:55 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:25:55 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 465
+[05-May-2025 10:28:01 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:28:01 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:28:01 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:28:01 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 465
+[05-May-2025 10:28:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 11
+[05-May-2025 10:28:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 457
+[05-May-2025 10:28:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 461
+[05-May-2025 10:28:12 Europe/Copenhagen] PHP Warning:  Undefined variable $method in /home/pillonid/apoint.dk/api.php on line 465
+[05-May-2025 11:23:41 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:23:41 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:25:17 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:25:17 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:25:19 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:25:20 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:26:29 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:26:29 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:27:21 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:27:21 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:31:36 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:31:36 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:31:41 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:31:41 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:31:54 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 466
+[05-May-2025 11:33:52 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:33:53 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:35:08 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:35:09 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:35:39 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:35:40 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:35:59 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:35:59 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:37:18 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467
+[05-May-2025 11:37:19 Europe/Copenhagen] PHP Warning:  Undefined array key "action" in /home/pillonid/apoint.dk/api.php on line 467

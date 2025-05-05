@@ -1,8 +1,11 @@
 function apiRequest(action,parameter)
 {
     let data_obj = {};
+    let type = "";
+
     if( action == "login")
     {	
+        type = "POST";
         data_obj = {
             'action':action,
             'email': $("#login_email").val(),
@@ -12,12 +15,13 @@ function apiRequest(action,parameter)
 
     if(action == "new_account")
     {
-    data_obj = {
-        'action':action,
-        'email': $("#account_email").val(),
-        'password': $("#account_password").val(),
-        'username': $("#account_username").val()
-        }
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'email': $("#account_email").val(),
+            'password': $("#account_password").val(),
+            'username': $("#account_username").val()
+            }
     }
 
     if(action == "save_dates")
@@ -26,7 +30,8 @@ function apiRequest(action,parameter)
         let endInput = $("#endDate").val();
         let start = startInput.split("/");
         let end = endInput.split("/");
-            
+        
+        type = "POST";        
         data_obj = {
             'action':action,
             'token': profile.getJWT(),
@@ -38,6 +43,7 @@ function apiRequest(action,parameter)
 
     if( action == "remove_booking")
     {
+        type = "POST";
         data_obj = {
                 'action': action,
                 'id': parameter,
@@ -47,6 +53,7 @@ function apiRequest(action,parameter)
     
     if(action == "save_timeslots")
     {
+        type = "POST";
         data_obj = {
             'action':action,
             'token': profile.getJWT(),
@@ -57,6 +64,7 @@ function apiRequest(action,parameter)
 
     if(action == "add_user")
     {
+        type = "POST";
         data_obj = {
             'action': action,
             'email': $("#add_user_email").val(),
@@ -67,6 +75,7 @@ function apiRequest(action,parameter)
 
     if(action == "remove_user")
     {
+        type = "POST";
         data_obj = {
             'action': action,
             'id': parameter,
@@ -77,6 +86,7 @@ function apiRequest(action,parameter)
 
     if(action == "remove_pending_user")
     {
+        type = "POST";
         data_obj = {
             'action': action,
             'id': parameter,
@@ -87,6 +97,7 @@ function apiRequest(action,parameter)
     
     if(action == "remove_calendar")
     {
+        type = "POST";
         data_obj = {
             'action': action,
             'calendar_id':profile.getCalendarID(),
@@ -96,34 +107,47 @@ function apiRequest(action,parameter)
 
     if( action == "new_calendar")
     {
-    data_obj = {
+        type = "POST";
+        data_obj = {
             'action': action,
             'title': $("#c_title").val(),
             'type': $("#c_type").val(),
             'interval': parseInt($("#c_interval").val()),
             'token': profile.getJWT()
-            }
+        }
     }	
 
     if( action == "get_calendars")
     {
-        
+        type = "POST";
         data_obj = {
             'action':action,
             'token':profile.getJWT()
-            }
+        }
     }
 
     if( action == "added_calendars")
-        {
-            data_obj = {
-                'action':action,
-                'token':profile.getJWT()
-                }
+    {
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'token':profile.getJWT()
         }
+    }
 
     if( action == "calendar")
     {
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'token':profile.getJWT(),
+            'id':parameter
+        }
+    }
+
+    if( action == "calendar_settings")
+    {
+        type = "POST";
         data_obj = {
             'action':action,
             'token':profile.getJWT(),
@@ -131,15 +155,15 @@ function apiRequest(action,parameter)
             }
     }
 
-    if( action == "calendar_settings")
-        {
-            data_obj = {
-                'action':action,
-                'token':profile.getJWT(),
-                'id':parameter
-                }
-        }
-        
+    if( action == "check_email")
+    {
+        type = "GET";
+        data_obj = {
+            'action':action,
+            'email':parameter
+            }
+    }
     
-    callAPI(action, data_obj);
+    
+    callAPI(action, data_obj, type);
 }
