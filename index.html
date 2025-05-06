@@ -14,9 +14,11 @@
 			function userProfile() {
 				let jwt_hash = "";
 				let login_status = false;
-				let CalendarID = 0;	
+				let CalendarID = null;	
 				let calenderUsers = "";
 				let route = "";
+				let receiver = null;
+				let id = null;
 				
 				this.setJWT = (hash) => {jwt_hash = hash;}
 				this.getJWT = () => jwt_hash;
@@ -32,9 +34,17 @@
 
 				this.setRoute = (url) => {route = url;}
 				this.getRoute = () => route;
+
+				this.setReceiver = (id) => {receiver = id;}
+				this.getReceiver = () => receiver;
+
+				this.setID = (user_id) => {id = user_id;}
+				this.getID = () => id;
+
 			}
 
 			let profile = new userProfile();
+			let msg_data = {};
 			
 			function getScreen()
 			{
@@ -65,6 +75,78 @@
 					var child = $("<a href='#calendar/" + item.id + "''>" + item.title  + "</a><br>");
 					$("#calendar_list_view").append(child);
 				});
+			}
+
+			function renderMessages(msgArray)
+			{
+				$("#message_list").html("");
+				
+				let group_msg = {};
+				let received_id = null;
+				$.each(msgArray, function(i, item){
+					let data = groupArray(item.sender_id, item.receiver_id, msgArray);
+					const group_name = item.sender_id + "_" + item.receiver_id;
+					const reverse_group_name = item.receiver_id + "_" + item.sender_id;
+					
+					if(!group_msg[reverse_group_name])
+					{
+						group_msg[group_name] = data;
+					}
+				});
+
+				
+				if(profile.getReceiver()==null)
+				{
+					$.each(group_msg, function(i, item){
+						let obj = item[item.length - 1];
+						if(obj.sender_id == profile.getID())
+						{
+							received_id = obj.receiver_id;
+						}else{
+							received_id = obj.sender_id;
+						}
+						$("#message_list").append(generateMsgBox(obj.sender_name, obj.msg, "11/12/06 - 10:15","last_msg_box",received_id));
+					});
+				
+				}else{
+
+					$.each(group_msg, function(i, item){
+						for(i in item){
+							if(item[i].receiver_id==profile.getReceiver() && item[i].sender_id==profile.getID() || item[i].receiver_id==profile.getID() && item[i].sender_id==profile.getReceiver()){
+								$("#message_list").append(generateMsgBox(item[i].sender_name, item[i].msg, "11/12/06 - 10:15","view_msg_box",received_id));
+							}
+						}
+					});
+				}
+			}
+
+			function generateMsgBox(sender_name,txt,date, className,receiver_id)
+			{
+				const clName = 'msg_box ' + className;
+				let html = "<div class='" + clName + "' data-receiver='" + receiver_id + "'>";
+				html += "<span class='msg_box_date'>Send: " + date + "</span>";
+				html += "<span class='msg_box_from'>from: " + sender_name + "</span>";
+				html += "<span class='msg_box_txt'>from: " + txt + "</span>";
+				html += "</div>";
+				return html;
+			}
+
+			function groupArray(s,r,array)
+			{
+
+				let collection = [];
+				for(let i in array) {
+					if(array[i]['sender_id'] == s && array[i]['receiver_id'] == r)
+					{
+						collection.push(array[i]);
+					}
+					if(array[i]['sender_id'] == r && array[i]['receiver_id'] == s)
+					{
+						collection.push(array[i]);
+					}
+				}
+				
+				return collection;
 			}
 
 			function renderCalendars(calendars)
@@ -146,6 +228,16 @@
 					}
 
 
+				});
+
+				$(document).on('click', '.last_msg_box', function() {
+					const id = $(this).data("receiver"); 
+					profile.setReceiver(id);
+					renderPage("goto","dm");
+				});
+
+				$(document).on('click', '.send_msg_btn', function() {
+					renderPage("goto","dm");
 				});
 
 				$(document).on('click', '.remove_user', function() {
@@ -267,7 +359,26 @@
 				</div>
 			</div>
 
+			<div class="content_div content_view" id="messages">
+				<div id="message_list">
 
+				</div>
+				<div id="send_massage">
+				<table><tr>
+						<td>Send msg to:<span id="send_to_user"></span></td>
+						</tr>
+						<tr>
+							<td><textarea id="msg"></textarea></td>
+						</tr>
+						<tr>
+							<td style="text-align: right">
+								<input class="submit_btn" data-action="send_message" type="button" value="Send">
+							</td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
 
 			<div  class="content_div content_view" id="new_account">
 				<div class="form_box">
@@ -334,6 +445,9 @@
 							</tr>
 						</table>	
 						<div id="calendar_info_btn"></div>
+
+						<div class="send_msg_btn">Send message</div>
+						
 					</div>
 
 				</div>		
@@ -342,7 +456,6 @@
 			<div  class="content_div content_view" id="dashboard">
 				<div id="dashboard_menu">
 					<a href="#create_calendar"><div class="btn_m1" id="new_btn">Create new calendar</div></a>
-					<div class="btn_m1" id="messages">Messages</div>
 				</div>
 				<div id="board_list"></div>
 			</div>

@@ -15,7 +15,6 @@ function callAPI(action, data_obj, type)
 					}
 
 					renderPage(JsonData.route,JsonData.val);
-					console.log(data);
 				},
 			error: function(){
 				renderPage("error", "something went wrong");

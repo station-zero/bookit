@@ -22,9 +22,6 @@ function jwt($token, $secret, $time)
     return $jwt;
 }
 
-$method = $_SERVER['REQUEST_METHOD'];
-$input = $_POST;
-
 function send_mail($email, $code)
 {
     $subject = 'Hello!';
@@ -105,50 +102,53 @@ function get_pending_users($calendar_id)
     return $pending_users;
 }
 
-function update_pending_users($calendar_id, $user_list)
+
+function update_pending_users($user_email)
 {
     $pending_users = array();
-    $remove_list = array();
-    
-    $query = 'SELECT * FROM pending_users WHERE calendar_id=:calendar_id';
+    $user_id = null;
+
+    $query = 'SELECT id FROM users WHERE email=:email';
     $statement = $GLOBALS["db"]->prepare($query);
-    $statement->bindValue(':calendar_id', $calendar_id);
+    $statement->bindValue(':email', $user_email);
+    $result = $statement->execute();
+    while ($row = $result->fetchArray()) {
+        $user_id = $row['id'];
+    }    
+
+    $query = 'SELECT * FROM pending_users WHERE email=:email';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':email', $user_email);
     $result = $statement->execute();
     
     while ($row = $result->fetchArray()) {
         $pending_users[] = array(
-            'id' => $row['id'], 
-            'email' => $row['email'] 
+            'pending_id' => $row['id'],
+            'calendar_id' => $row['calendar_id'],
+            'user_id' => $user_id
         );
     }  
     
     foreach($pending_users as $user)
     {
-        $query = 'SELECT id FROM users WHERE email=:email';
-        $statement = $GLOBALS["db"]->prepare($query);
-        $statement->bindValue(':email', $user['email']);
-        $result = $statement->execute();
-        while ($row = $result->fetchArray()) {
-            $user_list .= "," . $row['id'];
-            $remove_list[] = $user['id'];
+        if($user['user_id'] != null)
+        {
+            $query = 'UPDATE calendar SET users=users||:user_list WHERE id=:calendar_id';
+            $statement = $GLOBALS["db"]->prepare($query);
+            $statement->bindValue(':calendar_id', $user['calendar_id']);
+            $statement->bindValue(':user_list', "," . $user['user_id']);
+            $result = $statement->execute();
+
+            $query = 'DELETE FROM pending_users WHERE id=:id';
+            $statement = $GLOBALS["db"]->prepare($query);
+            $statement->bindValue(':id', $user['pending_id']);
+            $result = $statement->execute();
+                
         }
-    }
-
-    $query = 'UPDATE calendar SET users=:user_list WHERE id=:calendar_id';
-    $statement = $GLOBALS["db"]->prepare($query);
-    $statement->bindValue(':calendar_id', $calendar_id);
-    $statement->bindValue(':user_list', $user_list);
     
-    $result = $statement->execute();
-
-    foreach($remove_list as $item)
-    {
-        $query = 'DELETE FROM pending_users WHERE id=:id';
-        $statement = $GLOBALS["db"]->prepare($query);
-        $statement->bindValue(':id', $item);
-        $result = $statement->execute();
     }
 }
+
 
 function get_user($token)
 {

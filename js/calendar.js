@@ -329,6 +329,9 @@
 							$("#calendar_info_btn").html("<div data-id='" + booking.id + "' id='delete_cal_btn'>Remove booking</div>");
 						}
 						
+						profile.setReceiver(booking.user_id);
+						$("#send_to_user").text(booking.user);
+						
 						$("#calendar_info_box").show();
 						$("#calendar_wrapper").hide();
 					}

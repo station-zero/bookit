@@ -11,18 +11,34 @@ function renderPage(route, val)
         
     if(route=="loggedin")
     {
-        profile.setJWT(val);
+        console.log(val['token']);
+        profile.setJWT(val['token']);
+        profile.setID(val['id']);
+
         profile.setLoginStatus(true);
         
         if(profile.getRoute() == "#login")
         {
             route = "goto";
-            val = "#dashboard";
+            val = "#calendars";
         }else{
             urlPath(profile.getRoute())
         }
     }
 
+    if(route=="new_message")
+    {
+        setReceiver(val);
+        //TODO hide userlist
+        page = "#messages";
+    }
+
+    if(route=="message_page")
+    {
+        renderMessages(val);
+        page = "#messages";        
+    }
+    
     if(route=="#calendar")
     {
         apiRequest("calendar",val);
@@ -32,7 +48,6 @@ function renderPage(route, val)
 
     if(route=="calendars_list")
     {
-        console.log(val);
         calendarList(val);
         page = "#calendars";
     }
@@ -65,6 +80,19 @@ function renderPage(route, val)
             val="#load";
         }
 
+        if(val=="dm")
+        {
+            apiRequest("get_messages","");
+            page = "#load";
+        }
+
+        if(val=="#messages")
+        {
+            profile.setReceiver(null);
+            apiRequest("get_messages","");
+            page = "#load";
+        }
+        
         page = val;
     }
 
@@ -76,7 +104,6 @@ function renderPage(route, val)
 
     if(route=="time_picker_view")
     {
-        console.log(val);
         timePicker(val['interval'], val['bookings'], getScreen());
         page="#time_picker";
 
@@ -87,8 +114,9 @@ function renderPage(route, val)
     if(profile.getLoginStatus()==true)
     {
         menu = "<a href='#home' class='menu_link'>Home</a>";
-        menu += "<a href='#dashboard' class='menu_link'>Dashboard</a>";
-        menu += "<a href='#calendars' class='menu_link'>calendars</a>";
+        menu += "<a href='#calendars' class='menu_link'>Calendars</a>";
+        menu += "<a href='#dashboard' class='menu_link'>Control Panel</a>";
+        menu += "<a href='#messages' class='menu_link'>Messages(0)</a>";
         
         $("#login_btn").text("Profile");
     }

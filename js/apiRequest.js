@@ -164,6 +164,26 @@ function apiRequest(action,parameter)
             }
     }
     
+    if( action == "get_messages")
+    {
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'token':profile.getJWT()
+        }
+    }
+
+    if( action == "send_message")
+    {
+        const msg = $("#msg").val();
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'token':profile.getJWT(),
+            'message':msg,
+            'receiver':profile.getReceiver()
+        }
+    }    
     
     callAPI(action, data_obj, type);
 }

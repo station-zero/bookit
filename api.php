@@ -32,7 +32,13 @@ switch ($method) {
             
             if($db->changes() != 0)
             {
-                echo json_encode(["route" => "loggedin", "val" => $jwt_token]);
+                $user = get_user($jwt_token);
+                update_pending_users($user['email']);
+                
+                $user_data = array('id' => $user['id'], 'token' => $jwt_token); 
+
+                echo json_encode(["route" => "loggedin", "val" => $user_data]);
+                
             }else{
                 echo json_encode(["route" => "error", "val" => "2"]);
             } 
@@ -177,6 +183,7 @@ switch ($method) {
             }else{
                 echo json_encode(["route" => "goto", "val" => "#login"]);
             }
+        
         }
 
         if($input['action']=="added_calendars")
@@ -312,6 +319,7 @@ switch ($method) {
 
                 if($db->changes() != 0)
                 {
+                    update_pending_users($email);
                     echo json_encode(["route" => "#settings", "val" => $calendar_id]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
@@ -385,6 +393,61 @@ switch ($method) {
             }
         }
 
+        if($input['action']=="send_message")
+        {
+            $token = $input['token'];
+            $receiver = $input['receiver'];
+            $message = $input['message'];
+            
+            $user = get_user($token); 
+            if($user["valid"]==true)
+            {
+                $query = 'INSERT INTO msg(sender, receiver, message) VALUES (:sender,:receiver,:message)';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':sender', $user['id']);
+                $statement->bindValue(':receiver', $receiver);
+                $statement->bindValue(':message', $message);
+                $result = $statement->execute();
+                if($db->changes() != 0)
+                {
+                    echo json_encode(["route" => "goto", "val" => "#messages"]);
+                }else{
+                    echo json_encode(["route" => "error", "val" => "fejl i database"]);
+                }
+            }else{
+                echo json_encode(["route" => "goto", "val" => "#login"]);
+            }
+        }
+
+        if($input['action']=="get_messages")
+        {
+            $token = $input['token'];
+            $message_list = array();
+           
+            $user = get_user($token); 
+            if($user["valid"]==true)
+            {
+                $query = 'SELECT * FROM msg WHERE receiver=:id OR sender=:id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':id', $user['id']);
+                $result = $statement->execute();
+                
+                while ($row = $result->fetchArray()) {            
+                    $message_list[] = array(
+                        'id' => $row['id'],
+                        'sender_id' => $row['sender'],
+                        'receiver_id' => $row['receiver'],
+                        'sender_name' => get_username($row['sender']),
+                        'receiver_name' => get_username($row['receiver']),
+                        'msg' => $row['message']
+                    );
+                }     
+                echo json_encode(["route" => "message_page", "val" => $message_list]);
+            }else{
+                echo json_encode(["route" => "goto", "val" => "#login"]);                
+            }
+        }
+
         if($input['action']=="calendar")
         {
             $token = $input['token'];
@@ -407,8 +470,6 @@ switch ($method) {
                     $user_list = $row['users'];
                     $interval = $row['interval'];
                 }
-
-                update_pending_users($id, $user_list);
 
                 $data = array();
                 $bookings = array();
