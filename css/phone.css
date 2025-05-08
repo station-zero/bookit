@@ -1,0 +1,93 @@
+@media only screen and (max-width: 800px) {
+    #main, .content_view, #menu_bar, .btn_c1, .btn_c2
+    {
+        width:100%;
+        margin:0px;
+    }
+
+    .content_view
+    {
+        padding:20px 0px;
+    }
+
+    #home img
+    {
+        width:90%;
+            
+    }
+
+    .form_box
+    {
+        width:90%;
+    }
+
+    .form_box table
+    {
+        width:100%;
+    }
+
+    .form_box table .td1
+    {
+        width:120px;
+    }
+    .form_box input
+    {
+        width:80%;
+    }
+
+    #cal_top_header, #calendar_box
+    {
+        width:100%;
+        min-width:100%;        
+    }
+
+    .dayPicker, .dayPickerEmty, .greyedOut, .booked {
+        width:30px;
+        height:30px;
+    }
+
+    #menu_bar .menu_link, #login_btn
+    {
+        display:none;
+        width:100%;
+        border-bottom:1px solid #000;
+        float: left;
+        padding: 20px 0px;
+        color: #f3f3e0;
+        text-decoration: none;
+        font-size: 17px;
+        margin:0px;
+        text-align:center;
+    }
+ 
+    .last_msg_box {
+        margin:20px;
+    }
+    .msg_box
+    {
+        width:80%;
+    }
+
+    .msg_box.box_right
+    {
+        margin-right:10px;
+    }
+
+    .msg_box.box_left
+    {
+        margin-left:10px;
+    }
+
+    .calendar_box
+    {
+        clear:both;
+        width: 90%;
+        border: 1px solid #000;
+        margin: 8px 5%;    
+    }
+
+    #phone_menu{
+        display:block;
+    }
+
+}

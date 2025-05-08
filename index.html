@@ -1,50 +1,27 @@
 <!DOCTYPE html>
-<html>
-	<title>Apoint test 2</title>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="da-dk" lang="da-dk" dir="ltr">
 	<head>
+		<title>Apoint</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
 		<script src="js/jquery-3.7.1.min.js"></script>
+		<script src="js/userProfile.js"></script>
+		
 		<script src="js/calendar.js"></script>
-		<script src="js/jaxa.js"></script>
+		<script src="js/ajax.js"></script>
 		<script src="js/timePicker.js"></script>
+		<script src="js/chat.js"></script>
 		
 		<script src="js/render.js"></script>
 		<script src="js/apiRequest.js"></script>
+		<script src="js/eventHandlers.js"></script>
 		
 		<script>
-			function userProfile() {
-				let jwt_hash = "";
-				let login_status = false;
-				let CalendarID = null;	
-				let calenderUsers = "";
-				let route = "";
-				let receiver = null;
-				let id = null;
-				
-				this.setJWT = (hash) => {jwt_hash = hash;}
-				this.getJWT = () => jwt_hash;
-
-				this.setLoginStatus = (bool) => {login_status = bool;}
-				this.getLoginStatus = () => login_status;
-
-				this.setCalendarID = (ID) => {CalendarID = ID;}
-				this.getCalendarID = () => CalendarID;
-
-				this.setCalendarUsers = (users) => {calendarUsers = users;}
-				this.getCalendarUsers = () => calendarUsers;
-
-				this.setRoute = (url) => {route = url;}
-				this.getRoute = () => route;
-
-				this.setReceiver = (id) => {receiver = id;}
-				this.getReceiver = () => receiver;
-
-				this.setID = (user_id) => {id = user_id;}
-				this.getID = () => id;
-
-			}
 
 			let profile = new userProfile();
 			let msg_data = {};
+			let error = 0;
 			
 			function getScreen()
 			{
@@ -61,10 +38,25 @@
 			function message(message)
 			{
 				$(".msg_box").text(message);
-
 				if(message=="taken")
 				{
 					$("#account_email").css({"color":"#990000"});
+					error = 1;
+				}else{
+					error = 0;
+				}
+			}
+
+			function showMenu()
+			{
+				const display = $("#phone_menu").style.display();
+				if(display == "block")
+				{
+					$("#menu_bar").hide();
+					$("#login_btn").hide();
+				}else{
+					$("#menu_bar").show();
+					$("#login_btn").show();
 				}
 			}
 
@@ -72,125 +64,61 @@
 			{
 				$("#calendar_list_view").html("");
 				$.each(calendars, function(i, item) {
-					var child = $("<a href='#calendar/" + item.id + "''>" + item.title  + "</a><br>");
-					$("#calendar_list_view").append(child);
+					let html = "<div class='calendar_box'>";
+					html += "<a href='#calendar/" + item.id + "''>";
+					html += "<div class='boxing'>" + item.title  + "</div></a>";
+					html += "<div class='tab'><a href='#settings/" + item.id + "'><img src='images/icon_settings.png'></a></div>";
+					$("#calendar_list_view").append(html);
 				});
+		
+				let new_btn = "<div class='calendar_box'>";
+				new_btn += "<div class='boxing' id='new_btn'>Create new calendar</div>";
+				new_btn += "<div class='tab'></div></div>";
+
+				$("#calendar_list_view").append(new_btn);
 			}
 
-			function renderMessages(msgArray)
-			{
-				$("#message_list").html("");
-				
-				let group_msg = {};
-				let received_id = null;
-				$.each(msgArray, function(i, item){
-					let data = groupArray(item.sender_id, item.receiver_id, msgArray);
-					const group_name = item.sender_id + "_" + item.receiver_id;
-					const reverse_group_name = item.receiver_id + "_" + item.sender_id;
-					
-					if(!group_msg[reverse_group_name])
-					{
-						group_msg[group_name] = data;
-					}
-				});
-
-				
-				if(profile.getReceiver()==null)
-				{
-					$.each(group_msg, function(i, item){
-						let obj = item[item.length - 1];
-						if(obj.sender_id == profile.getID())
-						{
-							received_id = obj.receiver_id;
-						}else{
-							received_id = obj.sender_id;
-						}
-						$("#message_list").append(generateMsgBox(obj.sender_name, obj.msg, "11/12/06 - 10:15","last_msg_box",received_id));
-					});
-				
-				}else{
-
-					$.each(group_msg, function(i, item){
-						for(i in item){
-							if(item[i].receiver_id==profile.getReceiver() && item[i].sender_id==profile.getID() || item[i].receiver_id==profile.getID() && item[i].sender_id==profile.getReceiver()){
-								$("#message_list").append(generateMsgBox(item[i].sender_name, item[i].msg, "11/12/06 - 10:15","view_msg_box",received_id));
-							}
-						}
-					});
-				}
-			}
-
-			function generateMsgBox(sender_name,txt,date, className,receiver_id)
-			{
-				const clName = 'msg_box ' + className;
-				let html = "<div class='" + clName + "' data-receiver='" + receiver_id + "'>";
-				html += "<span class='msg_box_date'>Send: " + date + "</span>";
-				html += "<span class='msg_box_from'>from: " + sender_name + "</span>";
-				html += "<span class='msg_box_txt'>from: " + txt + "</span>";
-				html += "</div>";
-				return html;
-			}
-
-			function groupArray(s,r,array)
-			{
-
-				let collection = [];
-				for(let i in array) {
-					if(array[i]['sender_id'] == s && array[i]['receiver_id'] == r)
-					{
-						collection.push(array[i]);
-					}
-					if(array[i]['sender_id'] == r && array[i]['receiver_id'] == s)
-					{
-						collection.push(array[i]);
-					}
-				}
-				
-				return collection;
-			}
-
-			function renderCalendars(calendars)
-			{
-				$("#board_list").html("");
-				$.each(calendars, function(i, item) {
-					var child = $("<div class='calendar_box' data-id='" + item.id + "''>" + item.title  + "</div>");
-					$("#board_list").append(child);
-				});
-				$(".optional").hide();
-				$("#c_type").val("day");
-				
-			}
 
 			function settings(calendar)
 			{
-				$("#settings_c_url").html("<a href='#calendar/" + calendar['id'] + "'>apoint.dk#calendar/" + calendar['id'] + "</a>");
-				$("#settings_c_type").html(calendar['type']);
-				
-				profile.setCalendarUsers(calendar['users']);
+				if(calendar['valid'] == true)
+				{
+					$("#settings_c_url").html("<a href='#calendar/" + calendar['id'] + "'>apoint.dk#calendar/" + calendar['id'] + "</a>");
+					$("#settings_c_type").html(calendar['type']);
+					
+					profile.setCalendarUsers(calendar['users']);
 
-				let html = "";
+					let html = "";
 
-				$("#settings_c_users").html("");
-				html += "<table><tr><td>Users</td><td>Status</td><td></td></tr>";
+					$("#settings_c_users").html("");
+					html += "<table><tr><td>Users</td><td>Status</td><td></td></tr>";
 
-				for(user of calendar['users'])
-				{	
-					if(user['id']!="")
-					{
-						html += "<tr><td>" + user['name'] + "</td><td>" + user['status'] + "</td>";
-						html += "<td><div class='remove_user' data-id='" + user['id'] + "'><img src='images/delete.png'></div></td></tr>";
+					for(user of calendar['users'])
+					{	
+						if(user['id']!="")
+						{
+							html += "<tr><td>" + user['name'] + "</td><td>" + user['status'] + "</td>";
+							html += "<td><div class='remove_user' data-id='" + user['id'] + "'><img src='images/delete.png'></div></td></tr>";
+						}
 					}
-				}
-				for(pending_user of calendar['pending'])
-				{	
-					if(pending_user['id']!="")
-					{
-						html += "<tr><td>" + pending_user['name'] + "</td><td>" + pending_user['status'] + "</td>";
-						html += "<td><div class='remove_pending' data-id='" + pending_user['id'] + "'><img src='images/delete.png'></div></td></tr>";
+					for(pending_user of calendar['pending'])
+					{	
+						if(pending_user['id']!="")
+						{
+							html += "<tr><td>" + pending_user['name'] + "</td><td>" + pending_user['status'] + "</td>";
+							html += "<td><div class='remove_pending' data-id='" + pending_user['id'] + "'><img src='images/delete.png'></div></td></tr>";
+						}
 					}
+					html += "</table>";
+					$("#settings_c_users").append(html);
+					$("#settings_option").html("<div id='delete_calendar'>Delete calendar</div>");
+					$("#settings_details").show();
+				}else{
+					$("#settings_c_url").html("");
+					$("#settings_c_type").html("");
+					$("#settings_details").hide();
+					$("#settings_option").html("<div class='remove_user' data-id='" + profile.getID() + "'>leave calendar</a>");
 				}
-				html += "</table>";
-				$("#settings_c_users").append(html);
 			}
 
 			function urlPath(hash)
@@ -205,149 +133,81 @@
 				profile.setRoute(hash);
 			}
 			
-			$(function(){
-				const check_gdpr = window.localStorage.getItem("gdpr");
-				if(check_gdpr)
-				{
-					$("#gdpr_banner").hide();
-				}
-
-				$("#account_email").on("keyup", function(){
-
-					const regex = /\S+@\S+\.\S+/;
-
-					const email = $(this).val();
-					const valid =  regex.test(email);
-					
-					if(valid)
-					{
-						apiRequest("check_email",email);
-						$("#account_email").css({"color":"#000000"});
-					}else{
-						$("#account_email").css({"color":"#990000"});
-					}
-
-
-				});
-
-				$(document).on('click', '.last_msg_box', function() {
-					const id = $(this).data("receiver"); 
-					profile.setReceiver(id);
-					renderPage("goto","dm");
-				});
-
-				$(document).on('click', '.send_msg_btn', function() {
-					renderPage("goto","dm");
-				});
-
-				$(document).on('click', '.remove_user', function() {
-					const id = $(this).data("id"); 
-					apiRequest("remove_user",id);
-				});
-
-				$(document).on('click', '.remove_pending', function() {
-					const id = $(this).data("id"); 
-					apiRequest("remove_pending_user",id);
-				});
-
-				$(document).on('click', '#delete_calendar', function() {
-					apiRequest("remove_calendar","");
-				});
-				
-				$(document).on('click', '.calendar_box', function() {
-					const id = $(this).data("id"); 
-					window.location.hash = "settings/" + id;
-				});
-
-				$(window).on('popstate', function(event) {
- 					const hash = event.target.location.hash;
-					 urlPath(hash);
-				});
-
-				$("#gdpr_ok").on("click", function() {
-					$("#gdpr_banner").hide();
-					window.localStorage.setItem("gdpr", 1);
-				});
-			
-				$(".submit_btn").on("click", function() {
-					const action = $(this).data("action");
-					apiRequest(action,"");
-				});
-
-				$("#c_type").on("change", function(){
-					if($(this).val() == "time")
-					{
-						$(".optional").show();
-					}else{
-						$(".optional").hide();
-					}
-				});
-
-				const hash = window.location.hash;
-				urlPath(hash);
-			})
-
 		</script>
 
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="stylesheet" type="text/css" href="css/calendar.css">
 		<link rel="stylesheet" type="text/css" href="css/timePicker.css">
+		<link rel="stylesheet" type="text/css" href="css/phone.css">
 		
 	</head>
 	<body>
 	
 	<div id="main">
+		<div id="phone_menu"></div>
 		<div id="menu_bar">
 			<a>LOADING CONTENT</a>
 		</div>
-		<a href="#login" class="menu_link"><div id="login_btn">Login</div></a>
+		<a href="#login" class="menu_link login_btn_a"><div id="login_btn">Login</div></a>
 		<div id="content_body">
 			<div class="content_div" id="home">
 				<img src="images/logo.png">
-				<p>Booking and resavation system</p>
+				<p>Booking platform</p>
 				<div class="divider"></div>
 				<div class="btn_c2"><p>
-					CREATE A FREE BOOKING SITE FOR YOUR MEETING 
-					ROOM, VACATION HOUSE, MUSIC STUDIO, CARS 
-					OR EVEN YOUR BOAT.</p> 
+					Opret dit eget gratis booking side i dag!</p> 
 				</div>
 				<a href="#new_account" class="menu_link">
 					<div class="btn_c1">
-						<p> Create a free account</p>
+						<p>Opret konto</p>
 					</div>
 				</a>
 			</div>
 			
-			<div  class="content_div content_view btn_d1" id="login">
+			<div  class="content_div content_view" id="login">
 				<div class="form_box">
 					<h2>Login</h2>
 					<table>
-						<tr><td>E-mail: </td><td><input id="login_email"></td></tr>
-						<tr><td>password: </td><td><input type="password" id="login_password"></td></tr>
-						<tr><td colspan="2" style="text-align: right"><input class="submit_btn" data-action="login" type="button" value="login"></td></tr>
+						<tr><td>E-mail: <br> <input id="login_email"></td></tr>
+						<tr><td>password: <br> <input type="password" id="login_password"></td></tr>
+						<tr><td><a class="forgot" href="#forgot_password">Glemt password?</a></td></tr>
+						
+						<tr><td style="text-align: right"><input class="submit_btn" data-action="login" type="button" value="login"></td></tr>
 					</table>
 				</div>
 			</div>
 
+			<div class="content_div content_view" id="forgot_password">
+				<div class="form_box">
+					<h2>Glemt password?</h2>
+					<p>Skriv din e-mail i feltet fornede, og vi sender en mail med et link til nulstilling af dit password.
+					<table>
+						<tr><td>E-mail: <br> <input id="reset_email"></td></tr>
+						<tr><td style="text-align: right"><input class="submit_btn" data-action="reset" type="button" value="Nulstil"></td></tr>
+					</table>
+				</div>
+			</div>
+
+
 			<div class="content_div content_view" id="settings_view">
 				<div>
-					<table>
-						<tr><td>Calendar URL:</td><td><div id="settings_c_url"></div></td></tr>
-						<tr><td>Calendar type:</td><td><div id="settings_c_type"></div></td></tr>
-						<tr><td>users:</td><td><div id="settings_c_users"></div><a href="#adduser"><div>Add user</div></a></td></tr>
+					<table id="settings_details">
+						<tr><td class="td1">Kalendar URL:</td><td><div id="settings_c_url"></div></td></tr>
+						<tr><td class="td1">Kalendar type:</td><td><div id="settings_c_type"></div></td></tr>
+						<tr><td class="td1">Brugere:</td><td><div id="settings_c_users"></div><a href="#adduser"><div>Add user</div></a></td></tr>
 					</table>	
 				</div>
-				<div id="delete_calendar">Delete calendar</div>
+				<div id="settings_option"></div>
 			</div>
 
 			<div class="content_div content_view" id="adduser">
-				<h2>Add user to calendar:</h2>
+				<h2>TIlføj brugere til kalendaren:</h2>
 				
 				<div class="form_box">
-					<h2>user details</h2>
+					<h2>Oplysninger</h2>
 					<table>
-						<tr><td>E-mail:</td><td><input id="add_user_email"></td></tr>
-						<tr><td colspan="2" style="text-align: right"><input class="submit_btn" data-action="add_user" type="button" value="Send request"></td></tr>
+						<tr><td>E-mail:<br><input id="add_user_email"></td></tr>
+						<tr><td style="text-align: right"><input class="submit_btn" data-action="add_user" type="button" value="Send request"></td></tr>
 					</table>
 				</div>
 
@@ -360,34 +220,33 @@
 			</div>
 
 			<div class="content_div content_view" id="messages">
+				
 				<div id="message_list">
-
+					loading
 				</div>
+				
 				<div id="send_massage">
-				<table><tr>
-						<td>Send msg to:<span id="send_to_user"></span></td>
-						</tr>
-						<tr>
-							<td><textarea id="msg"></textarea></td>
-						</tr>
-						<tr>
-							<td style="text-align: right">
-								<input class="submit_btn" data-action="send_message" type="button" value="Send">
-							</td>
-						</tr>
-					</table>
-
+					<div class="form_box">
+						<table width="100%">
+							<tr><td>
+									<textarea id="msg"></textarea>
+							</td></tr>
+							<tr><td style="text-align: right">
+								<input class="submit_btn" data-action="send_message" type="button" value="Send">		
+							</td></tr>
+						</table>
+					</div>
 				</div>
 			</div>
 
 			<div  class="content_div content_view" id="new_account">
 				<div class="form_box">
-					<h2>Create new account</h2>
+					<h2>Opret ny bruger</h2>
 					<table>
-						<tr><td>E-mail: </td><td><input id="account_email"></td></tr>
-						<tr><td>password: </td><td><input type="password" id="account_password"></td><span class="msg_box"></span></tr>
-						<tr><td>Username: </td><td><input id="account_username"></td></tr>
-						<tr><td colspan="2" style="text-align: right"><input class="submit_btn" data-action="new_account" type="button" value="Create"></td></tr>
+						<tr><td> E-mail: <br> <input id="account_email"></td></tr>
+						<tr><td> password: <br> <input type="password" id="account_password"></td><span class="msg_box"></span></tr>
+						<tr><td> Brugernavn: <br> <input id="account_username"></td></tr>
+						<tr><td style="text-align: right"><input class="submit_btn" data-action="new_account" type="button" value="Opret"></td></tr>
 					</table>
 				</div>
 			</div>
@@ -396,81 +255,69 @@
 				<div id="calendar_box">
 					<div id="calendar_wrapper">
 						<div id="cal_top_header">
-							<div id="prev">prev</div>
-								Calendar
-							<div id="next">next</div>
+							<div id="prev">Tilbage</div>
+								Kalendar
+							<div id="next">Frem</div>
 						</div>
 						<div id="first_month">
 							<div id="first_date" class="header"></div>
-							<div class="dayPickerEmty topRow">Mon</div>
-							<div class="dayPickerEmty topRow">Tue</div>
-							<div class="dayPickerEmty topRow">Wed</div>
-							<div class="dayPickerEmty topRow">Thu</div>
+							<div class="dayPickerEmty topRow">Man</div>
+							<div class="dayPickerEmty topRow">Tirs</div>
+							<div class="dayPickerEmty topRow">Ons</div>
+							<div class="dayPickerEmty topRow">Tors</div>
 							<div class="dayPickerEmty topRow">Fre</div>
-							<div class="dayPickerEmty topRow">Sat</div>
-							<div class="dayPickerEmty topRow">Sun</div>	
+							<div class="dayPickerEmty topRow">Lør</div>
+							<div class="dayPickerEmty topRow">Søn</div>	
 							<div id="first_month_picker"></div>
 						</div>
 						<div id="second_month">
 							<div id="second_date" class="header"></div>
-							<div class="dayPickerEmty topRow">Mon</div>
-							<div class="dayPickerEmty topRow">Tue</div>
-							<div class="dayPickerEmty topRow">Wed</div>
-							<div class="dayPickerEmty topRow">Thu</div>
+							<div class="dayPickerEmty topRow">Man</div>
+							<div class="dayPickerEmty topRow">Tirs</div>
+							<div class="dayPickerEmty topRow">Ons</div>
+							<div class="dayPickerEmty topRow">Tors</div>
 							<div class="dayPickerEmty topRow">Fre</div>
-							<div class="dayPickerEmty topRow">Sat</div>
-							<div class="dayPickerEmty topRow">Sun</div>
+							<div class="dayPickerEmty topRow">Lør</div>
+							<div class="dayPickerEmty topRow">SØn</div>
 							<div id="second_month_picker"></div>
 						</div>
 						<div class="break">
-							<table>
-								<tr><td>Selected start date:</td><td><input id="startDate" value=""></td></tr>
-								<tr><td>Selected end date:</td><td><input id="endDate" value=""></td></tr>
-							</table>
+							<input type="hidden" id="startDate" value="">
+							<input type="hidden" id="endDate" value="">
 						</div>
-						<input class="submit_btn" data-action="save_dates" type="button" value="Save">
+						<input class="submit_btn btn" data-action="save_dates" type="button" value="Save">
 					</div>
 					<div id="calendar_info_box">
 						<div id="calendar_info_close_btn">x</div>
-						<h1>Reserved</h1>
+						<h1>Reserveret</h1>
 						<table>
 							<tr>
-								<td>User:</td><td><span id="calendar_info_box_user"></span></td>
+								<td>Bruger:</td><td><span id="calendar_info_box_user"></span></td>
 							</tr>
 							<tr>
 								<td>Start:</td><td><span id="calendar_info_box_start"></span></td>
 							</tr>
 							<tr>
-								<td>End:</td><td><span id="calendar_info_box_end"></span></td>
+								<td>Slut:</td><td><span id="calendar_info_box_end"></span></td>
 							</tr>
 						</table>	
-						<div id="calendar_info_btn"></div>
-
-						<div class="send_msg_btn">Send message</div>
-						
+						<div class="send_msg_btn btn">Send Besked</div>
+						<div class="btn btn_red" id="calendar_info_btn"></div>
 					</div>
-
 				</div>		
-			</div>
-
-			<div  class="content_div content_view" id="dashboard">
-				<div id="dashboard_menu">
-					<a href="#create_calendar"><div class="btn_m1" id="new_btn">Create new calendar</div></a>
-				</div>
-				<div id="board_list"></div>
 			</div>
 
 			<div  class="content_div content_view" id="create_calendar">
 				<div class="form_box">
 					<table>
 						<tr>
-							<td>Title of calendar:</td><td><input id="c_title"></td>
+							<td>Kalendar navn:</td><td><input id="c_title"></td>
 						</tr>
 						<tr>
-							<td>type of calendar: </td><td>
+							<td>Kalendar type: </td><td>
 								<select id="c_type">
-									<option value="day">whole-day based bookings</option>
-									<option value="time">Time based bookings</option>
+									<option value="day">hel-dags booking</option>
+									<option value="time">Time baseret booking</option>
 								</select>
 							</td>
 						</tr>
@@ -495,11 +342,15 @@
 				</div>
 			</div>
 
-			<div  class="content_div content_view" id="mail_send">Mail send, check your mail you retard!</div>
+			<div  class="content_div content_view" id="mail_send">Oprettelses mail send til din e-mail. Følge linket i mailen for at gennemfører oprettelse.</div>
 			
 			<div  class="content_div content_view" id="error"><div id="error_msg"></div></div>
 			
 			<div  class="content_div content_view" id="load">LOADING...</div>
+
+			<div  class="content_div content_view" id="profile">
+				Under construction
+			</div>
 
 			<div  class="content_div content_view" id="time_picker">
 				<div class="boxView">
@@ -507,19 +358,19 @@
 						<div id="pick_date_btn"></div>
 						<div id="small_calendar_wrapper">
 							<div id="small_cal_top_header">
-								<div id="small_cal_prev">prev</div>
-									<span id="small_cal_month_viewer">Calendar</span>
-								<div id="small_cal_next">next</div>
+								<div id="small_cal_prev">Tilbage</div>
+									<span id="small_cal_month_viewer">Kalendar</span>
+								<div id="small_cal_next">Frem</div>
 							</div>	
 							<div id="small_calendar">
 								<div id="cal_date_viewer" class="header"></div>
-								<div class="smallDayPickerEmty topRow">Mon</div>
-								<div class="smallDayPickerEmty topRow">Tue</div>
-								<div class="smallDayPickerEmty topRow">Wed</div>
-								<div class="smallDayPickerEmty topRow">Thu</div>
+								<div class="smallDayPickerEmty topRow">Man</div>
+								<div class="smallDayPickerEmty topRow">Tirs</div>
+								<div class="smallDayPickerEmty topRow">Ons</div>
+								<div class="smallDayPickerEmty topRow">Tors</div>
 								<div class="smallDayPickerEmty topRow">Fre</div>
-								<div class="smallDayPickerEmty topRow">Sat</div>
-								<div class="smallDayPickerEmty topRow">Sun</div>	
+								<div class="smallDayPickerEmty topRow">Lør</div>
+								<div class="smallDayPickerEmty topRow">Søn</div>	
 								<div id="small_cal_month_picker"></div>
 							</div>
 						</div>
@@ -537,18 +388,19 @@
 
 				<div id="time_slot_info_box">
 					<div id="time_slot_info_close_btn">x</div>
-					<h1>Reserved</h1>
+					<h1>Reserveret</h1>
 					<table>
 						<tr>
-							<td>User:</td><td><span id="time_slot_info_box_user"></span></td>
+							<td>Bruger:</td><td><span id="time_slot_info_box_user"></span></td>
 						</tr>
 						<tr>
 							<td>Start:</td><td><span id="time_slot_info_box_start"></span></td>
 						</tr>
 						<tr>
-							<td>End:</td><td><span id="time_slot_info_box_end"></span></td>
+							<td>Slut:</td><td><span id="time_slot_info_box_end"></span></td>
 						</tr>
-					</table>	
+					</table>
+					<div class="send_msg_btn btn">Send Besked</div>	
 					<div id="time_slot_info_btn"></div>
 				</div>
 

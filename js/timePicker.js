@@ -33,7 +33,9 @@
         $("#pick_date_btn").show();
         $("#view_time_list").show();
         $("#schedu_box").show();
-            
+        $("#time_slot_info_box").hide();
+        $(".boxView").show();
+        
         if(screenType=="phone")
         {
             $("#schedu_box").hide();
@@ -128,8 +130,7 @@
                 const bookingDD = booking.start.substring(8,10);
                 const bookingHH = booking.start.substring(11,13); 
                 const bookingMin = booking.start.substring(14,16); 
-                console.log(checkSum(bookingYY,bookingMM,bookingDD), checkSum(year,(month),day));
-               
+                
                 if(checkSum(bookingYY,bookingMM,bookingDD) == checkSum(year,(month),day) && hour==bookingHH && min==bookingMin)
                 {
                     booking_detail.push(booking.user);
@@ -217,6 +218,8 @@
 
         function time_slot_info(id)
         {
+            $("#time_slot_info_box").show();
+            $(".boxView").hide();
             for(booking of bookings)
 			{
 			    if(id == booking.id)
@@ -228,13 +231,21 @@
                     if(booking.ownership==true)
 					{
 						$("#time_slot_info_btn").html("<div data-id='" + booking.id + "' id='time_slot_delete_cal_btn'>Remove booking</div>");
-					}
-					
+					}else{
+                        $("#time_slot_info_btn").html("");
+                    }
+					profile.setReceiver(booking.user_id);
+						
                     $("#time_slot_info_box").show();
 					$("#time_slot_wrapper").hide();
 				}
 			}
         }
+
+        $("#time_slot_info_close_btn").on("click", function(){
+            $("#time_slot_info_box").hide();
+            $(".boxView").show();
+        });
 
         $(document).off("click", ".time_slot").on("click", ".time_slot", function(){
             const selected = $(this).data("selected");

@@ -5,7 +5,7 @@ function callAPI(action, data_obj, type)
 		$.ajax({
 			type: "POST",
 			data: data_obj,
-			url: "api.php",
+			url: "https://apoint.dk/api.php",
 				success: function(data){
 					const JsonData = jQuery.parseJSON(data);
 					
@@ -27,7 +27,7 @@ function callAPI(action, data_obj, type)
 			$.ajax({
 				type: "GET",
 				data: data_obj,
-				url: "api.php",
+				url: "https://apoint.dk/api.php",
 					success: function(data){
 						const JsonData = jQuery.parseJSON(data);
 						message(JsonData.message);

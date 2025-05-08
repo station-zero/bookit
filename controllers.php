@@ -22,9 +22,9 @@ function jwt($token, $secret, $time)
     return $jwt;
 }
 
-function send_mail($email, $code)
+function send_reset_mail($email, $code)
 {
-    $subject = 'Hello!';
+    $subject = 'Nulstil password';
 
     $headers = "From: noreply@apoint.dk\n";
     $headers .= "MIME-Version: 1.0\n";
@@ -33,11 +33,36 @@ function send_mail($email, $code)
     $message = '
     <html>
     <head>
-        <title>Verify my ass...</title>
+        <title>Nulstil password</title>
     </head>
     <body>
-        <p>CLick on that F***ing link!:</p>
-        <a href="https://www.apoint.dk/verify.php?i=' . $code . '">KLIK OG VIND EN MIO.</a>
+        <p>Følg nederstående link for at nul stille dit password.</p>
+        <a href="https://www.apoint.dk/reset_form.php?i=' . $code . '">Nulstil password</a>
+    </body>
+    </html>
+    ';
+
+    mail($email, $subject, $message, $headers);
+}
+
+
+function send_mail($email, $code)
+{
+    $subject = 'Bekræft ny bruger';
+
+    $headers = "From: noreply@apoint.dk\n";
+    $headers .= "MIME-Version: 1.0\n";
+    $headers .= "Content-type: text/html; charset=iso 8859-1";
+
+    $message = '
+    <html>
+    <head>
+        <title>Apoint.dk - Bekræft ny bruger</title>
+    </head>
+    <body>
+        <p>Velkommen til Apoint.dk - nem booking</p>
+        <p>For at aktiver din bruger skal du benytte dette link:</p>
+        <a href="https://www.apoint.dk/verify.php?i=' . $code . '">Bekræft bruger</a>
     </body>
     </html>
     ';
@@ -162,9 +187,12 @@ function get_user($token)
     $result = $statement->execute();
     
     while ($row = $result->fetchArray()) {
-        $user_data['valid']=true;
-        $user_data['id']=$row['id'];
-        $user_data['email']=$row['email'];
+        if(round(microtime(true)) < $row['jwt_token_expire'])
+        {
+            $user_data['valid']=true;
+            $user_data['id']=$row['id'];
+            $user_data['email']=$row['email'];
+        }
     }  
 
     return $user_data;

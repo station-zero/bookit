@@ -11,7 +11,6 @@ function renderPage(route, val)
         
     if(route=="loggedin")
     {
-        console.log(val['token']);
         profile.setJWT(val['token']);
         profile.setID(val['id']);
 
@@ -68,11 +67,6 @@ function renderPage(route, val)
     if(route=="goto")
     {
         if(val == ""){val = "#home";}
-		
-        if(val == "#dashboard")
-        {
-            apiRequest("get_calendars","");
-        }
 
         if(val == "#calendars")
         {
@@ -83,16 +77,23 @@ function renderPage(route, val)
         if(val=="dm")
         {
             apiRequest("get_messages","");
-            page = "#load";
+            val = "#load";
         }
 
         if(val=="#messages")
         {
             profile.setReceiver(null);
             apiRequest("get_messages","");
-            page = "#load";
+            val = "#load";
         }
-        
+
+        if(val=="#logout")
+        {
+            profile.setLoginStatus(false);
+            apiRequest("logout","");
+            val = "#load";
+        }
+
         page = val;
     }
 
@@ -109,16 +110,20 @@ function renderPage(route, val)
 
     }
 
-    menu += "<a href='#home' class='menu_link'>Home</a>";
     $("#login_btn").text("login");
     if(profile.getLoginStatus()==true)
     {
         menu = "<a href='#home' class='menu_link'>Home</a>";
         menu += "<a href='#calendars' class='menu_link'>Calendars</a>";
-        menu += "<a href='#dashboard' class='menu_link'>Control Panel</a>";
-        menu += "<a href='#messages' class='menu_link'>Messages(0)</a>";
+        menu += "<a href='#messages' class='menu_link'>Messages</a>";
+        menu += "<a href='#profile' class='menu_link'>Profile</a>";
         
-        $("#login_btn").text("Profile");
+        $("#login_btn").text("Logout");
+        $(".login_btn_a").attr("href", "#logout");
+    }else{
+        menu = "<a href='#home' class='menu_link'>Home</a>";
+        $("#login_btn").text("Login");
+        $(".login_btn_a").attr("href", "#login");
     }
     $("#menu_bar").html(menu);
 

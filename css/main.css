@@ -16,6 +16,14 @@ h2, p, div, td, p, a, input
 }
 
 
+#phone_menu{
+    display:none;
+    width:100%;
+    background:#373737;
+    clear:both;
+    height:60px;
+}
+
 #main
 {
     margin:auto;
@@ -82,20 +90,48 @@ h2, p, div, td, p, a, input
     float:left;
     width:260px;
     border:1px solid #000;
-    padding:20px 10px;
     margin:10px;
-    background:#e44746;
+    overflow:hidden;
+ }
+
+.calendar_box .boxing
+{
+    display:block;
+    width:100%;
+    padding:25px 10px;
     text-transform: uppercase;
     color: #f3f3e0;
     font-size: 17px;
-
+    background:#e44746;
+    text-decoration: none;
 }
 
-.calendar_box:hover
+.calendar_box .tab
 {
-    cursor:pointer;
+    display: block;
+    float: right;
+    width: 100%;
+    min-height: 30px;
+    padding: 10px 10px 0px 0px;
+    text-transform: uppercase;
+    color: #f3f3e0;
+    font-size: 17px;
+    background: #333333;
+    text-align: right;
 }
 
+#new_btn
+{
+    background:#009900;
+}
+
+.calendar_box .tab img:hover, .calendar_box .boxing:hover {cursor:pointer;}
+
+
+.calendar_box a
+{
+    text-decoration: none;
+}
 
 #home
 {
@@ -207,6 +243,11 @@ h2, p, div, td, p, a, input
     cursor:pointer;
 }
 
+.form_box table
+{
+    margin: 0 auto;
+}
+
 .content_view
 {
     margin:40px;
@@ -262,4 +303,180 @@ h2, p, div, td, p, a, input
     padding:10px 20px;
     border-top:1px solid #000;
     margin:0px 20px;
+}
+
+.last_msg_box
+{
+    display: block;
+    clear:both;
+    margin:20px 0px;
+    border:2px solid #c1c1c1;
+    overflow:hidden;
+}
+
+.last_msg_box:hover
+{
+    cursor:pointer;
+}
+
+.header_box
+{
+    background: #e44746;
+    padding:15px;
+    display: block;
+    float:left;
+    width:100%;
+    font-size:14px;
+    font-weight:bold;
+    color:#f3f3e0;
+}
+
+.last_msg_box_txt
+{
+    padding:15px;
+    display: block;
+    float: left;
+}
+
+.msg_box
+{
+    display: block;
+    clear:both;
+    width: 500px;
+    border-radius:25px;
+    overflow:hidden;
+}
+
+.msg_box_bottom
+{
+    display: block;
+    clear:both;
+    width: 200px;
+    height: 60px;
+    margin: 0px 20px;
+    }
+
+.msg_box_date, .msg_box_from
+{
+    display: block;
+    float:left;
+    font-size:14px;
+    font-weight:bold;
+    color:#f3f3e0;
+}
+
+.msg_box_from
+{
+    background: #e44746;
+    width:100%;
+    padding:10px;
+}
+
+.msg_box_bottom .msg_box_date
+{
+    width:100%;
+    color:#999999;
+    padding:10px 0px;
+}
+
+.msg_box_txt
+{
+    font-size:17px;
+    font-weight:normal;
+    width: 100%;
+    padding:20px 40px;
+    border-top:1px solid #000;
+    display: block;
+    clear:both;
+}
+
+.msg_box.box_right
+{
+    float:right;
+}
+
+.msg_box.box_left
+{
+    float:left;;
+}
+
+.box_right .msg_box_txt
+{
+    background:#e5e3be;
+}
+
+.box_left .msg_box_txt
+{
+    background:#e1e0d8;
+    float:left;
+}
+
+.tab_right
+{
+    float:right;
+    text-align: right;
+}
+
+.tab_left
+{
+    float:left;
+    text-align: 100%;
+}
+
+#send_massage, #message_list
+{
+display:block;
+float:left;
+clear:both;
+width:100%;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #444;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+  }
+
+  table
+  {
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  table td
+  {
+    vertical-align: top;
+  }
+
+  .forgot
+  {
+    color:#e1e0d8;
+    font-size:11px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .btn {
+    background-color:#44c767;
+    border:1px solid #18ab29;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-size:17px;
+    padding:15px 0px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #2f6627;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn_red{
+    background-color: #AA0404;    
 }

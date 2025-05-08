@@ -5,3 +5,23 @@
 [05-May-2025 15:35:23 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
 [05-May-2025 15:35:33 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 202
 [05-May-2025 15:35:43 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
+[05-May-2025 15:36:42 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
+[05-May-2025 15:36:52 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 202
+[05-May-2025 15:37:00 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
+[05-May-2025 15:38:29 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 350
+[05-May-2025 15:38:34 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 350
+[05-May-2025 15:38:48 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 350
+[05-May-2025 15:40:05 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, near &quot;||&quot;: syntax error in /home/pillonid/apoint.dk/controllers.php on line 137
+[05-May-2025 15:40:05 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/controllers.php:138
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(320): update_pending_users('hello@stationze...')
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/controllers.php on line 138
+[07-May-2025 21:57:33 Europe/Copenhagen] PHP Warning:  SQLite3Stmt::execute(): Unable to execute statement: database is locked in /home/pillonid/apoint.dk/api.php on line 36
+[07-May-2025 22:30:31 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
+[07-May-2025 22:33:24 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
+[07-May-2025 22:33:50 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
+[07-May-2025 22:36:07 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
+[07-May-2025 22:38:21 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
+[07-May-2025 22:40:15 Europe/Copenhagen] PHP Warning:  Undefined variable $hash in /home/pillonid/apoint.dk/api.php on line 100
+[07-May-2025 22:40:15 Europe/Copenhagen] PHP Deprecated:  hash(): Passing null to parameter #2 ($data) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 100

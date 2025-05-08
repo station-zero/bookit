@@ -1,6 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-
+date_default_timezone_set("Europe/Copenhagen");
+            
 $db = new SQLite3('database.db');
 
 $jwt_token = "";
@@ -21,29 +22,73 @@ switch ($method) {
             
             $token  = base64_encode(random_bytes(12));
             $secret = base64_encode(random_bytes(24));            
-            $jwt_token = jwt($token, $secret, date("c"));   
+            $jwt_token = jwt($token, $secret, date("c")); 
+            $expire = round(microtime(true)) + (60 * 120);  
 
-            $query = 'UPDATE users SET jwt_token=:token WHERE email=:email AND hashed_password=:hashed_password';
-            $statement = $db->prepare($query);
-            $statement->bindValue(':token', $jwt_token);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':hashed_password', $hashed_password);
-            $result = $statement->execute();
             
+                $query = 'UPDATE users SET jwt_token=:token, jwt_token_expire=:expire WHERE email=:email AND hashed_password=:hashed_password';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':token', $jwt_token);
+                $statement->bindValue(':expire', $expire);
+                $statement->bindValue(':email', $email);
+                $statement->bindValue(':hashed_password', $hashed_password);
+                $result = $statement->execute();
+                
+                if($db->changes() != 0)
+                {
+                    $user = get_user($jwt_token);
+                    update_pending_users($user['email']);
+                    
+                    $user_data = array('id' => $user['id'], 'token' => $jwt_token); 
+
+                    echo json_encode(["route" => "loggedin", "val" => $user_data]);
+                    
+                }else{
+                    echo json_encode(["route" => "error", "val" => "Forkret password eller e-mail"]);
+                }
+        }
+
+        if($input['action']=="logout")
+        {
+            $token = $input['token'];
+         
+            $user = get_user($token); 
+            if($user["valid"]==true)
+            {
+                $query = 'UPDATE users SET jwt_token_expire=:expire WHERE jwt_token=:jwt_token';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':expire', 0);
+                $statement->bindValue(':jwt_token', $token);
+                $result = $statement->execute();
+                
+                if($db->changes() != 0)
+                {
+                    echo json_encode(["route" => "error", "val" => "logget ud"]);
+                }else{
+                    echo json_encode(["route" => "error", "val" => "Fejl i Database"]);
+                } 
+            }
+        }
+
+        if($input['action']=="reset")
+        {
+            $email = $input['email'];
+            $reset_hash = base64_encode(random_bytes(12));
+
+            $query = 'UPDATE users SET reset=:reset WHERE email=:email';
+            $statement = $db->prepare($query);
+            $statement->bindValue(':reset', $reset_hash);
+            $statement->bindValue(':email', $email);
+            $result = $statement->execute();
             if($db->changes() != 0)
             {
-                $user = get_user($jwt_token);
-                update_pending_users($user['email']);
-                
-                $user_data = array('id' => $user['id'], 'token' => $jwt_token); 
-
-                echo json_encode(["route" => "loggedin", "val" => $user_data]);
-                
+                send_reset_mail($email, $reset_hash);
+                echo json_encode(["route" => "error", "val" => "Mail sendt"]);
             }else{
-                echo json_encode(["route" => "error", "val" => "2"]);
-            } 
+                echo json_encode(["route" => "error", "val" => "Fejl i Database"]); 
+            }
         }
-        
+
         if($input['action']=="new_account")
         {
             $username = $input['username'];
@@ -53,23 +98,26 @@ switch ($method) {
             
             $verified_code = base64_encode(random_bytes(12));
             $verified_code = preg_replace('/[^a-zA-Z0-9_ -]/s','-',$verified_code);
-
-            $query = 'INSERT INTO users(username, email, hashed_password, verified) VALUES (:username,:email,:hashed_pw,:verified)';
-            $statement = $db->prepare($query);
-            $statement->bindValue(':username', $username);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':hashed_pw', $hashed_pw);
-            $statement->bindValue(':verified', $verified_code);
-            $result = $statement->execute();
-            
-            if($db->changes() != 0)
+            if(email_validation($email)==false)
             {
-                send_mail($email,$verified_code);
-
-                echo json_encode(["route" => "goto", "val" => "#mail_send"]);
+                $query = 'INSERT INTO users(username, email, hashed_password, verified) VALUES (:username,:email,:hashed_pw,:verified)';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':username', $username);
+                $statement->bindValue(':email', $email);
+                $statement->bindValue(':hashed_pw', $hashed_pw);
+                $statement->bindValue(':verified', $verified_code);
+                $result = $statement->execute();
+            
+                if($db->changes() != 0)
+                {
+                    send_mail($email,$verified_code);
+                    echo json_encode(["route" => "goto", "val" => "#mail_send"]);
+                }else{
+                    echo json_encode(["route" => "error", "val" => "Fejl i database"]);
+                }
             }else{
-                echo json_encode(["route" => "error", "val" => "1"]);
-            }
+            echo json_encode(["route" => "error", "val" => "E-mail eksistere allerede i systemet"]);
+            }    
         }
 
         if($input['action']=="new_calendar")
@@ -93,7 +141,7 @@ switch ($method) {
 
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "goto", "val" => "#dashboard"]);
+                    echo json_encode(["route" => "goto", "val" => "#calendars"]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }
@@ -122,7 +170,7 @@ switch ($method) {
 
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "error", "val" => "Det virker!"]);
+                    echo json_encode(["route" => "goto", "val" => "#calendar/" + $calendar_id]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }
@@ -161,30 +209,6 @@ switch ($method) {
                 echo json_encode(["route" => "goto", "val" => "#login"]);
             }
         }       
-
-        if($input['action']=="get_calendars")
-        {
-            $token = $input['token'];
-            
-            $user = get_user($token); 
-            if($user["valid"]==true)
-            {
-                $query = 'SELECT * FROM calendar WHERE owner=:owner';
-                $statement = $db->prepare($query);
-                $statement->bindValue(':owner', $user['id']);
-                $result = $statement->execute();
-                
-                $items = array();
-            
-                while ($row = $result->fetchArray()) {
-                    $items[] = array('id' => $row['id'], 'title' => $row['name']); 
-                }
-                echo json_encode(["route" => "dashboard", "val" => "dashboard", "calendars" => $items]);
-            }else{
-                echo json_encode(["route" => "goto", "val" => "#login"]);
-            }
-        
-        }
 
         if($input['action']=="added_calendars")
         {
@@ -228,9 +252,11 @@ switch ($method) {
             $user = get_user($token); 
             if($user["valid"]==true)
             {
-                $query = 'DELETE FROM calendar_blocks WHERE id=:id';
+                $query = 'DELETE FROM calendar_blocks WHERE id=:id AND owner=:user_id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':id', $id);
+                $statement->bindValue(':user_id', $user['id']);
+                
                 $result = $statement->execute();
 
                 echo json_encode(["route" => "error", "val" => "delete the booking: " . $id]);
@@ -267,17 +293,19 @@ switch ($method) {
             $id = $input['id'];
             $calendar_id = $input['calendar_id'];
             $user_list = "";
-            
+            $owner = null;
+
             $user = get_user($token); 
             if($user["valid"]==true)
             {
-                $query = 'SELECT users FROM calendar WHERE id=:calendar_id';
+                $query = 'SELECT users, owner FROM calendar WHERE id=:calendar_id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':calendar_id', $calendar_id);
                 $result = $statement->execute();
                 
                 while ($row = $result->fetchArray()) {
-                    $user_list = $row['users']; 
+                    $user_list = $row['users'];
+                    $owner = $row['owner'];
                 }
 
                 $user_list = str_replace($id,"",$user_list);
@@ -291,7 +319,12 @@ switch ($method) {
                 
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "#settings", "val" => $calendar_id]);
+                    if($id!=$user['id'])
+                    {
+                        echo json_encode(["route" => "#settings", "val" => $calendar_id]);
+                    }else{
+                        echo json_encode(["route" => "goto", "val" => "#calendars"]);
+                    }
                 }else{
                     echo json_encode(["route" => "error", "val" => "222"]);
                 }   
@@ -344,27 +377,33 @@ switch ($method) {
                 $statement->bindValue(':id', $id);
                 $result = $statement->execute();
                 
-                $type = "";
-            
                 while ($row = $result->fetchArray()) {
                     $user_list = array();
                     
-                    $users = explode(",", $row['users']);
-                    foreach($users as $user_id)
+                    if($user["id"] == $row['owner'])
                     {
-                        $user_list[] = array(
-                            'id' => $user_id,
-                            'name' => get_username($user_id),
-                            'status' => "Active" 
+                        $users = explode(",", $row['users']);
+                        foreach($users as $user_id)
+                        {
+                            $user_list[] = array(
+                                'id' => $user_id,
+                                'name' => get_username($user_id),
+                                'status' => "Active" 
+                            );
+                        }
+            
+                        $items = array(
+                            'valid' => true,
+                            'id' => $row['id'], 
+                            'type' => $row['type'], 
+                            'users' => $user_list,
+                            'pending' => get_pending_users($id)
+                        );
+                    }else{
+                        $items = array(
+                            'valid' => false
                         );
                     }
-        
-                    $items = array(
-                        'id' => $row['id'], 
-                        'type' => $row['type'], 
-                        'users' => $user_list,
-                        'pending' => get_pending_users($id)
-                    );
                 } 
                 echo json_encode(["route" => "settings_view", "val" => $items]);
             }else{
@@ -395,22 +434,25 @@ switch ($method) {
 
         if($input['action']=="send_message")
         {
+            
             $token = $input['token'];
             $receiver = $input['receiver'];
             $message = $input['message'];
+            $date = date("H:i d/m/Y");
             
             $user = get_user($token); 
             if($user["valid"]==true)
             {
-                $query = 'INSERT INTO msg(sender, receiver, message) VALUES (:sender,:receiver,:message)';
+                $query = 'INSERT INTO msg(sender, receiver, message, timestamp) VALUES (:sender,:receiver,:message,:timestamp)';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':sender', $user['id']);
                 $statement->bindValue(':receiver', $receiver);
                 $statement->bindValue(':message', $message);
+                $statement->bindValue(':timestamp',$date);
                 $result = $statement->execute();
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "goto", "val" => "#messages"]);
+                    echo json_encode(["route" => "goto", "val" => "#dm"]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }
@@ -439,6 +481,7 @@ switch ($method) {
                         'receiver_id' => $row['receiver'],
                         'sender_name' => get_username($row['sender']),
                         'receiver_name' => get_username($row['receiver']),
+                        'timestamp' => $row['timestamp'],
                         'msg' => $row['message']
                     );
                 }     
@@ -516,7 +559,6 @@ switch ($method) {
                 echo json_encode(["route" => "goto", "val" => "#login"]);
             }
         }
-
         break;
     
     case 'PUT':

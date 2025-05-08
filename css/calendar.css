@@ -106,9 +106,15 @@
 		#calendar_info_box
 		{
 			display:none;
-			width:100%;
-			background:#FFFFFF;
+			padding:20px 50px;
+			background:#e5e3be;
 			font-size:18px;
+			border:5px solid #c1c1c1;
+		}
+
+		#calendar_info_box table td
+		{
+			padding:6px;
 		}
 
 		#calendar_info_close_btn

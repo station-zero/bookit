@@ -155,6 +155,16 @@ function apiRequest(action,parameter)
             }
     }
 
+    if( action == "reset")
+    {
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'email':$("#reset_email").val()
+            }
+    }
+    
+
     if( action == "check_email")
     {
         type = "GET";
@@ -183,7 +193,16 @@ function apiRequest(action,parameter)
             'message':msg,
             'receiver':profile.getReceiver()
         }
-    }    
+    }
+    
+    if(action == "logout")
+    {
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'token':profile.getJWT()
+         }
+    }
     
     callAPI(action, data_obj, type);
 }

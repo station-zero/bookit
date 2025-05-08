@@ -334,6 +334,14 @@
 						
 						$("#calendar_info_box").show();
 						$("#calendar_wrapper").hide();
+
+						 
+						if(profile.getID() == booking.user_id)
+						{
+							$("#calendar_info_btn").show();
+						}else{
+							$("#calendar_info_btn").hide();
+						}
 					}
 				}
 			});
