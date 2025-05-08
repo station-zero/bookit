@@ -25,9 +25,14 @@ $(function(){
         renderPage("goto","dm");
     });
 
-    $(document).on('click', '#phone_menu', function() {
+    $(document).on('click', '#phone_menu_btn', function() {
         showMenu();
     });
+
+    $(document).on('click', '#history', function() {
+        moreHistory();
+    });
+
 
     $(document).on('click', '#new_btn', function() {
         renderPage("goto","#create_calendar");
@@ -53,11 +58,23 @@ $(function(){
         apiRequest("remove_calendar","");
     });
 
-
     $(window).on('popstate', function(event) {
         const hash = event.target.location.hash;
         urlPath(hash);
         error = 0;
+    });
+
+    $(window).on( "resize", function() {
+        if(getScreen()=="phone")
+            {
+                $("#menu_bar").hide();
+                $("#login_btn").hide();
+                $("#phone_menu").show();
+            }else{
+                $("#menu_bar").show();
+                $("#login_btn").show();
+                $("#phone_menu").hide();
+            }
     });
 
     $("#gdpr_ok").on("click", function() {

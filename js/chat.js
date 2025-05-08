@@ -1,13 +1,23 @@
+let chatLength = 5;
+let group_msg = {};
+    
 function sort_date_desc(a, b) {
     return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+}
+
+function moreHistory()
+{
+    chatLength = chatLength + 5;
+    generateChat(chatLength);
 }
 
 function renderMessages(msgArray)
 {
     $("#message_list").html("");
     let msg_list_array = [];
+    group_msg = {};
+    chatLength = 5;
 
-    let group_msg = {};
     let received_id = null;
     $.each(msgArray, function(i, item){
         let data = groupArray(item.sender_id, item.receiver_id, msgArray);
@@ -22,8 +32,9 @@ function renderMessages(msgArray)
 
     if(profile.getReceiver()==null)
     {
+        $("#history").hide();
         $("#send_massage").hide();
-        console.log(group_msg);
+        
         $.each(group_msg, function(i, item){
             let obj = item[item.length - 1];
             if(obj.sender_id == profile.getID())
@@ -43,15 +54,27 @@ function renderMessages(msgArray)
         }
 
     }else{
-        $("#send_massage").show();
-        $.each(group_msg, function(i, item){
-            for(i in item){
+        generateChat(chatLength);
+    }
+}
+
+function generateChat(length)
+{
+    $("#message_list").html("");
+    $("#send_massage").show();
+    $("#history").show();
+
+    $.each(group_msg, function(i, item){
+        for(i in item){
+            if( i > item.length - length)
+            {
                 if(item[i].receiver_id==profile.getReceiver() && item[i].sender_id==profile.getID() || item[i].receiver_id==profile.getID() && item[i].sender_id==profile.getReceiver()){
                     $("#message_list").append(generateMsgBox(item[i].sender_name, item[i].msg, item[i].timestamp, item[i].sender_id));
                 }
             }
-        });
-    }
+        }
+    });
+
 }
 
 function generateMsgBoxListView(sender_name, msg, timestamp, receiver_id)

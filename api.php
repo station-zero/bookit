@@ -452,7 +452,7 @@ switch ($method) {
                 $result = $statement->execute();
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "goto", "val" => "#dm"]);
+                    echo json_encode(["route" => "goto", "val" => "dm"]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }

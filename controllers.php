@@ -26,10 +26,11 @@ function send_reset_mail($email, $code)
 {
     $subject = 'Nulstil password';
 
-    $headers = "From: noreply@apoint.dk\n";
-    $headers .= "MIME-Version: 1.0\n";
-    $headers .= "Content-type: text/html; charset=iso 8859-1";
-
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'To: ' . $email . ' <' . $email . '>' . "\r\n";
+    $headers .= 'From: Apoint.dk <no-reply@apoint.dk>' . "\r\n";
+    
     $message = '
     <html>
     <head>
@@ -42,6 +43,7 @@ function send_reset_mail($email, $code)
     </html>
     ';
 
+
     mail($email, $subject, $message, $headers);
 }
 
@@ -50,10 +52,11 @@ function send_mail($email, $code)
 {
     $subject = 'Bekræft ny bruger';
 
-    $headers = "From: noreply@apoint.dk\n";
-    $headers .= "MIME-Version: 1.0\n";
-    $headers .= "Content-type: text/html; charset=iso 8859-1";
-
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'To: ' . $email . ' <' . $email . '>' . "\r\n";
+    $headers .= 'From: Apoint.dk <no-reply@apoint.dk>' . "\r\n";
+    
     $message = '
     <html>
     <head>

@@ -130,8 +130,31 @@ function renderPage(route, val)
 
     if(page!="")
     {
+        if(page=="#calendar" || page=="#calendars" || page=="#messages" || page=="#time_picker" || page=="#profile" || page=="#create_calendar")
+        {
+            if(page=="#time_picker" || page=="#calendar")
+            {
+                if(profile.getCalendarID()==null)
+                {
+                    apiRequest("added_calendars","");
+                }
+            }
+
+            if(profile.getLoginStatus()!=true)
+            {
+                page="#login";
+            }
+        }
+
         $(".content_div").hide();
         $(page).show();
+        if(page=="#messages" && profile.getReceiver()!=null)
+        {
+            $('html,body').animate({scrollTop:10000});
+        }else{
+            $('html,body').animate({scrollTop:0});
+        }
+        history.pushState(null, null, page);
         
     }
 }

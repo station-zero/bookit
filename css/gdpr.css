@@ -1,0 +1,32 @@
+#gdpr_banner
+{
+    position:fixed;
+    bottom:0px;
+    background-color:rgba(0, 0, 0, 0.8);
+    width:100%;
+    padding:20px;
+    text-align:center;
+    
+}
+
+#gdpr_banner p
+{
+    color:#f3f3e0;
+    size:14px;
+}
+
+#gdpr_banner #gdpr_ok
+{
+    display: inline-block;
+    padding:10px 15px;
+    margin:0px 10px;
+    background:#009900;
+    border:1px solid #FFF;
+    color:#f3f3e0;
+    size:14px;
+}
+
+#gdpr_banner #gdpr_ok:hover
+{
+    cursor:pointer;
+}

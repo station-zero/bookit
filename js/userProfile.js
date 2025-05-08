@@ -2,7 +2,6 @@ function userProfile() {
     let jwt_hash = "";
     let login_status = false;
     let CalendarID = null;	
-    let calenderUsers = "";
     let route = "";
     let receiver = null;
     let id = null;
@@ -27,5 +26,4 @@ function userProfile() {
 
     this.setID = (user_id) => {id = user_id;}
     this.getID = () => id;
-
 }

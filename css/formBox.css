@@ -1,0 +1,42 @@
+.form_box
+{
+    display: block;
+    padding:10px 20px;
+    border:2px solid #696963;
+    margin: 0 auto;
+    width: fit-content;
+    background: #e44746;
+    color:#f3f3e0;
+    font-size:16px;
+}
+
+.form_box input, .form_box select 
+{
+    border:1px solid #373737;
+    font-size:16px;
+    width: 280px;
+    padding:10px;
+    margin:10px;
+}
+
+.form_box input[type="button"]
+{
+    background:#373737;
+    padding:10px 30px;
+    color:#f3f3e0;
+    font-weight:bold;
+    font-size:15px;
+    border:none;
+    margin-top:15px;
+    width:auto;
+}
+
+.form_box input[type="button"]:hover
+{
+    cursor:pointer;
+}
+
+.form_box table
+{
+    margin: 0 auto;
+}

@@ -7,7 +7,12 @@
 
     .content_view
     {
-        padding:20px 0px;
+        padding:20px 0px 80px 0px;
+    }
+
+    .content_div
+    {
+        width: 100%;
     }
 
     #home img
@@ -48,9 +53,9 @@
 
     #menu_bar .menu_link, #login_btn
     {
-        display:none;
+        display:block;
         width:100%;
-        border-bottom:1px solid #000;
+        border-top:1px solid #000;
         float: left;
         padding: 20px 0px;
         color: #f3f3e0;
@@ -59,7 +64,18 @@
         margin:0px;
         text-align:center;
     }
+
+    #login_btn
+    {
+        border-bottom:1px solid #000;
+        
+    }
  
+    #menu_bar, #login_btn
+    {
+        display:none;
+    }
+
     .last_msg_box {
         margin:20px;
     }
@@ -77,6 +93,11 @@
     {
         margin-left:10px;
     }
+    
+    .msg_box_txt
+    {
+        max-width:auto;
+    }
 
     .calendar_box
     {
@@ -88,6 +109,57 @@
 
     #phone_menu{
         display:block;
+        float:left;
+        width:100%;
+        background:#373737;
+        clear:both;
+        height:80px;
+    }
+
+    #phone_menu_btn
+    {
+        display:block;
+        float:right;
+        width:80px;
+        height:80px;
+        background-image:url("/images/menu.png");  
+        background-repeat:no-repeat;
+        background-position: center;      
+    }
+
+    #second_month_picker .dayPickerEmty, #first_month_picker .dayPickerEmty
+    {
+        height:2px;
+    }
+
+    #calendar_box, #cal_top_header
+    {
+        width:300px;
+        min-width:300px;
+        margin:0 auto;
+    }
+
+    .fixed
+    {
+        position:fixed;
+        bottom:0px;
+        left:0px;
+    }
+
+    #calendar_info_box
+    {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 90%;
+        height: 90%;
+        padding: 5%;
+        border: 0px;
+    }
+
+    .form_box td input
+    {
+        width:80%;
     }
 
 }

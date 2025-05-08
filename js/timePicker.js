@@ -36,11 +36,6 @@
         $("#time_slot_info_box").hide();
         $(".boxView").show();
         
-        if(screenType=="phone")
-        {
-            $("#schedu_box").hide();
-            $("#view_time_list").hide();
-        }
         initCalendar();
         createBookingList();
         createTimeView();
@@ -49,12 +44,6 @@
         {
             $("#booking_list_view").html("");
             let html = "";
-            
-            if(screenType=="phone"){
-                $("#booking_list_view").append("<div id='back_time_picker'>Back</div>");
-            }else{
-                $("#booking_list_view").append("<div>Bookings</div>");
-            }
 
             for(selected_date of time_slots)
             {

@@ -1,27 +1,82 @@
-[05-May-2025 15:28:31 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 202
-[05-May-2025 15:29:58 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
-[05-May-2025 15:30:01 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
-[05-May-2025 15:35:21 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
-[05-May-2025 15:35:23 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
-[05-May-2025 15:35:33 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 202
-[05-May-2025 15:35:43 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
-[05-May-2025 15:36:42 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
-[05-May-2025 15:36:52 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 202
-[05-May-2025 15:37:00 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 349
-[05-May-2025 15:38:29 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 350
-[05-May-2025 15:38:34 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 350
-[05-May-2025 15:38:48 Europe/Copenhagen] PHP Deprecated:  explode(): Passing null to parameter #2 ($string) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 350
-[05-May-2025 15:40:05 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, near &quot;||&quot;: syntax error in /home/pillonid/apoint.dk/controllers.php on line 137
-[05-May-2025 15:40:05 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/controllers.php:138
+[07-May-2025 23:50:21 Europe/Copenhagen] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + string in /home/pillonid/apoint.dk/api.php:174
 Stack trace:
-#0 /home/pillonid/apoint.dk/api.php(320): update_pending_users('hello@stationze...')
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 174
+[07-May-2025 23:52:52 Europe/Copenhagen] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + string in /home/pillonid/apoint.dk/api.php:174
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 174
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[07-May-2025 23:53:17 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[08-May-2025 00:09:42 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[08-May-2025 00:09:42 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[08-May-2025 00:09:42 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[08-May-2025 00:09:42 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[08-May-2025 00:09:42 Europe/Copenhagen] PHP Warning:  SQLite3::prepare(): Unable to prepare statement: 1, no such column: owner in /home/pillonid/apoint.dk/api.php on line 257
+[08-May-2025 00:09:42 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function bindValue() on bool in /home/pillonid/apoint.dk/api.php:258
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 258
+[08-May-2025 11:17:22 Europe/Copenhagen] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + string in /home/pillonid/apoint.dk/api.php:173
+Stack trace:
+#0 {main}
+  thrown in /home/pillonid/apoint.dk/api.php on line 173
+[08-May-2025 14:05:39 Europe/Copenhagen] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string + string in /home/pillonid/apoint.dk/controllers.php:31
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(85): send_reset_mail('hello@stationze...', 'HN7aHznNoe/xuIk...')
 #1 {main}
-  thrown in /home/pillonid/apoint.dk/controllers.php on line 138
-[07-May-2025 21:57:33 Europe/Copenhagen] PHP Warning:  SQLite3Stmt::execute(): Unable to execute statement: database is locked in /home/pillonid/apoint.dk/api.php on line 36
-[07-May-2025 22:30:31 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
-[07-May-2025 22:33:24 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
-[07-May-2025 22:33:50 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
-[07-May-2025 22:36:07 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
-[07-May-2025 22:38:21 Europe/Copenhagen] PHP Warning:  Undefined array key "email" in /home/pillonid/apoint.dk/api.php on line 79
-[07-May-2025 22:40:15 Europe/Copenhagen] PHP Warning:  Undefined variable $hash in /home/pillonid/apoint.dk/api.php on line 100
-[07-May-2025 22:40:15 Europe/Copenhagen] PHP Deprecated:  hash(): Passing null to parameter #2 ($data) of type string is deprecated in /home/pillonid/apoint.dk/api.php on line 100
+  thrown in /home/pillonid/apoint.dk/controllers.php on line 31
+[08-May-2025 14:06:13 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/pillonid/apoint.dk/controllers.php:31
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(85): send_reset_mail('hello@stationze...', 'BYsAoxiXqwlB7E9...')
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/controllers.php on line 31
+[08-May-2025 14:06:53 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home/pillonid/apoint.dk/controllers.php:31
+Stack trace:
+#0 /home/pillonid/apoint.dk/api.php(85): send_reset_mail('hello@stationze...', 'UXefpstaWDYSBTM...')
+#1 {main}
+  thrown in /home/pillonid/apoint.dk/controllers.php on line 31

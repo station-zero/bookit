@@ -109,8 +109,6 @@
 #booking_list_view
 {
     display:block;
-    float:left;
-    width:100%;
     height:430px;
     border:1px solid #333333;
 
@@ -200,3 +198,20 @@
     display:block;
 }
 
+
+.boxView
+{
+    display:block;
+    float:left;
+    width:420px;
+    margin:0px 18px;
+    padding:14px 18px;
+    
+}
+
+.boxView span
+{
+    padding:10px 0px;
+    display:block;
+    height:30px;
+}
