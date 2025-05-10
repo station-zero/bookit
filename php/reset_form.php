@@ -20,7 +20,6 @@
                 <a class="menu_link" href="index.html">Tilbage</a>
             </div>
             <a href="https://apoint.dk#login" class="menu_link login_btn_a"><div id="login_btn">Login</div></a>
-            <!-- front page -->
             <div id="content_body">
                 <div  class="content_view" id="login">
                     <div class="form_box">

@@ -4,7 +4,9 @@ function renderPage(route, val)
     
     $("#add_user_email").val("");
     $("#c_title").val("");
-
+    $("#account_email").val("");
+    $("#account_password").val("");
+    $("#account_username").val("");
 
     if(route=="error")
     {

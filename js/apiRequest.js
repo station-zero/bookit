@@ -126,6 +126,16 @@ function apiRequest(action,parameter)
         }
     }
 
+    if( action == "new_password")
+    {
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'token':profile.getJWT(),
+            'new_password':$("#new_password").val()
+        }
+    }
+    
     if( action == "calendar")
     {
         type = "POST";
