@@ -1,4 +1,9 @@
 @media only screen and (max-width: 800px) {
+    html, body
+    {
+        background:#FFFFFF;
+    }
+    
     #main, .content_view, #menu_bar, .btn_c1, .btn_c2
     {
         width:100%;
@@ -23,7 +28,8 @@
 
     .form_box
     {
-        width:90%;
+        width:auto;
+        margin: 0 20px;
     }
 
     .form_box table
@@ -54,17 +60,18 @@
     #menu_bar .menu_link, #login_btn
     {
         display:block;
-        width:100%;
+        width:90%;
         border-top:1px solid #000;
         float: left;
-        padding: 20px 0px;
+        padding: 5%;
         color: #f3f3e0;
         text-decoration: none;
         font-size: 17px;
         margin:0px;
         text-align:center;
     }
-
+    
+    
     #login_btn
     {
         border-bottom:1px solid #000;
@@ -75,15 +82,11 @@
     {
         display:none;
     }
-
+    
     .last_msg_box {
-        margin:20px;
+        margin:20px 20px;
     }
-    .msg_box
-    {
-        width:80%;
-    }
-
+    
     .msg_box.box_right
     {
         margin-right:10px;
@@ -99,12 +102,26 @@
         max-width:auto;
     }
 
+    .msg_box
+    {
+        width:80%;
+    }
+
     .calendar_box
     {
-        clear:both;
-        width: 90%;
+        display:block;
+        float:left;
+        width:90%;
         border: 1px solid #000;
-        margin: 8px 5%;    
+        margin: 8px 5%;   
+        
+        
+    }
+
+    .text_box
+    {
+        padding: 10px 50px;
+        text-align: justify;
     }
 
     #phone_menu{
@@ -122,7 +139,8 @@
         float:right;
         width:80px;
         height:80px;
-        background-image:url("/images/menu.png");  
+        background-image:url("/images/svg/menu_btn.svg");  
+        background-size:60px;
         background-repeat:no-repeat;
         background-position: center;      
     }
@@ -139,12 +157,25 @@
         margin:0 auto;
     }
 
+    #first_month, #second_month
+    {
+        width: 280px;
+    }
     .fixed
     {
         position:fixed;
         bottom:0px;
         left:0px;
     }
+
+    .space_box
+{
+    display:block;
+    float:left;
+    clear:both;
+    height:100px;
+    width:100%;
+}
 
     #calendar_info_box
     {
@@ -160,6 +191,45 @@
     .form_box td input
     {
         width:80%;
+    }
+
+    #schedu_box {
+        height:300px;
+    }
+    
+    .content_view
+    {
+        min-height:100px;
+    }
+
+    #prev_phone_btn, #next_phone_btn	
+    {
+        display:block;
+    }
+
+    #prev, #next
+    {
+        display:none;
+    }
+
+    #cal_top_header
+    {
+        height:40px;
+    }
+
+    .boxView
+    {
+        width:90%;
+        padding:0px 5%;
+        margin:0px;
+    }
+
+    .confirm_list
+    {
+        height:0px;
+        padding: 10px 5% 0px;
+        border-top: 2px solid #333;
+        margin-top: 50px;
     }
 
 }

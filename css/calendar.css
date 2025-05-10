@@ -90,20 +90,56 @@
 			text-transform: uppercase;
 			font-weight: bold;
 		}
+
+		
 		
 		#next{
 			float:right;
-			background-image:url("/images/forward.png");
+			background-image:url("/images/svg/right_arrow.svg");
 			background-repeat: no-repeat;
 			background-position: center;
+			background-size: 40px;
 		}
 
 		#prev{
-			background-image:url("/images/back.png");
+			background-image:url("/images/svg/left_arrow.svg");
 			background-repeat: no-repeat;
-			background-position: 16px;
-		
+			background-position: center;
+			background-size: 40px;
 		}
+
+		#prev_phone_btn, #next_phone_btn
+		{
+			display:none;
+			float:left;
+			width: 284px;
+			height:50px;
+			text-align:center;
+			font-size:14px;
+			padding:0%;
+			border:1px solid #062538;
+			background:#e44746;
+			color:#f3f3e0;
+			text-transform: uppercase;
+			font-weight: bold;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 40px;
+		}
+		
+		#calendar_title
+		{
+			display: contents;
+		}
+
+		#next_phone_btn{
+			background-image:url("/images/svg/down_arrow.svg");
+
+		}
+
+		#prev_phone_btn{
+			background-image:url("/images/svg/up_arrow.svg");
+		}		
 
 		.break
 		{

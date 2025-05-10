@@ -10,7 +10,7 @@ function getScreen()
     return viewType;
 }
 
-function message(message)
+function inputValidationMsg(message)
 {
     $(".msg_box").text(message);
     if(message=="taken")
@@ -42,12 +42,12 @@ function calendarList(calendars)
         let html = "<div class='calendar_box'>";
         html += "<a href='#calendar/" + item.id + "''>";
         html += "<div class='boxing'>" + item.title  + "</div></a>";
-        html += "<div class='tab'><a href='#settings/" + item.id + "'><img src='images/icon_settings.png'></a></div>";
+        html += "<div class='tab'><a href='#settings/" + item.id + "'><div class='settings_btn'></div></a></div>";
         $("#calendar_list_view").append(html);
     });
 
     let new_btn = "<div class='calendar_box'>";
-    new_btn += "<div class='boxing' id='new_btn'>Create new calendar</div>";
+    new_btn += "<div class='boxing' id='new_btn'>Opret kalendar</div>";
     new_btn += "<div class='tab'></div></div>";
 
     $("#calendar_list_view").append(new_btn);
@@ -55,17 +55,17 @@ function calendarList(calendars)
 
 function settings(calendar)
 {
+    $("#settings_c_url").html("<a href='#calendar/" + calendar['id'] + "'>apoint.dk#calendar/" + calendar['id'] + "</a>");
+    $("#settings_c_type").html(calendar['type']);
+
     if(calendar['valid'] == true)
-    {
-        $("#settings_c_url").html("<a href='#calendar/" + calendar['id'] + "'>apoint.dk#calendar/" + calendar['id'] + "</a>");
-        $("#settings_c_type").html(calendar['type']);
-        
+    {        
         profile.setCalendarUsers(calendar['users']);
 
         let html = "";
 
         $("#settings_c_users").html("");
-        html += "<table><tr><td>Users</td><td>Status</td><td></td></tr>";
+        html += "<table><tr><td>Brugere</td><td>Status</td><td>Fjern adgang</td></tr>";
 
         for(user of calendar['users'])
         {	
@@ -85,13 +85,11 @@ function settings(calendar)
         }
         html += "</table>";
         $("#settings_c_users").append(html);
-        $("#settings_option").html("<div id='delete_calendar'>Delete calendar</div>");
-        $("#settings_details").show();
+        $("#settings_option").html("<div id='delete_calendar'>Slet kalendar</div>");
+        $(".owner_details").show();
     }else{
-        $("#settings_c_url").html("");
-        $("#settings_c_type").html("");
-        $("#settings_details").hide();
-        $("#settings_option").html("<div class='remove_user' data-id='" + profile.getID() + "'>leave calendar</a>");
+        $(".owner_details").hide();
+        $("#settings_option").html("<div class='remove_user' data-id='" + profile.getID() + "'>Forlad kalendar</a>");
     }
 }
 

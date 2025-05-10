@@ -29,8 +29,8 @@ $(function(){
         showMenu();
     });
 
-    $(document).on('click', '#history', function() {
-        moreHistory();
+    $(document).on('click', '#older_msg_btn', function() {
+        viewOlderMessages();
     });
 
 

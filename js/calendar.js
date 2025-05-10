@@ -1,5 +1,5 @@
 		
-		function calendar(bookings){ 
+		function calendar(bookings,title){ 
 			
 			const now = new Date();
 			let DD = now.getDate();
@@ -29,7 +29,9 @@
 			let selected = false;
 			
 			$("#calendar_info_box").hide();
-			$("#calendar_wrapper").show();			
+			$("#calendar_wrapper").show();	
+			$("#calendar_title").html(title);		
+			$("#save_booking_btn").hide();
 
 			function drawSelection()
 			{
@@ -245,6 +247,7 @@
 
 			function resetSelection()
 			{
+				$("#save_booking_btn").hide();
 				$(".dayPicker").each(function() {
 							$(this).css({"background":"#FFFFFF"})
 							selectStartDate.DD = 0;
@@ -253,7 +256,6 @@
 							selectEndDate.DD = 0;
 							selectEndDate.MM = 0;
 							selectEndDate.YY = 0;
-							
 				});
 				selected=false;
 			}
@@ -290,6 +292,7 @@
 							resetSelection();
 						}else{
 							drawSelection();
+							$("#save_booking_btn").show();
 						}
 					}
 			});
@@ -326,7 +329,7 @@
 		
 						if(booking.ownership==true)
 						{
-							$("#calendar_info_btn").html("<div data-id='" + booking.id + "' id='delete_cal_btn'>Remove booking</div>");
+							$("#calendar_info_btn").html("<div data-id='" + booking.id + "' id='delete_cal_btn'>Fjern booking</div>");
 						}
 						
 						profile.setReceiver(booking.user_id);
@@ -356,7 +359,7 @@
 				$("#calendar_wrapper").show();			
 			});
 			
-			$("#prev").on("click", function(){
+			$(".prev_btn").on("click", function(){
 				MM -= 1;
 				if(MM < 0)
 				{
@@ -366,7 +369,7 @@
 				drawCalendar(YY,MM,DD);
 			});
 			
-			$("#next").on("click", function(){
+			$(".next_btn").on("click", function(){
 				MM += 1;
 				if(MM > 11)
 				{

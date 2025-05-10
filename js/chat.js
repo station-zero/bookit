@@ -5,7 +5,7 @@ function sort_date_desc(a, b) {
     return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
 }
 
-function moreHistory()
+function viewOlderMessages()
 {
     chatLength = chatLength + 5;
     generateChat(chatLength);
@@ -32,7 +32,7 @@ function renderMessages(msgArray)
 
     if(profile.getReceiver()==null)
     {
-        $("#history").hide();
+        $("#older_msg_btn").hide();
         $("#send_massage").hide();
         
         $.each(group_msg, function(i, item){
@@ -62,7 +62,7 @@ function generateChat(length)
 {
     $("#message_list").html("");
     $("#send_massage").show();
-    $("#history").show();
+    $("#older_msg_btn").show();
 
     $.each(group_msg, function(i, item){
         for(i in item){

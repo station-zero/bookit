@@ -74,23 +74,24 @@
 
 .msg_box_txt
 {
-    font-size:17px;
-    font-weight:normal;
-    padding:20px 40px;
-    border-top:1px solid #000;
+    font-size: 17px;
+    font-weight: normal;
+    padding: 10px 5%;
+    border-top: 1px solid #000;
     display: block;
-    clear:both;
-    width:100%;
-    max-width: 440px;
+    clear: both;
+    width: 90%;
 }
 
-#history
+#older_msg_btn
 {
     display:none;
     width: 50px;
     height: 30px;
     margin: 0 auto;
     padding-bottom: 10px;
+    font-size: 36px;
+    text-align: center;
 }
 
 .msg_box.box_right

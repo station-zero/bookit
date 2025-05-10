@@ -63,7 +63,8 @@ switch ($method) {
                 
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "error", "val" => "logget ud"]);
+                    $msg = "Du er nu logget ud.";
+                    echo json_encode(["route" => "#success", "val" => $msg]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "Fejl i Database"]);
                 } 
@@ -82,8 +83,22 @@ switch ($method) {
             $result = $statement->execute();
             if($db->changes() != 0)
             {
-                send_reset_mail($email, $reset_hash);
-                echo json_encode(["route" => "error", "val" => "Mail sendt"]);
+                $subject = "Nulstil password";
+                $message = '
+                    <html>
+                        <head>
+                            <title>Nulstil password</title>
+                        </head>
+                        <body>
+                            <p>Følg nederstående link for at nul stille dit password.</p>
+                            <a href="https://www.apoint.dk/php/reset_form.php?i=' . $reset_hash . '">Nulstil password</a>
+                        </body>
+                    </html>
+                    ';
+                
+                send_mail($email, $subject, $message);
+                $msg = "En e-mail med nulstillingslink er sendt til din e-mail. Følg linket i e-mailen for at fuldføre nulstillingen af din adgangskode.";
+                echo json_encode(["route" => "#success", "val" => $msg]);
             }else{
                 echo json_encode(["route" => "error", "val" => "Fejl i Database"]); 
             }
@@ -98,7 +113,7 @@ switch ($method) {
             
             $verified_code = base64_encode(random_bytes(12));
             $verified_code = preg_replace('/[^a-zA-Z0-9_ -]/s','-',$verified_code);
-            if(email_validation($email)==false)
+            if(email_validation($email)==true && email_aviable($email)==true)
             {
                 $query = 'INSERT INTO users(username, email, hashed_password, verified) VALUES (:username,:email,:hashed_pw,:verified)';
                 $statement = $db->prepare($query);
@@ -110,8 +125,23 @@ switch ($method) {
             
                 if($db->changes() != 0)
                 {
-                    send_mail($email,$verified_code);
-                    echo json_encode(["route" => "goto", "val" => "#mail_send"]);
+                    $subject = 'Bekræft ny bruger';
+                    $message = '
+                    <html>
+                    <head>
+                        <title>Apoint.dk - Bekræft ny bruger</title>
+                    </head>
+                    <body>
+                        <p>Velkommen til Apoint.dk - nem booking</p>
+                        <p>For at aktiver din bruger skal du benytte dette link:</p>
+                        <a href="https://www.apoint.dk/php/verify.php?i=' . $verified_code . '">Bekræft bruger</a>
+                    </body>
+                    </html>
+                    ';
+                
+                    send_mail($email, $subject, $message);
+                    $msg = "En aktiveringsmail er sendt til din e-mail. Følg linket i mailen for at færdiggøre oprettelsen af din konto.";
+                    echo json_encode(["route" => "#success", "val" => $msg]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "Fejl i database"]);
                 }
@@ -170,7 +200,8 @@ switch ($method) {
 
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "goto", "val" => "#calendar/" + $calendar_id]);
+                    $msg = "Din booking er gemt. <a href='#calendar/" . $calendar_id . "'>Tilbage til kalendaren</a>";
+                    echo json_encode(["route" => "#success", "val" => $msg]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }
@@ -201,7 +232,8 @@ switch ($method) {
                 
                 if($db->changes() != 0)
                 {
-                    echo json_encode(["route" => "error", "val" => "Det virker!" . count($time_slots)]);
+                    $msg = "Din booking er gemt. <a href='#calendar/" . $calendar_id . "'>Tilbage til kalendaren</a>";
+                    echo json_encode(["route" => "#success", "val" => $msg]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
                 }
@@ -210,7 +242,7 @@ switch ($method) {
             }
         }       
 
-        if($input['action']=="added_calendars")
+        if($input['action']=="view_calendars")
         {
             $token = $input['token'];
             
@@ -259,8 +291,8 @@ switch ($method) {
                 
                 $result = $statement->execute();
 
-                echo json_encode(["route" => "error", "val" => "delete the booking: " . $id]);
-                
+                $msg = "Din booking er nu fjernet. <a href='#calendar/" . $calendar_id . "'>Tilbage til kalendaren</a>";
+                echo json_encode(["route" => "#success", "val" => $msg]);                
             }else{
                 echo json_encode(["route" => "goto", "val" => "#login"]);
             }
@@ -352,12 +384,28 @@ switch ($method) {
 
                 if($db->changes() != 0)
                 {
+
+                    $subject = 'Du har fået adgang til kalendaren';
+                    $calendar_link = "https://www.apoint.dk#calendar/" . $calendar_id; 
+                    $message = '
+                    <html>
+                        <head>
+                            <title>Du er blevet tilføjet til en Apoint Kalendar</title>
+                        </head>
+                        <body>
+                            <p>Følg nederstående link for at se kalendaren</p>
+                            <a href="' . $calendar_link . '">' . $calendar_link . '</a>
+                        </body>
+                    </html>
+                    ';                
+
                     update_pending_users($email);
+                    send_mail($email, $subject, $message);
+                    
                     echo json_encode(["route" => "#settings", "val" => $calendar_id]);
                 }else{
                     echo json_encode(["route" => "error", "val" => "fejl i database"]);
-                }
-                
+                }          
             }else{
             echo json_encode(["route" => "goto", "val" => "#login"]);
             }
@@ -401,7 +449,9 @@ switch ($method) {
                         );
                     }else{
                         $items = array(
-                            'valid' => false
+                            'valid' => false,
+                            'id' => $row['id'], 
+                            'type' => $row['type']
                         );
                     }
                 } 
@@ -425,8 +475,8 @@ switch ($method) {
                 $statement->bindValue(':user_id', $user['id']);
                 $result = $statement->execute();
 
-                echo json_encode(["route" => "error", "val" => "deleted"]);
-                
+                $msg = "Kalendaren er nu fjernet. <a href='#calendars'>Tilbage</a>";
+                echo json_encode(["route" => "#success", "val" => $msg]);                
             }else{
                 echo json_encode(["route" => "goto", "val" => "#login"]);
             }
@@ -496,11 +546,12 @@ switch ($method) {
             $token = $input['token'];
             $id = $input['id'];
             $interval = 0;
+            $title = "";
 
             $user = get_user($token);
             if($user["valid"]==true)
             {
-                $query = 'SELECT type, users, interval FROM calendar WHERE id=:id';
+                $query = 'SELECT type, users, interval, name FROM calendar WHERE id=:id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':id', $id);
                 $result = $statement->execute();
@@ -512,6 +563,7 @@ switch ($method) {
                     $type = $row['type'];
                     $user_list = $row['users'];
                     $interval = $row['interval'];
+                    $title = $row['name'];
                 }
 
                 $data = array();
@@ -542,13 +594,14 @@ switch ($method) {
 
                 $data = array(
                     'interval' => $interval,
-                    'bookings' => $bookings
+                    'bookings' => $bookings,
+                    'title' => $title
                 );
 
                 if(allowed_in($id, $user["id"]))
                 {
                     if($type=="day"){
-                        echo json_encode(["route" => "calendar_view", "val" => $bookings]);
+                        echo json_encode(["route" => "calendar_view", "val" => $data]);
                     }else{
                         echo json_encode(["route" => "time_picker_view", "val" => $data]);
                     }
@@ -575,26 +628,11 @@ switch ($method) {
         if($input['action']=="check_email")
         {
             $email = $input['email'];
-            $valid = true;
             
-            if(email_validation($email)==true)
-            {
-                $query = 'SELECT email FROM users WHERE email=:email';
-                $statement = $db->prepare($query);
-                $statement->bindValue(':email', $email);
-                $result = $statement->execute();
-               
-                while ($row = $result->fetchArray()) {
-                    $valid = false;
-                }
-
-                if($valid == false){
+            if(email_aviable($email) == false){
                     echo json_encode(["message" => "taken"]);
-                }else{
-                    echo json_encode(["message" => "ok"]);
-                }
             }else{
-                echo json_encode(["message" => "invalid"]);
+                    echo json_encode(["message" => "ok"]);
             }
         }
         break;

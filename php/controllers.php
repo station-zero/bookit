@@ -22,56 +22,19 @@ function jwt($token, $secret, $time)
     return $jwt;
 }
 
-function send_reset_mail($email, $code)
+function send_mail($email, $subject, $message)
 {
-    $subject = 'Nulstil password';
+    $subject_encoded = '=?UTF-8?B?'.base64_encode(utf8_encode($subject)).'?=';
 
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= 'To: ' . $email . ' <' . $email . '>' . "\r\n";
-    $headers .= 'From: Apoint.dk <no-reply@apoint.dk>' . "\r\n";
+    $headers[] = 'MIME-Version: 1.0';
+    $headers[] = 'Content-Type: text/html; charset=UTF-8"';
+    $headers[] = 'From: Apoint.dk <no-reply@apoint.dk>';
+    $headers[] = 'X-Priority: 3';
+    $headers[] = 'X-Mailer: PHP'. phpversion();
     
-    $message = '
-    <html>
-    <head>
-        <title>Nulstil password</title>
-    </head>
-    <body>
-        <p>Følg nederstående link for at nul stille dit password.</p>
-        <a href="https://www.apoint.dk/reset_form.php?i=' . $code . '">Nulstil password</a>
-    </body>
-    </html>
-    ';
-
-
-    mail($email, $subject, $message, $headers);
+    mail($email, $subject_encoded, $message, implode("\r\n", $headers));
 }
 
-
-function send_mail($email, $code)
-{
-    $subject = 'Bekræft ny bruger';
-
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= 'To: ' . $email . ' <' . $email . '>' . "\r\n";
-    $headers .= 'From: Apoint.dk <no-reply@apoint.dk>' . "\r\n";
-    
-    $message = '
-    <html>
-    <head>
-        <title>Apoint.dk - Bekræft ny bruger</title>
-    </head>
-    <body>
-        <p>Velkommen til Apoint.dk - nem booking</p>
-        <p>For at aktiver din bruger skal du benytte dette link:</p>
-        <a href="https://www.apoint.dk/verify.php?i=' . $code . '">Bekræft bruger</a>
-    </body>
-    </html>
-    ';
-
-    mail($email, $subject, $message, $headers);
-}
 
 function get_username($id)
 {
@@ -87,6 +50,22 @@ function get_username($id)
     }  
     return $name;
 }
+
+function email_aviable($email)
+{
+    $avilable = true;
+
+    $query = 'SELECT * FROM users WHERE email=:email';
+    $statement = $GLOBALS["db"]->prepare($query);
+    $statement->bindValue(':email', $email);
+    $result = $statement->execute();
+    
+    while ($row = $result->fetchArray()) {
+        $avilable = false;
+    }  
+    return $avilable;
+}
+
 
 function allowed_in($calendar_id, $user_id)
 {

@@ -117,16 +117,7 @@ function apiRequest(action,parameter)
         }
     }	
 
-    if( action == "get_calendars")
-    {
-        type = "POST";
-        data_obj = {
-            'action':action,
-            'token':profile.getJWT()
-        }
-    }
-
-    if( action == "added_calendars")
+    if( action == "view_calendars")
     {
         type = "POST";
         data_obj = {

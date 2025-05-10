@@ -12,6 +12,11 @@
     border:1px solid #e9e9e9;
 }
 
+.gryed_btn
+{
+    background:#333333;
+}
+
 .topRow
 {
     font-size:10px;
@@ -35,36 +40,44 @@
     background:#FFFFFF;
 }
 
+#small_cal_month_picker .smallDayPickerEmty
+{
+    height:1px;
+}
+
 #small_calendar
 {
-    display:block;
-    float:left;
+    display:table;
     padding:2px;
-    margin:4px;
+    margin:0 auto;
     background:#e9e9e9;
-    width:100%;
 }
 
 #small_cal_prev, #small_cal_next
 {
     display:block;
     float:left;
-    width:55px;
-    text-align:center;
-    font-size:14px;
-    padding:8px 0px;
-    border:1px solid #062538;
-    border-radius:5px;
-    background:#2dabf9;
-    color:#e9e9e9;
-    text-shadow:1px 1px #263666;
-    text-transform: uppercase;
-    font-weight: bold;
+	width:50px;
+	height:50px;
+	border:1px solid #062538;
+	background:#e44746;
+	color:#f3f3e0;
+    background-position: center;
+    background-size: 40px;
+    background-repeat: no-repeat;
+    margin:0px 10px;
 }
 
+#small_cal_prev{
+    background-image: url("/images/svg/left_arrow.svg");
+}
+
+
 #small_cal_next{
+    background-image: url("/images/svg/right_arrow.svg");
     float:right;
 }
+
 
 .break
 {
@@ -73,6 +86,8 @@
 
 #small_cal_month_picker
 {
+    display:block;
+    float:left;
     clear:both;
 }
 
@@ -90,17 +105,21 @@
 {
     display: block;
     clear:both;
-    padding:10px;
-    margin:10px;
+    width:100%;
+    padding:25px 0px;
+    text-transform: uppercase;
+    color: #f3f3e0;
+    font-size: 17px;
+    background:#e44746;
+    text-decoration: none;
     border:1px solid #333333;
-
+    margin-bottom:4px;
 }
 
 #time_picker_cal
 {
     display:block;
     float:left;
-    padding: 10px;
     width:100%;
     border:1px solid #333333;
     background:#e9e9e9;
@@ -109,17 +128,24 @@
 #booking_list_view
 {
     display:block;
-    height:430px;
-    border:1px solid #333333;
-
+    min-height:10px;
+    border: 1px solid #333333;
+    color: #c1c1c1;
+    text-align: center;
+    font-size: 50px;
+    padding: 10px;
+    background: #696963;
 }
-
 #small_calendar_wrapper
 {
     display:block;
-    float:left;
     background:#e9e9e9;
-    
+    padding: 16px 0px;
+}
+
+#small_cal_month_viewer
+{
+    display:contents;
 }
 
 #pick_date_btn
@@ -127,15 +153,15 @@
     display:block;
     width:100%;
     text-align:center;
+    padding:16px 0px;
 }
     
 #time_line
 {
     display:block;
     float:left;
-    width:50px;
-    border-right:2px solid #000000;
-
+    width:10%;
+    margin-top:-5px;
 }
 
 .time_indicator
@@ -155,7 +181,7 @@
 {
     display:block;
     float:left;
-    width:200px;
+    width:90%;
 }
 
 .time_slot
@@ -164,12 +190,13 @@
     float:left;
     outline:2px solid #c1c1c1;
     height:100%;
-    width:260px;
+    width:100%;
     box-sizing: border-box;
-    padding:10px 0px 0px 70px;
-    font-family:arial;
-    font-size:16px;
-
+    padding: 20px 0px;
+    font-family: arial;
+    font-size: 16px;
+    text-align: center;
+    color:#f3f3e0;
 }
 
 
@@ -185,7 +212,6 @@
 {
     display:block;
     clear:both;
-    width: 100%;
     height:430px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -215,3 +241,23 @@
     display:block;
     height:30px;
 }
+
+#time_slot_info_box
+		{
+			display:none;
+			padding:20px 50px;
+			background:#e5e3be;
+			font-size:18px;
+			border:5px solid #c1c1c1;
+		}
+
+		#time_slot_info_box table td
+		{
+			padding:6px;
+		}
+
+		#time_slot_info_close_btn
+		{
+			display:block;
+			float:right;
+		}	

@@ -1,5 +1,5 @@
-    function timePicker(interval, bookings, screenType){
-
+    function timePicker(interval, bookings){
+        console.log(bookings);
         const now = new Date();
                 
         class  Date_obj {
@@ -11,17 +11,16 @@
         }
         let today = new Date_obj;
         let date = new Date_obj;
-        let selectedDate = new Date_obj;
+        let selectedDate = new Date_obj;;
 
-        let state = 0;
-
-        const freeColor = "#3333ff";
-        const selectedColor = "#33FF33";
-        const takenColor = "#FF3333";
+        const freeColor = "#8495B7";
+        const selectedColor = "#44c767";
+        const takenColor = "#e44746";
         
         const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
         let time_slots = [];
+        let book_timw = false;
 
         $("#pick_date_btn").html(date.DD + "/" + (date.MM + 1) + "/" + date.YY);
         
@@ -29,34 +28,42 @@
         $("#time_slots").html("");
             
         $("#small_calendar_wrapper").hide();
-        $("#booking_list_view").show();
         $("#pick_date_btn").show();
-        $("#view_time_list").show();
-        $("#schedu_box").show();
         $("#time_slot_info_box").hide();
-        $(".boxView").show();
-        
+        $("#schedu_box").hide();
+
         initCalendar();
         createBookingList();
         createTimeView();
 
         function createBookingList()
         {
-            $("#booking_list_view").html("");
+            if(time_slots.length==0)
+            {
+                $("#booking_list_view").html("Tom");
+                $("#book_time").addClass("gryed_btn");
+                book_time=false;
+                
+            }else{
+                $("#booking_list_view").html("");
+                $("#book_time").removeClass("gryed_btn");
+                book_time=true;
+            }
             let html = "";
 
             for(selected_date of time_slots)
             {
-                $("#booking_list_view").append("<div class='booking_list_item'>" + prettyTimeFormat(selected_date) + "</div>"); 
+                $("#booking_list_view").append("<div data-time='" + selected_date + "' class='booking_list_item'>" + prettyTimeFormat(selected_date) + "</div>"); 
             }
         }
 
         
         function createTimeView()
         {
+            const d = new Date();
+                
             $("#time_line").html("");
             $("#time_slots").html("");
-            $("#time_slots").hide();
             
             for(let i=0; i < 24; i++)
             {
@@ -102,11 +109,8 @@
                 "' class='time_slot' data-status='" + status + 
                 "' data-selected='false' data-time='" + timeVal + "' data-id='" + id + "'>" + text + "</div>");
             }
-            
-            setTimeout(function(){
-                $("#time_slots").show();
-            },500); 
-            
+            let time_position = parseInt(d.getHours()) * 60 + parseInt(d.getMinutes());
+            $("#schedu_box").scrollTop(time_position);
         }
 
         function checkDate(year,month,day,hour,min)
@@ -158,7 +162,7 @@
             let style = "";
 
             $(".smallDayPicker").css({"font-weight":"normal"});
-            
+
             for(let i=1; i < 45; i++)
             {
                 if(i > firstDayInMonth && dayNumber < lastDateInMonth + 1){
@@ -201,7 +205,7 @@
             const time = split[1].split(":");
             
             const endtime = timeConverter((parseInt(time[0]) * 60) + interval);
-            return date[2] + "/" + date[1] + "/" +  date[0] + " " + split[1] + " - " + endtime;  
+            return "dato: " + date[2] + "/" + date[1] + "/" +  date[0] + "<br>Tid: " + split[1] + " - " + endtime;  
 
         }
 
@@ -219,7 +223,7 @@
 		            
                     if(booking.ownership==true)
 					{
-						$("#time_slot_info_btn").html("<div data-id='" + booking.id + "' id='time_slot_delete_cal_btn'>Remove booking</div>");
+						$("#time_slot_info_btn").html("<div data-id='" + booking.id + "' id='time_slot_delete_cal_btn'>Fjern booking</div>");
 					}else{
                         $("#time_slot_info_btn").html("");
                     }
@@ -234,6 +238,17 @@
         $("#time_slot_info_close_btn").on("click", function(){
             $("#time_slot_info_box").hide();
             $(".boxView").show();
+        });
+
+        $(document).off("click", ".booking_list_item").on("click", ".booking_list_item", function(){
+            
+            const time = $(this).data("time");
+            
+            $("[data-time='" + time + "']").css({"background":freeColor});
+            $("[data-time='" + time + "']").data("selected", false);
+                
+            time_slots = time_slots.filter(i => i !== time);
+            createBookingList();
         });
 
         $(document).off("click", ".time_slot").on("click", ".time_slot", function(){
@@ -258,6 +273,11 @@
             {
                 time_slot_info(id);
             }
+            if($(window).width() < 800)
+            {
+                $("#schedu_box").hide();
+            }
+
             createBookingList();
         });
         
@@ -284,7 +304,6 @@
         $("#pick_date_btn").on("click", function(){
             $("#small_calendar_wrapper").show();
             $("#pick_date_btn").hide();
-            $("#view_time_list").hide();
             
             $("#schedu_box").hide();            
 
@@ -306,7 +325,6 @@
             $("#small_calendar_wrapper").hide();
             $("#pick_date_btn").show();
             $("#schedu_box").show();
-            $("#view_time_list").show();
             
             createTimeView();
         });
@@ -317,20 +335,11 @@
             $("#booking_list_view").hide();
         });
 
-        $("#view_time_list").on("click", function(){
-
-            if(state == 0 && screenType!="phone")
+        $("#book_time").on("click", function(){
+            if(book_time==true)
             {
                 apiRequest("save_timeslots",time_slots);
             }
-
-            if(screenType=="phone")
-                {
-                    $("#time_picker_cal").hide();
-                    $("#schedu_box").hide();
-                    $("#booking_list_view").show();
-                    state = 1;
-                }    
         });
 
         $(document).on("click", "#time_slot_delete_cal_btn", function(){

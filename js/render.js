@@ -1,8 +1,11 @@
 function renderPage(route, val)
 {
     let page = "";
-    let menu = "";
     
+    $("#add_user_email").val("");
+    $("#c_title").val("");
+
+
     if(route=="error")
     {
         page="#error";
@@ -63,14 +66,26 @@ function renderPage(route, val)
         settings(val);
         page = "#settings_view";
     }
+
+    if(route=="#success")
+    {
+        $("#success_msg").html(val);
+        page = "#success";
+    }
     
     if(route=="goto")
     {
-        if(val == ""){val = "#home";}
+        if(val == ""){
+            if(app==false){
+                val = "#home";
+            }else{
+                val = "#calendars";
+            }
+        }
 
         if(val == "#calendars")
         {
-            apiRequest("added_calendars","");
+            apiRequest("view_calendars","");
             val="#load";
         }
 
@@ -99,7 +114,7 @@ function renderPage(route, val)
 
     if(route=="calendar_view")
     {
-        calendar(val);
+        calendar(val['bookings'],val['title']);
         page="#calendar";
     }
 
@@ -110,33 +125,15 @@ function renderPage(route, val)
 
     }
 
-    $("#login_btn").text("login");
-    if(profile.getLoginStatus()==true)
-    {
-        menu = "<a href='#home' class='menu_link'>Home</a>";
-        menu += "<a href='#calendars' class='menu_link'>Calendars</a>";
-        menu += "<a href='#messages' class='menu_link'>Messages</a>";
-        menu += "<a href='#profile' class='menu_link'>Profile</a>";
-        
-        $("#login_btn").text("Logout");
-        $(".login_btn_a").attr("href", "#logout");
-    }else{
-        menu = "<a href='#home' class='menu_link'>Home</a>";
-        $("#login_btn").text("Login");
-        $(".login_btn_a").attr("href", "#login");
-    }
-    $("#menu_bar").html(menu);
-
-
     if(page!="")
     {
-        if(page=="#calendar" || page=="#calendars" || page=="#messages" || page=="#time_picker" || page=="#profile" || page=="#create_calendar")
+        if(page=="#calendar" || page=="#calendars" || page=="#messages" || page=="#time_picker" || page=="#profile" || page=="#create_calendar" || page=="#settings_view")
         {
-            if(page=="#time_picker" || page=="#calendar")
+            if(page=="#time_picker" || page=="#calendar" || page=="#settings_view")
             {
                 if(profile.getCalendarID()==null)
                 {
-                    apiRequest("added_calendars","");
+                    apiRequest("view_calendars","");
                 }
             }
 
@@ -154,7 +151,7 @@ function renderPage(route, val)
         }else{
             $('html,body').animate({scrollTop:0});
         }
-        history.pushState(null, null, page);
-        
     }
+
+    generateMenu();
 }
