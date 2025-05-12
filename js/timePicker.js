@@ -19,8 +19,7 @@
         const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
         let time_slots = [];
-        let book_timw = false;
-
+        
         $("#pick_date_btn").html(date.DD + "/" + (date.MM + 1) + "/" + date.YY);
         
         $("#time_line").html("");
