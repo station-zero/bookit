@@ -6,18 +6,41 @@ $(function(){
     }
 
     $("#account_email").on("keyup", function(){
+        
         const regex = /\S+@\S+\.\S+/;
         const email = $(this).val();
         const valid =  regex.test(email);
-        
         if(valid)
         {
             apiRequest("check_email",email);
-            $("#account_email").css({"color":"#000000"});
         }else{
-            $("#account_email").css({"color":"#990000"});
+            error["email"] = "invalid";
+            generateErrorMsg();    
         }
     });
+
+    $("#account_password").on("keyup", function(){
+        if($(this).val().length < 4)
+        {
+            error['password'] = "short";
+        }else{
+            error['password'] = "";
+        }
+
+        generateErrorMsg();
+    });
+
+    $("#account_username").on("keyup", function(){
+        if($(this).val().length < 4)
+        {
+            error['username'] = "short";
+        }else{
+            error['username'] = "";
+        }
+
+        generateErrorMsg();
+    });
+
 
     $(document).on('click', '.last_msg_box', function() {
         const id = $(this).data("receiver"); 
@@ -32,7 +55,6 @@ $(function(){
     $(document).on('click', '#older_msg_btn', function() {
         viewOlderMessages();
     });
-
 
     $(document).on('click', '#new_btn', function() {
         renderPage("goto","#create_calendar");
@@ -61,7 +83,7 @@ $(function(){
     $(window).on('popstate', function(event) {
         const hash = event.target.location.hash;
         urlPath(hash);
-        error = 0;
+        error = {email:'',username:'',password:''};
     });
 
     $(window).on( "resize", function() {
@@ -83,8 +105,20 @@ $(function(){
     });
 
     $(".submit_btn").on("click", function() {
+        let status = "fine";
         const action = $(this).data("action");
-        apiRequest(action,"");
+
+        if(action == "new_account"){
+            if(error['email'] != "" && error['password'] != "" && error['username'] != "")
+            {
+                let status = "err";
+            }
+        }
+
+        if(status == "fine")
+        {
+            apiRequest(action,"");
+        }
     });
 
     $("#c_type").on("change", function(){
@@ -94,6 +128,16 @@ $(function(){
         }else{
             $(".optional").hide();
         }
+    });
+
+    $("#toggle_pw").on("click", function(){
+        $(".toogle_tab").hide();
+        $("#new_password_tab").slideToggle('fast');
+    });
+
+    $("#toggle_del_user").on("click", function(){
+        $(".toogle_tab").hide();
+        $("#del_user_tab").slideToggle('fast');
     });
 
     const hash = window.location.hash;

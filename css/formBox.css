@@ -8,6 +8,7 @@
     background: #e44746;
     color:#f3f3e0;
     font-size:16px;
+    min-width: 450px;
 }
 
 .form_box input, .form_box select 

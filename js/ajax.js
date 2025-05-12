@@ -10,7 +10,7 @@ function callAPI(action, data_obj, type)
 					renderPage(JsonData.route,JsonData.val);
 				}
 				if(type=="GET"){
-					inputValidationMsg(JsonData.message);
+					inputValidationMsg(JsonData.validation);
 				}
 			},
 		error: function(){

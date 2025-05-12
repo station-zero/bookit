@@ -3,9 +3,13 @@
 	<head>
 		<title>Apoint - Simple booking</title>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta content='yes' name='apple-mobile-web-app-capable'/>
-		<meta content='yes' name='mobile-web-app-capable'/>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="msapplication-tap-highlight" content="no" />
+		<meta name="theme-color" content="#e44746">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
 		<script src="js/jquery-3.7.1.min.js"></script>
 		<script src="js/userProfile.js"></script>
@@ -25,7 +29,7 @@
 		<script>
 			let profile = new userProfile();
 			let msg_data = {};
-			let error = 0;
+			let error = {};
 			let app = false;
 		</script>
 
@@ -39,6 +43,8 @@
 		
 		<link rel="icon" type="image/png" href="/images/favicon.png" />
 		<link rel="manifest" href="manifest.json" />
+		<link rel="shortcut icon" href="/images/512icon.png">
+    	<link rel="apple-touch-icon" href="/images/512icon.png">
 	</head>
 	<body>
 	
@@ -57,13 +63,13 @@
 				<div class="divider"></div>
 				<div class="btn_c2">
 					<p>
-						Opret din gratis bookingside med Apoint. Få kontrol over, 
+						Opret din helt egen bookingside med Apoint. Få kontrol over, 
 						hvem der kan booke – perfekt til lukkede møder og private arrangementer.
 					</p>
 				</div>
 				<a href="#new_account" class="menu_link">
 					<div class="btn_c1">
-						<p>Opret konto</p>
+						<p>Opret en gratis brugerkonto.</p>
 					</div>
 				</a>
 			</div>
@@ -75,7 +81,7 @@
 						<tr><td>E-mail: <br> <input id="login_email"></td></tr>
 						<tr><td>password: <br> <input type="password" id="login_password"></td></tr>
 						<tr><td><a class="forgot" href="#forgot_password">Glemt password?</a></td></tr>
-						<tr><td><a class="forgot" href="#new_account">Opret konto</a></td></tr>
+						<tr><td><a class="forgot" href="#new_account">Opret bruger</a></td></tr>
 						
 						<tr><td style="text-align: right"><input class="submit_btn" data-action="login" type="button" value="login"></td></tr>
 					</table>
@@ -168,7 +174,7 @@
 						<tr><td> E-mail: <br> <input id="account_email"></td></tr>
 						<tr><td> password: <br> <input type="password" id="account_password"></tr>
 						<tr><td> Brugernavn: <br> <input id="account_username"></td></tr>
-						<tr><td> <span class="msg_box"></span></td></tr>
+						<tr><td> <span class="invalid_msg_box"></span></td></tr>
 						<tr><td style="text-align: right"><input class="submit_btn" data-action="new_account" type="button" value="Opret"></td></tr>
 					</table>
 				</div>
@@ -279,20 +285,44 @@
 			<!-- the loading page -->
 			<div  class="content_div content_view" id="load">LOADING...</div>
 			
-			<!-- hte profil page todo -->
+			<!-- the profil page -->
 			<div  class="content_div content_view" id="profile">
-				<h1>Profil instillinger</h1>
-				<div class="form_box">
-					<table>
-						<tr>
-							<td>Nyt password: <br> <input type="password" id="new_password"></td>
-						</tr>
-						<tr>
-							<td style="text-align:right;">
-								<input class="submit_btn" data-action="new_password" type="button" value="Create">
-							</td>
-						</tr>
-					</table>
+				<div class="text_box">
+					<h1>Profil instillinger</h1>
+					
+					<div id="toggle_pw" class="toggle_btn">Ændre password</div>
+					<div id="new_password_tab" class="toogle_tab">
+						<div class="form_box">
+							<table>
+								<tr>
+									<td>Nyt password: <br> <input type="password" id="new_password"></td>
+								</tr>
+								<tr>
+									<td style="text-align:right;">
+										<input class="submit_btn" data-action="new_password" type="button" value="Ændre">
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+					<div id="toggle_del_user" class="toggle_btn">Slet bruger</div>
+					<div id="del_user_tab" class="toogle_tab">
+						<div class="form_box">
+							<table>
+								<tr>
+									<td>Ønsker du at slette din bruger? Denne handling er permanent og kan ikke fortrydes</td>
+								</tr>
+								<tr>
+									<td style="text-align:right;">
+										<input class="submit_btn" data-action="delete_userprofile" type="button" value="Slet bruger">
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 
@@ -327,7 +357,7 @@
 					
 				</div>
 				<div class="boxView confirm_list">
-					<span>Valgte tidspunkter</span>
+					<span>Valgte tidspunkter:</span>
 					<div id="booking_list_view"></div>
 					<div class="space_box"></div>
 					<div class="btn fixed" id="book_time">Book</div>		
@@ -355,7 +385,11 @@
 		</div>
 	</div>
 	<div id="gdpr_banner">
-		<p>bla bla bla. bla bla </p><div id="gdpr_ok">Accept</div>
+		<p>
+			<b>Denne hjemmeside bruger cookies</b><br>
+			apoint.dk anvender egne cookies som nødvendige for at dette website til at fungere optimalt.
+			Ved at klikke Accept, accepterer du brugen af cookies på dette website.
+		</p><div id="gdpr_ok">Accept</div>
 	</div>
 	</body>
 </html>

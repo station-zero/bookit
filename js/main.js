@@ -3,23 +3,56 @@ function getScreen()
     let viewType = "fullscreen";
     const screenWidth = $(window).width();
 
-    if(screenWidth<800)
+    if(screenWidth<800 || app == true)
     {
         viewType = "phone";
     }
     return viewType;
 }
 
-function inputValidationMsg(message)
-{
-    $(".msg_box").text(message);
-    if(message=="taken")
+function inputValidationMsg(validation)
+{    
+    if(validation=="taken")
     {
-        $("#account_email").css({"color":"#990000"});
-        error = 1;
+        error['email'] = "taken";   
     }else{
-        error = 0;
+        error['email'] = "";
     }
+    generateErrorMsg();
+}
+
+function generateErrorMsg()
+{
+    let msg = "";
+    $("#account_password").css({color:'#000000'});
+    $("#account_email").css({color:'#000000'});
+    $("#account_username").css({color:'#000000'});
+
+    if(error['email'] == "invalid"  && $("#account_email").val().length != 0)
+    {
+        $("#account_email").css({color:'#990000'});
+        msg += "<li>E-mail ikke gyldig.</li>";
+    }
+
+    if(error['email'] == "taken")
+    {
+        $("#account_email").css({color:'#990000'});
+        msg += "<li>E-mail addressen eksitere allerde i systemet.</li>";
+    }
+
+    if(error['username'] == "short" && $("#account_username").val().length != 0)
+    {
+        $("#account_username").css({color:'#990000'});
+        msg += "<li>brugernavn skal minimum være på 4 karaktere.</li>";
+    }
+
+    if(error['password'] == "short" && $("#account_password").val().length != 0)
+    {
+        $("#account_password").css({color:'#990000'});
+        msg += "<li>password skal minimum være på 4 karaktere.</li>";
+    }
+
+    $(".invalid_msg_box").html("<ul>" + msg + "</ul>");
 }
 
 function showMenu()
@@ -84,6 +117,7 @@ function settings(calendar)
             }
         }
         html += "</table>";
+
         $("#settings_c_users").append(html);
         $("#settings_option").html("<div id='delete_calendar'>Slet kalendar</div>");
         $(".owner_details").show();
@@ -96,12 +130,15 @@ function settings(calendar)
 function urlPath(hash)
 {
     const path = hash.split("/");
+
     if(path.length == 2){
         renderPage(path[0],path[1]);
     }else{
         renderPage("goto",path[0]);
     }
+    
     $(".msg_box").text("");
+    
     if($("#phone_menu").css("display")=="block")
     {
         $("#menu_bar").hide();

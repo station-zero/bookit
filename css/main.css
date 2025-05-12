@@ -15,7 +15,6 @@ h2, p, div, td, p, a, input
     color:#f3f3e0;
 }
 
-
 #phone_menu{
     display:none;
 }
@@ -66,7 +65,6 @@ h2, p, div, td, p, a, input
     background-image:url("/images/svg/settings_btn.svg");
     border-style: none;
 }
-
 
 #main
 {
@@ -214,6 +212,9 @@ h2, p, div, td, p, a, input
     width:360px;
     min-height:180px;
     background-color:#133e87;
+    background-image:url("/images/btn_c1.png");
+    background-repeat: no-repeat;
+    background-position: 200px 5px;
     
 }
 
@@ -242,6 +243,7 @@ h2, p, div, td, p, a, input
     clear:both;
     display:none;
     float:left;
+    width:100%;
 }
 
 #home 
@@ -283,6 +285,28 @@ h2, p, div, td, p, a, input
     font-size:11px;
     text-decoration: none;
     font-weight: bold;
+  }
+
+  .toogle_tab
+  {
+    padding:10px;
+    background:#c1c1c1;
+  }
+
+  .toggle_btn
+  {
+    background-color:#f3f3f3;
+    border:1px solid #dcdcdc;
+    display:block;
+    clear:both;
+    cursor:pointer;
+    color: #232323;
+    font-size:17px;
+    padding:15px 0px;
+    text-decoration:none;
+    min-width: 200px;
+    margin-top: 10px;
+    text-align: center; 
   }
 
   .btn {

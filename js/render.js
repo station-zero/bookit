@@ -7,6 +7,8 @@ function renderPage(route, val)
     $("#account_email").val("");
     $("#account_password").val("");
     $("#account_username").val("");
+    $("#new_password").val("");
+    $(".toogle_tab").hide();
 
     if(route=="error")
     {
@@ -33,7 +35,6 @@ function renderPage(route, val)
     if(route=="new_message")
     {
         setReceiver(val);
-        //TODO hide userlist
         page = "#messages";
     }
 

@@ -1,5 +1,4 @@
     function timePicker(interval, bookings){
-        console.log(bookings);
         const now = new Date();
                 
         class  Date_obj {
@@ -42,8 +41,7 @@
             {
                 $("#booking_list_view").html("Tom");
                 $("#book_time").addClass("gryed_btn");
-                book_time=false;
-                
+                book_time=false;       
             }else{
                 $("#booking_list_view").html("");
                 $("#book_time").removeClass("gryed_btn");
@@ -197,7 +195,6 @@
             }
             return divElement;
         }
-        
 
         function prettyTimeFormat(dateTime){
             const split = dateTime.split(" ");
@@ -206,7 +203,6 @@
             
             const endtime = timeConverter((parseInt(time[0]) * 60) + interval);
             return "dato: " + date[2] + "/" + date[1] + "/" +  date[0] + "<br>Tid: " + split[1] + " - " + endtime;  
-
         }
 
         function time_slot_info(id)
@@ -319,7 +315,6 @@
             selectedDate.MM = date.MM;
             selectedDate.YY = date.YY;
             
-
             $("#pick_date_btn").html(date.DD + "/" + (date.MM + 1) + "/" + date.YY);
            
             $("#small_calendar_wrapper").hide();
@@ -346,7 +341,6 @@
             const id = $(this).data("id");
             apiRequest("remove_booking",id);			
         });
-
 
         createTimeView();
     }

@@ -16,7 +16,7 @@ switch ($method) {
 
         if($input["action"] == "login")
         {
-            $email = $input["email"];
+            $email = strtolower($input["email"]);
             $password = $input["password"];
             $hashed_password = hash("sha256", $password);
             
@@ -73,7 +73,7 @@ switch ($method) {
 
         if($input["action"] == "reset")
         {
-            $email = $input["email"];
+            $email = strtolower($input["email"]);
             $reset_hash = base64_encode(random_bytes(12));
 
             $query = "UPDATE users SET reset=:reset WHERE email= :email";
@@ -105,6 +105,7 @@ switch ($method) {
                 echo json_encode(["route" => "error", "val" => "Fejl i Database"]); 
             }
         }
+
 
         if($input["action"] == "new_password")
         {
@@ -139,11 +140,36 @@ switch ($method) {
             }
         }
 
+        if($input["action"] == "delete_userprofile")
+        {
+            $token = $input["token"];
+            
+            $user = get_user($token);
+            if($user["valid"] == true)
+            {
+                $query = "UPDATE users SET email='', hashed_password='', jwt_token='' WHERE id=:id";
+                $statement = $db->prepare($query);
+                $statement->bindValue(":id", $user["id"]);
+                $result = $statement->execute();
+                
+                if($db->changes() != 0)
+                {
+                    $msg = "Din bruger er nu slettet";
+                    echo json_encode(["route" => "#success", "val" => $msg]);
+                }else{
+                    echo json_encode(["route" => "error", "val" => "Fejl i database"]);
+                }
+            }else{
+                    echo json_encode(["route" => "goto", "val" => "#login"]);
+            }
+        }
+
+
         if($input["action"] == "new_account")
         {
             $username = $input["username"];
             $password = $input["password"];
-            $email = $input["email"];
+            $email = strtolower($input["email"]);
             
             $hashed_pw = hash("sha256", $password);
             
@@ -162,7 +188,7 @@ switch ($method) {
             
                 if($db->changes() != 0)
                 {
-                    $subject = "Bekræft ny bruger";
+                    $subject = "Ny bruger";
                     $message = "
                     <html>
                     <head>
@@ -225,7 +251,7 @@ switch ($method) {
             $calendar_id = $input['calendar_id'];
             
             $user = get_user($token); 
-            if($user["valid"]==true)
+            if($user["valid"] == true)
             {
                 $query = 'INSERT INTO calendar_blocks(start_time, end_time, user_id, calendar_id) VALUES (:start, :end, :user_id, :calendar_id)';
                 $statement = $db->prepare($query);
@@ -316,11 +342,12 @@ switch ($method) {
         {
             $token = $input["token"];
             $id = $input["id"];
+            $calendar_id = $input["calendar_id"];
             
             $user = get_user($token); 
             if($user["valid"] == true)
             {
-                $query = "DELETE FROM calendar_blocks WHERE id=:id AND owner=:user_id";
+                $query = "DELETE FROM calendar_blocks WHERE id=:id AND user_id=:user_id";
                 $statement = $db->prepare($query);
                 $statement->bindValue(":id", $id);
                 $statement->bindValue(":user_id", $user["id"]);
@@ -404,7 +431,7 @@ switch ($method) {
         if($input["action"] == "add_user")
         {
             $token = $input["token"];
-            $email = $input["email"];
+            $email = strtolower($input["email"]);
             $calendar_id = $input["calendar_id"];
             
             $items = array();
@@ -476,7 +503,7 @@ switch ($method) {
                             );
                         }
             
-                        $items = array(
+                        $all_users = array(
                             "valid" => true,
                             "id" => $row["id"], 
                             "type" => $row["type"], 
@@ -484,14 +511,14 @@ switch ($method) {
                             "pending" => get_pending_users($id)
                         );
                     }else{
-                        $items = array(
+                        $all_users = array(
                             "valid" => false,
                             "id" => $row["id"], 
                             "type" => $row["type"]
                         );
                     }
                 } 
-                echo json_encode(["route" => "settings_view", "val" => $items]);
+                echo json_encode(["route" => "settings_view", "val" => $all_users]);
             }else{
             echo json_encode(["route" => "goto", "val" => "#login"]);
             }
@@ -663,12 +690,12 @@ switch ($method) {
 
         if($input["action"] == "check_email")
         {
-            $email = $input["email"];
+            $email = strtolower($input["email"]);
             
             if(email_aviable($email) == false){
-                    echo json_encode(["message" => "taken"]);
+                    echo json_encode(["validation" => "taken"]);
             }else{
-                    echo json_encode(["message" => "ok"]);
+                    echo json_encode(["validation" => "ok"]);
             }
         }
         break;

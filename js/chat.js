@@ -74,7 +74,6 @@ function generateChat(length)
             }
         }
     });
-
 }
 
 function generateMsgBoxListView(sender_name, msg, timestamp, receiver_id)
@@ -110,7 +109,6 @@ function generateMsgBox(sender_name, txt, timestamp, sender_id)
 
 function groupArray(s,r,array)
 {
-
     let collection = [];
     for(let i in array) {
         if(array[i]['sender_id'] == s && array[i]['receiver_id'] == r)

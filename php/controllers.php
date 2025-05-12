@@ -25,7 +25,7 @@ function jwt($token, $secret, $time)
 
 function send_mail($email, $subject, $message)
 {
-    $subject_encoded = "=?UTF-8?B?".base64_encode(utf8_encode($subject))."?=";
+    $subject_encoded = $subject;
 
     $headers[] = "MIME-Version: 1.0";
     $headers[] = "Content-Type: text/html; charset=UTF-8";

@@ -24,6 +24,17 @@ function apiRequest(action,parameter)
             }
     }
 
+    if(action == "delete_userprofile")
+    {
+        profile.setLoginStatus(false);
+        
+        type = "POST";
+        data_obj = {
+            'action':action,
+            'token': profile.getJWT()
+        }
+    }
+
     if(action == "save_dates")
     {
         let startInput = $("#startDate").val();
@@ -47,6 +58,7 @@ function apiRequest(action,parameter)
         data_obj = {
                 'action': action,
                 'id': parameter,
+                'calendar_id': profile.getCalendarID,
                 'token': profile.getJWT()
         }
     }	
@@ -167,7 +179,7 @@ function apiRequest(action,parameter)
     
 
     if( action == "check_email")
-    {
+    {    
         type = "GET";
         data_obj = {
             'action':action,
@@ -197,7 +209,7 @@ function apiRequest(action,parameter)
     }
     
     if(action == "logout")
-    {
+    {    
         type = "POST";
         data_obj = {
             'action':action,

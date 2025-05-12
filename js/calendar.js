@@ -1,6 +1,5 @@
 		
-		function calendar(bookings,title){ 
-			
+		function calendar(bookings,title){ 			
 			const now = new Date();
 			let DD = now.getDate();
 			let YY = now.getFullYear();
@@ -137,8 +136,7 @@
 
 				$("#startDate").val(selectStartDate.DD + "/" + (selectStartDate.MM + 1) + "/" + selectStartDate.YY);
 				$("#endDate").val(selectEndDate.DD + "/" + (selectEndDate.MM + 1) + "/" + selectEndDate.YY);
-
-				}
+			}
 
 			function checkSum(year,month,day)
 			{
@@ -172,13 +170,12 @@
 				for(let i=1; i < 45; i++)
 				{
 					if(i > firstDayInMonth && dayNumber < lastDateInMonth + 1){
-
-						
 						let todayClass = "";
 						let className = "dayPicker";
 						let elementId = "";
 						let item_number = 0;
-						
+						let booked_info_div = "";
+
 						const dayCheckSum = checkSum(year, month, dayNumber);
 
 						for(var booking of bookings)
@@ -192,7 +189,8 @@
 							if(dayCheckSum >= bookingStart && dayCheckSum <= bookingEnd)
 							{
 								className = "booked";
-								elementId = booking.id; 
+								elementId = booking.id;
+								booked_info_div = "<div class='booked_info'>" + booking.user + "</div>"; 
 							}
 							item_number += 1;	
 						}
@@ -212,7 +210,7 @@
 						divElement += "data-m='" +  month + "' ";
 						divElement += "data-y='" +  year + "' ";
 						divElement += "data-id='" + elementId + "' ";
-						divElement += ">" + dayNumber + "</div>";
+						divElement += ">" + dayNumber + booked_info_div + "</div>";
 						dayNumber += 1;
 					}else{
 						divElement += "<div class='dayPickerEmty'></div>";
@@ -268,7 +266,6 @@
 				let day = $(this).data('d');
 				let month = $(this).data('m');
 				let year = $(this).data('y');
-				
 				
 					if(selected==false)
 					{
@@ -378,10 +375,8 @@
 				}
 				drawCalendar(YY,MM,DD);
 			});
-			
-			
+						
 			drawCalendar(YY,MM,DD);
-			
 		}
 		
 		
