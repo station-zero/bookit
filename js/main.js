@@ -130,12 +130,6 @@ function settings(calendar)
 function urlPath(hash)
 {
     const path = hash.split("/");
-
-    if(path.length == 2){
-        renderPage(path[0],path[1]);
-    }else{
-        renderPage("goto",path[0]);
-    }
     
     $(".msg_box").text("");
     
@@ -146,4 +140,12 @@ function urlPath(hash)
     }
     
     profile.setRoute(hash);
+
+    if(path.length == 2){
+        renderPage(path[0],path[1]);
+    }else{
+        renderPage("goto",path[0]);
+    }
+    
+    
 }
