@@ -1,4 +1,4 @@
-function callAPI(action, data_obj, type)
+function callAPI(data_obj, type)
 {	
 	$.ajax({
 		type: type,
@@ -9,7 +9,7 @@ function callAPI(action, data_obj, type)
 				if(type=="POST"){
 					renderPage(JsonData.route,JsonData.val);
 				}
-				if(type=="GET"){
+				else if(type=="GET"){
 					inputValidationMsg(JsonData.validation);
 				}
 			},
