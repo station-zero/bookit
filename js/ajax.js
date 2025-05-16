@@ -5,7 +5,7 @@ function callAPI(data_obj, type)
 		data: data_obj,
 		url: "https://apoint.dk/php/api.php",
 		success: function(data){
-			const JsonData = jQuery.parseJSON(data);	
+			const JsonData =  JSON.parse(data);	
 			if(type=="POST"){
 				renderPage(JsonData.route,JsonData.val);
 			}
