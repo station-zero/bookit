@@ -198,5 +198,5 @@ function apiRequest(action,parameter)
             break;
     }
 
-    callAPI(action, data_obj, type);
+    callAPI(data_obj, type);
 }
