@@ -44,7 +44,7 @@ switch ($method) {
                     echo json_encode(["route" => "loggedin", "val" => $user_data]);
                     
                 }else{
-                    echo json_encode(["route" => "error", "val" => "Forkret password eller e-mail"]);
+                    echo json_encode(["route" => "error", "val" => "Forkert password eller e-mail"]);
                 }
         }
 
